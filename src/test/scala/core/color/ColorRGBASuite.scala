@@ -1,7 +1,8 @@
 package com.example
 package core.color
 
-import core.color.ColorRGBA
+
+import core.support.{FloatWithAlmostEquals, Precision}
 
 import org.scalatest.flatspec.AnyFlatSpec
 import spire.math.UByte
@@ -37,5 +38,25 @@ class ColorRGBASuite extends AnyFlatSpec {
     val colorRGBA = ColorRGBA.apply(200, 150, 10, 155)
 
     assert(colorRGBA.RGBAInt === -1681353206)
+  }
+
+  "ColorRGBA" can "be converted to ColorHSLA" in {
+    implicit val precision: Precision = Precision(0.02f)
+
+    val colorRGBA = ColorRGBA.apply(200, 150, 10, 125)
+    val colorHSLA = colorRGBA.asColorHSLA
+
+    assert(colorHSLA.hue ~= 44.2f)
+    assert(colorHSLA.lightness ~= 0.41f)
+    assert(colorHSLA.saturation ~= 0.9f)
+    assert(colorHSLA.alpha ~= 0.5f)
+  }
+
+
+  "ColorRGBA" can "be converted to ColorHSLA and back to ColorRGBA, keeping values" in {
+    val colorRGBA = ColorRGBA.apply(183, 159, 10, 125)
+    val colorHSLA = colorRGBA.asColorHSLA
+
+    assert(colorRGBA.equals(colorHSLA.asColorRGBA))
   }
 }
