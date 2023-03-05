@@ -22,6 +22,9 @@ object GrayscaleColorConversion {
       case GrayscaleConversionAlgorithm.LUMA_BT601 => applyLumaBT601Grayscale(color)
       case GrayscaleConversionAlgorithm.LUMA_BT709 => applyLumaBT709Grayscale(color)
       case GrayscaleConversionAlgorithm.AVERAGING => applyAveragingGrayscale(color)
+      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_RED => applySingleChannelRedGrayscale(color)
+      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_GREEN => applySingleChannelGreenGrayscale(color)
+      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_BLUE => applySingleChannelBlueGrayscale(color)
     }
   }
 
@@ -48,5 +51,23 @@ object GrayscaleColorConversion {
     val averageColorValue = UByte(((colorRGBA.red.intValue + colorRGBA.blue.intValue + colorRGBA.green.intValue) / 3f).round)
 
     ColorRGBA(averageColorValue, averageColorValue, averageColorValue, colorRGBA.alpha)
+  }
+
+  def applySingleChannelRedGrayscale(color: Color): ColorRGBA = {
+    val colorRGBA = color.asColorRGBA
+
+    ColorRGBA(colorRGBA.red, colorRGBA.red, colorRGBA.red, colorRGBA.alpha)
+  }
+
+  def applySingleChannelGreenGrayscale(color: Color): ColorRGBA = {
+    val colorRGBA = color.asColorRGBA
+
+    ColorRGBA(colorRGBA.green, colorRGBA.green, colorRGBA.green, colorRGBA.alpha)
+  }
+
+  def applySingleChannelBlueGrayscale(color: Color): ColorRGBA = {
+    val colorRGBA = color.asColorRGBA
+
+    ColorRGBA(colorRGBA.blue, colorRGBA.blue, colorRGBA.blue, colorRGBA.alpha)
   }
 }

@@ -54,4 +54,16 @@ class GrayscaleColorConversionSuite extends AnyFlatSpec {
     assert(resultedGrayscaleColorBT709 == expectedGrayscaleColor)
     assert(resultedGrayscaleColorBT601 == expectedGrayscaleColor)
   }
+
+  "GrayscaleColorConversion" can "apply grayscale using single channel algorithm" in {
+    val initialColor = ColorRGBA.apply(255, 200, 100, 125)
+
+    val resultedColorUsingRedChannel = GrayscaleColorConversion.applyGrayscale(initialColor, GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_RED)
+    val resultedColorUsingGreenChannel = GrayscaleColorConversion.applyGrayscale(initialColor, GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_GREEN)
+    val resultedColorUsingBlueChannel = GrayscaleColorConversion.applyGrayscale(initialColor, GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_BLUE)
+
+    assert(resultedColorUsingRedChannel == ColorRGBA.apply(255, 255, 255, 125))
+    assert(resultedColorUsingBlueChannel == ColorRGBA.apply(100, 100, 100, 125))
+    assert(resultedColorUsingGreenChannel == ColorRGBA.apply(200, 200, 200, 125))
+  }
 }
