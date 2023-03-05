@@ -53,11 +53,29 @@ class ColorRGBASuite extends AnyFlatSpec {
     assert(colorHSLA.alpha ~= 0.5f, "Conversion failed: expected alpha %s, received %s" format(0.5f, colorHSLA.alpha))
   }
 
-
   "ColorRGBA" can "be converted to ColorHSLA and back to ColorRGBA, keeping same values" in {
     val colorRGBA = ColorRGBA.apply(183, 159, 10, 125)
     val colorHSLA = colorRGBA.asColorHSLA
 
     assert(colorRGBA == colorHSLA.asColorRGBA)
+  }
+
+  "ColorRGBA" can "be converted to ColorHSVA" in {
+    implicit val precision: Precision = Precision(0.0099f)
+
+    val colorRGBA = ColorRGBA.apply(200, 150, 10, 125)
+    val colorHSVA = colorRGBA.asColorHSVA
+
+    assert(colorHSVA.hue ~= 44.21f, "Conversion failed: expected hue %s, received %s" format(44.21f, colorHSVA.hue))
+    assert(colorHSVA.value ~= 0.78f, "Conversion failed: expected lightness %s, received %s" format(0.78f, colorHSVA.value))
+    assert(colorHSVA.saturation ~= 0.95f, "Conversion failed: expected saturation %s, received %s" format(0.95f, colorHSVA.saturation))
+    assert(colorHSVA.alpha ~= 0.5f, "Conversion failed: expected alpha %s, received %s" format(0.5f, colorHSVA.alpha))
+  }
+
+  "ColorRGBA" can "be converted to ColorHSVA and back to ColorRGBA, keeping same values" in {
+    val colorRGBA = ColorRGBA.apply(183, 159, 10, 125)
+    val colorHSVA = colorRGBA.asColorHSVA
+
+    assert(colorRGBA == colorHSVA.asColorRGBA)
   }
 }

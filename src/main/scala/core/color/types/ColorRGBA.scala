@@ -16,22 +16,41 @@ case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte
   override def asColorRGBA: ColorRGBA = this
 
   override def asColorHSLA: ColorHSLA = {
-    val r: Float = red.toFloat / 255
-    val g: Float = green.toFloat / 255
-    val b: Float = blue.toFloat / 255
+    val (r, g, b) = convertRGBValuesToFloat
 
     val value: Float = r.max(g).max(b)
     val xMin: Float = r.min(g).min(b)
-
     val chroma = value - xMin
     val lightness = (value + xMin) / 2
 
     ColorHSLA(
       calculateHue(chroma, value, r, g, b),
-      calculateSaturation(value, lightness),
+      calculateHSLSaturation(value, lightness),
       lightness,
       alpha.toFloat / 255
     )
+  }
+
+  override def asColorHSVA: ColorHSVA = {
+    val (r, g, b) = convertRGBValuesToFloat
+
+    val value: Float = r.max(g).max(b)
+    val xMin: Float = r.min(g).min(b)
+    val chroma = value - xMin
+
+    ColorHSVA(
+      calculateHue(chroma, value, r, g, b),
+      calculateHSVSaturation(value, chroma),
+      value,
+      alpha.toFloat / 255
+    )
+  }
+
+  private def convertRGBValuesToFloat: (Float, Float, Float) = {
+    val r: Float = red.toFloat / 255
+    val g: Float = green.toFloat / 255
+    val b: Float = blue.toFloat / 255
+    (r, g, b)
   }
 
   private def calculateHue(chroma: Float, value: Float, r: Float, g: Float, b: Float): Float = {
@@ -48,13 +67,24 @@ case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte
 
   }
 
-  private def calculateSaturation(value: Float, lightness: Float): Float = {
+  private def calculateHSLSaturation(value: Float, lightness: Float): Float = {
     implicit val precision: Precision = Precision(0.0001f)
     if ((lightness ~= 0) || (lightness ~= 1)) {
       0
     }
     else {
       (value - lightness) / lightness.min(1 - lightness)
+    }
+  }
+
+  private def calculateHSVSaturation(value: Float, chroma: Float): Float = {
+    implicit val precision: Precision = Precision(0.0001f)
+
+    if (value ~= 0) {
+      0
+    }
+    else {
+      chroma / value
     }
   }
 }

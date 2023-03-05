@@ -7,4 +7,6 @@ trait Color {
   def asColorRGBA: ColorRGBA
 
   def asColorHSLA: ColorHSLA
+
+  def asColorHSVA: ColorHSVA
 }

@@ -1,8 +1,7 @@
 package com.example
 package core.color.types
 
-import core.support.Precision
-import core.support.FloatWithAlmostEquals
+import core.support.{FloatWithAlmostEquals, Precision}
 
 /**
  * HSL (for hue, saturation, lightness) is alternative representations of the RGB color model.
@@ -27,6 +26,15 @@ case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: Flo
   }
 
   override def asColorHSLA: ColorHSLA = this
+
+  override def asColorHSVA: ColorHSVA = {
+    implicit val precision: Precision = Precision(0.001f)
+
+    val value = lightness + saturation * lightness.min(1 - lightness)
+    val saturationHSV = if (lightness ~= 0) 0 else 2 * (1 - lightness / value)
+
+    ColorHSVA(hue, saturationHSV, value, alpha)
+  }
 
   /**
    * Check if is this ColorHSLA almost equals to another ColorHSLA.
