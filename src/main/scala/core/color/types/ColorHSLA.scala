@@ -1,7 +1,16 @@
 package com.example
 package core.color.types
 
-case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: Float) extends Color {
+/**
+ * HSL (for hue, saturation, lightness) is alternative representations of the RGB color model.
+ * A in HSLA stands for alpha / transparency.
+ *
+ * @param hue        in range from 0f to 360f
+ * @param saturation in range from 0f to 1f
+ * @param lightness  in range from 0f to 1f
+ * @param alpha      in range from 0f to 1f
+ */
+case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: Float = 1f) extends Color {
   override def asAWTColor: java.awt.Color = asColorRGBA.asAWTColor
 
   override def asColorRGBA: ColorRGBA = {
@@ -22,10 +31,10 @@ case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: Flo
 
     val (r1, g1, b1) = hslToRGB(h, c, x)
 
-    ColorRGBA.apply(((r1 + m) * 255).ceil.toInt,
-      ((g1 + m) * 255).ceil.toInt,
-      ((b1 + m) * 255).ceil.toInt,
-      (255 * alpha).ceil.toInt)
+    ColorRGBA.apply(((r1 + m) * 255).round,
+      ((g1 + m) * 255).round,
+      ((b1 + m) * 255).round,
+      (255 * alpha).round)
   }
 
   override def asColorHSLA: ColorHSLA = this
