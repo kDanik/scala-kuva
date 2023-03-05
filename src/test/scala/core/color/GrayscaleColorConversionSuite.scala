@@ -44,7 +44,7 @@ class GrayscaleColorConversionSuite extends AnyFlatSpec {
     assert(resultedGrayscaleColor == expectedGrayscaleColor)
   }
 
-  "Luma algorithm" should "not overflow if input color has max values for each channel" in {
+  "Luma algorithm overflow" should "never happen (input with max values)" in {
     val initialColor = ColorRGBA.apply(255, 255, 255, 125)
 
     val resultedGrayscaleColorBT709 = GrayscaleColorConversion.applyGrayscale(initialColor, GrayscaleConversionAlgorithm.LUMA_BT709)
@@ -65,5 +65,23 @@ class GrayscaleColorConversionSuite extends AnyFlatSpec {
     assert(resultedColorUsingRedChannel == ColorRGBA.apply(255, 255, 255, 125))
     assert(resultedColorUsingBlueChannel == ColorRGBA.apply(100, 100, 100, 125))
     assert(resultedColorUsingGreenChannel == ColorRGBA.apply(200, 200, 200, 125))
+  }
+
+  "GrayscaleColorConversion" can "apply grayscale using decomposition (min) algorithm" in {
+    val initialColor = ColorRGBA.apply(255, 200, 100, 125)
+
+    val resultedGrayscaleColor = GrayscaleColorConversion.applyGrayscale(initialColor, GrayscaleConversionAlgorithm.DECOMPOSITION_MIN)
+    val expectedGrayscaleColor = ColorRGBA.apply(100, 100, 100, 125)
+
+    assert(resultedGrayscaleColor == expectedGrayscaleColor)
+  }
+
+  "GrayscaleColorConversion" can "apply grayscale using decomposition (max) algorithm" in {
+    val initialColor = ColorRGBA.apply(255, 200, 100, 125)
+
+    val resultedGrayscaleColor = GrayscaleColorConversion.applyGrayscale(initialColor, GrayscaleConversionAlgorithm.DECOMPOSITION_MAX)
+    val expectedGrayscaleColor = ColorRGBA.apply(255, 255, 255, 125)
+
+    assert(resultedGrayscaleColor == expectedGrayscaleColor)
   }
 }

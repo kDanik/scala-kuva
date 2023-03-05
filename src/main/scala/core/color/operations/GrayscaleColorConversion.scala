@@ -25,6 +25,8 @@ object GrayscaleColorConversion {
       case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_RED => applySingleChannelRedGrayscale(color)
       case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_GREEN => applySingleChannelGreenGrayscale(color)
       case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_BLUE => applySingleChannelBlueGrayscale(color)
+      case GrayscaleConversionAlgorithm.DECOMPOSITION_MIN => applyDecompositionMinGrayscale(color)
+      case GrayscaleConversionAlgorithm.DECOMPOSITION_MAX => applyDecompositionMaxGrayscale(color)
     }
   }
 
@@ -69,5 +71,18 @@ object GrayscaleColorConversion {
     val colorRGBA = color.asColorRGBA
 
     ColorRGBA(colorRGBA.blue, colorRGBA.blue, colorRGBA.blue, colorRGBA.alpha)
+  }
+  def applyDecompositionMaxGrayscale(color: Color): ColorRGBA = {
+    val colorRGBA = color.asColorRGBA
+    val maxChannelValue = UByte(colorRGBA.red.intValue.max(colorRGBA.green.intValue).max(colorRGBA.blue.intValue))
+
+    ColorRGBA(maxChannelValue, maxChannelValue, maxChannelValue, colorRGBA.alpha)
+  }
+
+  def applyDecompositionMinGrayscale(color: Color): ColorRGBA = {
+    val colorRGBA = color.asColorRGBA
+    val minChannelValue = UByte(colorRGBA.red.intValue.min(colorRGBA.green.intValue).min(colorRGBA.blue.intValue))
+
+    ColorRGBA(minChannelValue, minChannelValue, minChannelValue, colorRGBA.alpha)
   }
 }

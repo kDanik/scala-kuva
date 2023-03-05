@@ -12,6 +12,10 @@ package core.color.operations
  * DESATURATION - Desaturating works by converting color to an HSL, then changing the saturation to zero. Results in a flatter, softer grayscale image
  *
  * SINGLE_COLOR_CHANNEL_* - uses value of one selected channel for values of all other channels
+ *
+ * DECOMPOSITION_MIN - uses value of one channel with minimum value for values of all other channels
+ *
+ * DECOMPOSITION_MAX - uses value of one channel with maximum value for values of all other channels
  */
 enum GrayscaleConversionAlgorithm:
   case AVERAGING,
@@ -20,4 +24,6 @@ enum GrayscaleConversionAlgorithm:
   DESATURATION,
   SINGLE_COLOR_CHANNEL_RED,
   SINGLE_COLOR_CHANNEL_GREEN,
-  SINGLE_COLOR_CHANNEL_BLUE
+  SINGLE_COLOR_CHANNEL_BLUE,
+  DECOMPOSITION_MIN,
+  DECOMPOSITION_MAX
