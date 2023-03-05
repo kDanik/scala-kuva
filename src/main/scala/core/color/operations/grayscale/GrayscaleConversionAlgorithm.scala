@@ -1,5 +1,5 @@
 package com.example
-package core.color.operations
+package core.color.operations.grayscale
 
 /**
  * Algorithms for grayscale color conversion:

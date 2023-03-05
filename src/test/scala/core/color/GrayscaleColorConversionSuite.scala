@@ -1,8 +1,8 @@
 package com.example
 package core.color
 
-import core.color.operations.{GrayscaleColorConversion, GrayscaleConversionAlgorithm}
 import core.color.types.ColorRGBA
+import com.example.core.color.operations.grayscale.{GrayscaleColorConversion, GrayscaleConversionAlgorithm}
 
 import org.scalatest.flatspec.AnyFlatSpec
 

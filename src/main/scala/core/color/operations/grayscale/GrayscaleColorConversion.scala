@@ -1,5 +1,5 @@
 package com.example
-package core.color.operations
+package core.color.operations.grayscale
 
 import core.color.types.{Color, ColorRGBA}
 
@@ -72,6 +72,7 @@ object GrayscaleColorConversion {
 
     ColorRGBA(colorRGBA.blue, colorRGBA.blue, colorRGBA.blue, colorRGBA.alpha)
   }
+
   def applyDecompositionMaxGrayscale(color: Color): ColorRGBA = {
     val colorRGBA = color.asColorRGBA
     val maxChannelValue = UByte(colorRGBA.red.intValue.max(colorRGBA.green.intValue).max(colorRGBA.blue.intValue))
