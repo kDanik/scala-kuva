@@ -2,6 +2,7 @@ package com.example
 package core.color
 
 
+import core.color.types.ColorRGBA
 import core.support.{FloatWithAlmostEquals, Precision}
 
 import org.scalatest.flatspec.AnyFlatSpec

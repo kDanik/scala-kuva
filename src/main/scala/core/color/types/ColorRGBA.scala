@@ -1,7 +1,9 @@
 package com.example
-package core.color
+package core.color.types
 
+import core.color.types.{Color, ColorHSLA, ColorRGBA}
 import core.support.{FloatWithAlmostEquals, Precision}
+
 import spire.math.{UByte, max}
 
 case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255)) extends Color {
@@ -18,7 +20,7 @@ case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte
     val g: Float = green.toFloat / 255
     val b: Float = blue.toFloat / 255
 
-    val value: Float =  r.max(g).max(b)
+    val value: Float = r.max(g).max(b)
     val xMin: Float = r.min(g).min(b)
 
     val chroma = value - xMin

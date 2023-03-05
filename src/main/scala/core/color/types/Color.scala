@@ -1,5 +1,5 @@
 package com.example
-package core.color
+package core.color.types
 
 trait Color {
   def asAWTColor: java.awt.Color

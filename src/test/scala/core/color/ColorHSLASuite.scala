@@ -1,6 +1,7 @@
 package com.example
 package core.color
 
+import com.example.core.color.types.ColorHSLA
 import org.scalatest.flatspec.AnyFlatSpec
 
 class ColorHSLASuite extends AnyFlatSpec {
