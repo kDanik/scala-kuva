@@ -1,6 +1,9 @@
 package com.example
 package core.color.types
 
+import core.support.Precision
+import core.support.FloatWithAlmostEquals
+
 case class ColorHSVA(hue: Float, saturation: Float, value: Float, alpha: Float = 1f) extends Color, HSVAndHSL {
   override def asAWTColor: java.awt.Color = asColorRGBA.asAWTColor
 
@@ -14,5 +17,12 @@ case class ColorHSVA(hue: Float, saturation: Float, value: Float, alpha: Float =
     hslHsvToRGB(h, c, x, m, alpha)
   }
 
-  override def asColorHSLA: ColorHSLA = this.asColorRGBA.asColorHSLA
+  override def asColorHSLA: ColorHSLA = {
+    implicit val precision: Precision = Precision(0.0001f)
+
+    val lightness = value * (1 - saturation / 2)
+    val saturationHSL = if ((lightness ~= 0) || (lightness ~= 1)) 0 else (value - lightness) / lightness.min(1 - lightness)
+
+    ColorHSLA(hue, saturationHSL, lightness, alpha)
+  }
 }
