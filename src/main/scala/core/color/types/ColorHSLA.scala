@@ -3,6 +3,8 @@ package core.color.types
 
 import core.support.{FloatWithAlmostEquals, Precision}
 
+import spire.math.UByte
+
 /**
  * HSL (for hue, saturation, lightness) is alternative representations of the RGB color model.
  * A in HSLA stands for alpha / transparency.
@@ -10,9 +12,9 @@ import core.support.{FloatWithAlmostEquals, Precision}
  * @param hue        in range from 0f to 360f
  * @param saturation in range from 0f to 1f
  * @param lightness  in range from 0f to 1f
- * @param alpha      in range from 0f to 1f
+ * @param alpha      in range from 0 to 255
  */
-case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: Float = 1f) extends Color, HSVAndHSL {
+case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: UByte = UByte(255)) extends Color, HSVAndHSL {
   override def asAWTColor: java.awt.Color = asColorRGBA.asAWTColor
 
   override def asColorRGBA: ColorRGBA = {
@@ -43,6 +45,6 @@ case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: Flo
   def almostEquals(obj: ColorHSLA): Boolean = {
     implicit val precision: Precision = Precision(0.001f)
 
-    (hue ~= obj.hue) && (saturation ~= obj.saturation) && (lightness ~= obj.lightness) && (alpha ~= obj.alpha)
+    (hue ~= obj.hue) && (saturation ~= obj.saturation) && (lightness ~= obj.lightness) && (alpha == obj.alpha)
   }
 }

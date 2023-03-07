@@ -50,7 +50,7 @@ class ColorRGBASuite extends AnyFlatSpec {
     assert(colorHSLA.hue ~= 44.21f, "Conversion failed: expected hue %s, received %s" format(44.21f, colorHSLA.hue))
     assert(colorHSLA.lightness ~= 0.411f, "Conversion failed: expected lightness %s, received %s" format(0.411f, colorHSLA.lightness))
     assert(colorHSLA.saturation ~= 0.9f, "Conversion failed: expected saturation %s, received %s" format(0.9f, colorHSLA.saturation))
-    assert(colorHSLA.alpha ~= 0.5f, "Conversion failed: expected alpha %s, received %s" format(0.5f, colorHSLA.alpha))
+    assert(colorHSLA.alpha == UByte(125), "Conversion failed: expected alpha %s, received %s" format(UByte(125), colorHSLA.alpha))
   }
 
   "ColorRGBA" can "be converted to ColorHSLA and back to ColorRGBA, keeping same values" in {
@@ -69,7 +69,7 @@ class ColorRGBASuite extends AnyFlatSpec {
     assert(colorHSVA.hue ~= 44.21f, "Conversion failed: expected hue %s, received %s" format(44.21f, colorHSVA.hue))
     assert(colorHSVA.value ~= 0.78f, "Conversion failed: expected lightness %s, received %s" format(0.78f, colorHSVA.value))
     assert(colorHSVA.saturation ~= 0.95f, "Conversion failed: expected saturation %s, received %s" format(0.95f, colorHSVA.saturation))
-    assert(colorHSVA.alpha ~= 0.5f, "Conversion failed: expected alpha %s, received %s" format(0.5f, colorHSVA.alpha))
+    assert(colorHSVA.alpha == UByte(125), "Conversion failed: expected alpha %s, received %s" format(UByte(125), colorHSVA.alpha))
   }
 
   "ColorRGBA" can "be converted to ColorHSVA and back to ColorRGBA, keeping same values" in {

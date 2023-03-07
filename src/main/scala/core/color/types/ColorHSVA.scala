@@ -3,7 +3,9 @@ package core.color.types
 
 import core.support.{FloatWithAlmostEquals, Precision}
 
-case class ColorHSVA(hue: Float, saturation: Float, value: Float, alpha: Float = 1f) extends Color, HSVAndHSL {
+import spire.math.UByte
+
+case class ColorHSVA(hue: Float, saturation: Float, value: Float, alpha: UByte = UByte(255)) extends Color, HSVAndHSL {
   override def asAWTColor: java.awt.Color = asColorRGBA.asAWTColor
 
   override def asColorRGBA: ColorRGBA = {
@@ -34,6 +36,6 @@ case class ColorHSVA(hue: Float, saturation: Float, value: Float, alpha: Float =
   def almostEquals(obj: ColorHSVA): Boolean = {
     implicit val precision: Precision = Precision(0.001f)
 
-    (hue ~= obj.hue) && (saturation ~= obj.saturation) && (value ~= obj.value) && (alpha ~= obj.alpha)
+    (hue ~= obj.hue) && (saturation ~= obj.saturation) && (value ~= obj.value) && (alpha == obj.alpha)
   }
 }

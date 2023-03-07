@@ -27,7 +27,7 @@ case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte
       calculateHue(chroma, value, r, g, b),
       calculateHSLSaturation(value, lightness),
       lightness,
-      alpha.toFloat / 255
+      alpha
     )
   }
 
@@ -42,7 +42,7 @@ case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte
       calculateHue(chroma, value, r, g, b),
       calculateHSVSaturation(value, chroma),
       value,
-      alpha.toFloat / 255
+      alpha
     )
   }
 
@@ -69,6 +69,7 @@ case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte
 
   private def calculateHSLSaturation(value: Float, lightness: Float): Float = {
     implicit val precision: Precision = Precision(0.0001f)
+
     if ((lightness ~= 0) || (lightness ~= 1)) {
       0
     }
@@ -96,5 +97,9 @@ object ColorRGBA {
 
   def apply(red: Int, green: Int, blue: Int, alpha: Int): ColorRGBA = {
     ColorRGBA(UByte(red), UByte(green), UByte(blue), UByte(alpha))
+  }
+
+  def apply(red: Int, green: Int, blue: Int, alpha: UByte): ColorRGBA = {
+    ColorRGBA(UByte(red), UByte(green), UByte(blue), alpha)
   }
 }
