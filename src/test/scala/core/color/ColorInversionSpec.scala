@@ -8,7 +8,7 @@ import core.color.types.{ColorHSVA, ColorRGBA}
 import org.scalatest.flatspec.AnyFlatSpec
 import spire.math.UByte
 
-class ColorInversionSuite extends AnyFlatSpec {
+class ColorInversionSpec extends AnyFlatSpec {
   "Color inversion" can "should work properly for ColorRGBA (excluding alpha)" in {
     val initialColor = ColorRGBA.apply(199, 130, 30, 110)
     val expectedInvertedColor = ColorRGBA.apply(56, 125, 225, 110)

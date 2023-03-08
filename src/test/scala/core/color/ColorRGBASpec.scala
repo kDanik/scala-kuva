@@ -8,7 +8,7 @@ import core.support.{FloatWithAlmostEquals, Precision}
 import org.scalatest.flatspec.AnyFlatSpec
 import spire.math.UByte
 
-class ColorRGBASuite extends AnyFlatSpec {
+class ColorRGBASpec extends AnyFlatSpec {
   "ColorRGBA" can "be converted to AWT Color" in {
     val colorRGBA = ColorRGBA.apply(100, 100, 100, 55)
     val expectedAwtColor = java.awt.Color(100, 100, 100, 55)

@@ -7,7 +7,7 @@ import core.support.{FloatWithAlmostEquals, Precision}
 import org.scalatest.flatspec.AnyFlatSpec
 import spire.math.UByte
 
-class ColorHSLASuite extends AnyFlatSpec {
+class ColorHSLASpec extends AnyFlatSpec {
   "ColorHSLA" can "be converted to ColorRGBA" in {
     val colorHSLA: ColorHSLA = ColorHSLA(190f, 0.75f, 0.6f, UByte(50))
     val expectedColorRGBA = ColorRGBA.apply(77, 204, 230, 50)

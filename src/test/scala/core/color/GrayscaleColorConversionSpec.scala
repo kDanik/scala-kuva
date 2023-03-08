@@ -7,7 +7,7 @@ import core.color.types.ColorRGBA
 import org.scalatest.flatspec.AnyFlatSpec
 
 
-class GrayscaleColorConversionSuite extends AnyFlatSpec {
+class GrayscaleColorConversionSpec extends AnyFlatSpec {
   "GrayscaleColorConversion" can "apply grayscale conversion with desaturation algorithm" in {
     val initialColor = ColorRGBA.apply(183, 159, 10, 125)
 
