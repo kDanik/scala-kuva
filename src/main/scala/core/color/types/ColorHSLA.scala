@@ -14,7 +14,7 @@ import spire.math.UByte
  * @param lightness  in range from 0f to 1f
  * @param alpha      in range from 0 to 255
  */
-case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: UByte = UByte(255)) extends Color, HSVAndHSL {
+final case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: UByte = UByte(255)) extends Color, HSVAndHSL {
   override def asAWTColor: java.awt.Color = asColorRGBA.asAWTColor
 
   override def asColorRGBA: ColorRGBA = {

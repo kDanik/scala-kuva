@@ -6,7 +6,7 @@ import core.support.{FloatWithAlmostEquals, Precision}
 
 import spire.math.{UByte, max}
 
-case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255)) extends Color {
+final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255)) extends Color {
   lazy val RGBInt: Int = (red.intValue << 16) | (green.intValue << 8) | blue.intValue
   lazy val RGBAInt: Int = (alpha.intValue << 24) | (red.intValue << 16) | (green.intValue << 8) | blue.intValue
 
