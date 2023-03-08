@@ -10,7 +10,7 @@ import spire.math.UByte
  */
 object GrayscaleColorConversion {
   /**
-   * Applies grayscale to color, using specified grayscale algorithm
+   * Using initial color and selected grayscale algorithms, creates new grayscale color.
    *
    * @param color     initial color
    * @param algorithm see GrayscaleConversionAlgorithm

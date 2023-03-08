@@ -6,7 +6,7 @@ import spire.math.UByte
 trait HSVAndHSL {
   /**
    * Refer to formula for conversion of HSL or HSV to RGB.
-   * They have same formula, except some initial calculations are slightly different
+   * HSL and HSV have almost same formula, except some initial calculations are slightly different
    */
   def hslHsvToRGB(h: Float, c: Float, x: Float, m: Float, alpha: UByte): ColorRGBA = {
     val (r1, g1, b1) = hslToRGBHelper(h, c, x)

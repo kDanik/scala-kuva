@@ -9,13 +9,13 @@ package core.color.operations.grayscale
  * LUMA - Correcting for the human eye, conversion will weight each color based on how the human eye perceives it.
  * BT709 and BT601 are different LUMA formulas based on recommendation of ITU-R
  *
- * DESATURATION - Desaturating works by converting color to an HSL, then changing the saturation to zero. Results in a flatter, softer grayscale image
+ * DESATURATION - Desaturating works by converting color to an HSL, then changing the saturation to zero. Results in a flatter, softer grayscale image.
  *
- * SINGLE_COLOR_CHANNEL_* - uses value of one selected channel for values of all other channels
+ * SINGLE_COLOR_CHANNEL_* - uses value of one selected RGB channel for values of all other channels
  *
- * DECOMPOSITION_MIN - uses value of one channel with minimum value for values of all other channels
+ * DECOMPOSITION_MIN - uses minimum value of one of RGB channel for values of all other channels
  *
- * DECOMPOSITION_MAX - uses value of one channel with maximum value for values of all other channels
+ * DECOMPOSITION_MAX - uses maximum value of one of RGB channel for values of all other channels
  */
 enum GrayscaleConversionAlgorithm:
   case AVERAGING,
