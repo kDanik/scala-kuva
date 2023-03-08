@@ -1,6 +1,5 @@
 package com.example
-package core.color
-
+package core.color.types
 
 import core.color.types.ColorRGBA
 import core.support.{FloatWithAlmostEquals, Precision}

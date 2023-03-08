@@ -1,5 +1,5 @@
 package com.example
-package core.color
+package core.color.types
 
 import core.color.types.{ColorHSLA, ColorRGBA}
 import core.support.{FloatWithAlmostEquals, Precision}

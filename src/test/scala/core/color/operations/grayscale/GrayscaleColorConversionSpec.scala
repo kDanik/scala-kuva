@@ -1,5 +1,5 @@
 package com.example
-package core.color
+package core.color.operations.grayscale
 
 import core.color.operations.grayscale.{GrayscaleColorConversion, GrayscaleConversionAlgorithm}
 import core.color.types.ColorRGBA
