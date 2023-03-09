@@ -16,7 +16,7 @@ final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   override def asColorRGBA: ColorRGBA = this
 
   override def asColorHSLA: ColorHSLA = {
-    val (r, g, b) = convertRGBValuesToFloat
+    val (r, g, b) = rgbValuesAsFloats
 
     val value: Float = r.max(g).max(b)
     val xMin: Float = r.min(g).min(b)
@@ -32,7 +32,7 @@ final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   }
 
   override def asColorHSVA: ColorHSVA = {
-    val (r, g, b) = convertRGBValuesToFloat
+    val (r, g, b) = rgbValuesAsFloats
 
     val value: Float = r.max(g).max(b)
     val xMin: Float = r.min(g).min(b)
@@ -46,11 +46,18 @@ final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte =
     )
   }
 
-  private def convertRGBValuesToFloat: (Float, Float, Float) = {
+  def rgbValuesAsFloats: (Float, Float, Float) = {
     val r: Float = red.toFloat / 255
     val g: Float = green.toFloat / 255
     val b: Float = blue.toFloat / 255
     (r, g, b)
+  }
+
+  def rbgaValuesAsFloats: (Float, Float, Float, Float) = {
+    val (r, g, b) = rgbValuesAsFloats
+    val a: Float = alpha.toFloat / 255
+
+    (r, g, b, a)
   }
 
   private def calculateHue(chroma: Float, value: Float, r: Float, g: Float, b: Float): Float = {
