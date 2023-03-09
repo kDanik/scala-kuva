@@ -2,7 +2,7 @@ package com.example
 package core.color.operations.inversion
 
 import core.color.operations.inversion.ColorInversion.invertSingleColorChannelValue
-import core.color.types.{Color, ColorRGBA}
+import core.color.types.{Color, ColorRgba}
 
 import spire.math.UByte
 
@@ -14,12 +14,12 @@ object ColorInversion {
    *
    * @param initialColor initial color in any color format
    * @param invertAlpha  should alpha channel also be inverted (by default false)
-   * @return inverted color in ColorRGBA format
+   * @return inverted color in ColorRgba format
    */
-  def invertColor(initialColor: Color, invertAlpha: Boolean = false): ColorRGBA = {
-    val initialColorAsRGBA: ColorRGBA = initialColor.asColorRGBA
+  def invertColor(initialColor: Color, invertAlpha: Boolean = false): ColorRgba = {
+    val initialColorAsRGBA: ColorRgba = initialColor.asColorRgba
 
-    ColorRGBA(
+    ColorRgba(
       invertSingleColorChannelValue(initialColorAsRGBA.red),
       invertSingleColorChannelValue(initialColorAsRGBA.green),
       invertSingleColorChannelValue(initialColorAsRGBA.blue),

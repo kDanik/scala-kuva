@@ -3,15 +3,15 @@ package core.color.types
 
 import spire.math.UByte
 
-trait HSVAndHSL {
+trait HsvaHsla {
   /**
    * Refer to formula for conversion of HSL or HSV to RGB.
    * HSL and HSV have almost same formula, except some initial calculations are slightly different
    */
-  def hslHsvToRGB(h: Float, c: Float, x: Float, m: Float, alpha: UByte): ColorRGBA = {
+  def hslHsvToRGB(h: Float, c: Float, x: Float, m: Float, alpha: UByte): ColorRgba = {
     val (r1, g1, b1) = hslToRGBHelper(h, c, x)
 
-    ColorRGBA.apply(((r1 + m) * 255).round,
+    ColorRgba.apply(((r1 + m) * 255).round,
       ((g1 + m) * 255).round,
       ((b1 + m) * 255).round,
       alpha)

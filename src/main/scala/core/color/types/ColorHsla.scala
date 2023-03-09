@@ -14,10 +14,10 @@ import spire.math.UByte
  * @param lightness  in range from 0f to 1f
  * @param alpha      in range from 0 to 255
  */
-final case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alpha: UByte = UByte(255)) extends Color, HSVAndHSL {
-  override def asAWTColor: java.awt.Color = asColorRGBA.asAWTColor
+final case class ColorHsla(hue: Float, saturation: Float, lightness: Float, alpha: UByte = UByte(255)) extends Color, HsvaHsla {
+  override def asAwtColor: java.awt.Color = asColorRgba.asAwtColor
 
-  override def asColorRGBA: ColorRGBA = {
+  override def asColorRgba: ColorRgba = {
     // refer to formula for HSL to RGB conversion
     val h = hue / 60
     val c = (1 - (2 * lightness - 1).abs) * saturation
@@ -27,22 +27,22 @@ final case class ColorHSLA(hue: Float, saturation: Float, lightness: Float, alph
     hslHsvToRGB(h, c, x, m, alpha)
   }
 
-  override def asColorHSLA: ColorHSLA = this
+  override def asColorHsla: ColorHsla = this
 
-  override def asColorHSVA: ColorHSVA = {
+  override def asColorHsva: ColorHsva = {
     implicit val precision: Precision = Precision(0.001f)
 
     val value = lightness + saturation * lightness.min(1 - lightness)
     val saturationHSV = if (lightness ~= 0) 0 else 2 * (1 - lightness / value)
 
-    ColorHSVA(hue, saturationHSV, value, alpha)
+    ColorHsva(hue, saturationHSV, value, alpha)
   }
 
   /**
-   * Check if is this ColorHSLA almost equals to another ColorHSLA.
+   * Check if is this ColorHsla almost equals to another ColorHsla.
    * This function should be used instead of equals because of floating point precision problems
    */
-  def almostEquals(obj: ColorHSLA): Boolean = {
+  def almostEquals(obj: ColorHsla): Boolean = {
     implicit val precision: Precision = Precision(0.001f)
 
     (hue ~= obj.hue) && (saturation ~= obj.saturation) && (lightness ~= obj.lightness) && (alpha == obj.alpha)

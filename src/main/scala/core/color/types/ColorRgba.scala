@@ -1,21 +1,20 @@
 package com.example
 package core.color.types
 
-import core.color.types.{Color, ColorHSLA, ColorRGBA}
+import core.color.types.{Color, ColorHsla, ColorRgba}
 import core.support.{FloatWithAlmostEquals, Precision}
 
 import spire.math.{UByte, max}
 
-final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255)) extends Color {
-  lazy val RGBInt: Int = (red.intValue << 16) | (green.intValue << 8) | blue.intValue
-  lazy val RGBAInt: Int = (alpha.intValue << 24) | (red.intValue << 16) | (green.intValue << 8) | blue.intValue
+final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255)) extends Color {
+  lazy val RgbInt: Int = (red.intValue << 16) | (green.intValue << 8) | blue.intValue
+  lazy val RgbaInt: Int = (alpha.intValue << 24) | (red.intValue << 16) | (green.intValue << 8) | blue.intValue
 
-  // is having this as lazy val instead more effective?
-  override def asAWTColor: java.awt.Color = java.awt.Color(red.intValue, green.intValue, blue.intValue, alpha.intValue)
+  override def asAwtColor: java.awt.Color = java.awt.Color(red.intValue, green.intValue, blue.intValue, alpha.intValue)
 
-  override def asColorRGBA: ColorRGBA = this
+  override def asColorRgba: ColorRgba = this
 
-  override def asColorHSLA: ColorHSLA = {
+  override def asColorHsla: ColorHsla = {
     val (r, g, b) = rgbValuesAsFloats
 
     val value: Float = r.max(g).max(b)
@@ -23,24 +22,24 @@ final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte =
     val chroma = value - xMin
     val lightness = (value + xMin) / 2
 
-    ColorHSLA(
+    ColorHsla(
       calculateHue(chroma, value, r, g, b),
-      calculateHSLSaturation(value, lightness),
+      calculateHslSaturation(value, lightness),
       lightness,
       alpha
     )
   }
 
-  override def asColorHSVA: ColorHSVA = {
+  override def asColorHsva: ColorHsva = {
     val (r, g, b) = rgbValuesAsFloats
 
     val value: Float = r.max(g).max(b)
     val xMin: Float = r.min(g).min(b)
     val chroma = value - xMin
 
-    ColorHSVA(
+    ColorHsva(
       calculateHue(chroma, value, r, g, b),
-      calculateHSVSaturation(value, chroma),
+      calculateHsvSaturation(value, chroma),
       value,
       alpha
     )
@@ -74,7 +73,7 @@ final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte =
 
   }
 
-  private def calculateHSLSaturation(value: Float, lightness: Float): Float = {
+  private def calculateHslSaturation(value: Float, lightness: Float): Float = {
     implicit val precision: Precision = Precision(0.0001f)
 
     if ((lightness ~= 0) || (lightness ~= 1)) {
@@ -85,7 +84,7 @@ final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte =
     }
   }
 
-  private def calculateHSVSaturation(value: Float, chroma: Float): Float = {
+  private def calculateHsvSaturation(value: Float, chroma: Float): Float = {
     implicit val precision: Precision = Precision(0.0001f)
 
     if (value ~= 0) {
@@ -97,16 +96,16 @@ final case class ColorRGBA(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   }
 }
 
-object ColorRGBA {
-  def apply(colorAWT: java.awt.Color): ColorRGBA = {
-    apply(colorAWT.getRed, colorAWT.getGreen, colorAWT.getBlue, colorAWT.getAlpha)
+object ColorRgba {
+  def apply(colorAwt: java.awt.Color): ColorRgba = {
+    apply(colorAwt.getRed, colorAwt.getGreen, colorAwt.getBlue, colorAwt.getAlpha)
   }
 
-  def apply(red: Int, green: Int, blue: Int, alpha: Int): ColorRGBA = {
-    ColorRGBA(UByte(red), UByte(green), UByte(blue), UByte(alpha))
+  def apply(red: Int, green: Int, blue: Int, alpha: Int): ColorRgba = {
+    ColorRgba(UByte(red), UByte(green), UByte(blue), UByte(alpha))
   }
 
-  def apply(red: Int, green: Int, blue: Int, alpha: UByte): ColorRGBA = {
-    ColorRGBA(UByte(red), UByte(green), UByte(blue), alpha)
+  def apply(red: Int, green: Int, blue: Int, alpha: UByte): ColorRgba = {
+    ColorRgba(UByte(red), UByte(green), UByte(blue), alpha)
   }
 }
