@@ -22,10 +22,16 @@ class ColorRgbaSpec extends AnyFlatSpec {
     assert(ColorRgba.apply(awtColor) == expectedColorRgba)
   }
 
-  "ColorRgba" can "be created with color values higher than 255, but will cause overflow" in {
+  "ColorRgba" can "be created with color values higher than 255,  but will normalize to valid value" in {
     val colorRgba = ColorRgba.apply(259, 255, 255, 255)
 
-    assert(colorRgba.red.intValue === 3)
+    assert(colorRgba.red.intValue === 255)
+  }
+
+  "ColorRgba" can "be created with color values below 0, but will normalize to valid value" in {
+    val colorRgba = ColorRgba.apply(-1, 255, 255, 255)
+
+    assert(colorRgba.red.intValue === 0)
   }
 
   "ColorRgba" can "be converted to RGB Int, that represents its value" in {
