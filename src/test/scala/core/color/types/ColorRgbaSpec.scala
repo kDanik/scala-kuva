@@ -46,6 +46,22 @@ class ColorRgbaSpec extends AnyFlatSpec {
     assert(colorRgba.RgbaInt === -1681353206)
   }
 
+  "ColorRgba" can "be created from RGB Int, that represents its value" in {
+    val rgbInt = 13145610;
+    val expectedColor = ColorRgba.apply(200, 150, 10, 255)
+
+    assert(ColorRgba.fromRgbInt(rgbInt) === expectedColor)
+  }
+
+  "ColorRgba" can "be created from RGBA Int, that represents its value" in {
+    val rgbaInt = -1681353206;
+    val expectedColor = ColorRgba.apply(200, 150, 10, 155)
+
+    assert(ColorRgba.fromRgbaInt(rgbaInt) === expectedColor)
+  }
+
+
+
   "ColorRgba" can "be converted to ColorHsla" in {
     implicit val precision: Precision = Precision(0.0099f)
 

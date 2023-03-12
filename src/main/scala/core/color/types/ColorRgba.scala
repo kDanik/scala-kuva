@@ -7,7 +7,13 @@ import core.support.{FloatWithAlmostEquals, Precision}
 import spire.math.{UByte, max}
 
 final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255)) extends Color {
+  /**
+   * Representation of this color (excluding alpha) as single int value
+   */
   lazy val RgbInt: Int = (red.intValue << 16) | (green.intValue << 8) | blue.intValue
+  /**
+   * Representation of this color as single int value
+   */
   lazy val RgbaInt: Int = (alpha.intValue << 24) | (red.intValue << 16) | (green.intValue << 8) | blue.intValue
 
   override def asAwtColor: java.awt.Color = java.awt.Color(red.intValue, green.intValue, blue.intValue, alpha.intValue)
@@ -45,13 +51,16 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
     )
   }
 
+  /**
+   * @return Tuple with RGB (excluding alpha) channel values converted to float (in range from 0f to 1f)
+   */
   def rgbValuesAsFloats: (Float, Float, Float) = {
-    val r: Float = red.toFloat / 255
-    val g: Float = green.toFloat / 255
-    val b: Float = blue.toFloat / 255
-    (r, g, b)
+    (redAsFloat, greenAsFloat, blueAsFloat)
   }
 
+  /**
+   * @return Tuple with RGBA channel values converted to float (in range from 0f to 1f)
+   */
   def rbgaValuesAsFloats: (Float, Float, Float, Float) = {
     val (r, g, b) = rgbValuesAsFloats
     val a: Float = alphaAsFloat
@@ -59,8 +68,32 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
     (r, g, b, a)
   }
 
+  /**
+   * @return Alpha channel value as float (in range from 0f to 1f)
+   */
   def alphaAsFloat: Float = {
     alpha.toFloat / 255
+  }
+
+  /**
+   * @return Red channel value as float (in range from 0f to 1f)
+   */
+  def redAsFloat: Float = {
+    red.toFloat / 255
+  }
+
+  /**
+   * @return Green channel value as float (in range from 0f to 1f)
+   */
+  def greenAsFloat: Float = {
+    green.toFloat / 255
+  }
+
+  /**
+   * @return Blue channel value as float (in range from 0f to 1f)
+   */
+  def blueAsFloat: Float = {
+    blue.toFloat / 255
   }
 
   private def calculateHue(chroma: Float, value: Float, r: Float, g: Float, b: Float): Float = {
@@ -119,6 +152,23 @@ object ColorRgba {
 
   def apply(red: Float, green: Float, blue: Float, alpha: UByte): ColorRgba = {
     ColorRgba(normalizeColorChannelValue(red), normalizeColorChannelValue(green), normalizeColorChannelValue(blue), alpha)
+  }
+
+  def fromRgbInt(rgbInt: Int) : ColorRgba = {
+    val red = UByte((rgbInt >> 16) & 0xff)
+    val green = UByte((rgbInt >> 8) & 0xff)
+    val blue = UByte(rgbInt & 0xff)
+
+    ColorRgba(red, green, blue, UByte(255))
+  }
+
+  def fromRgbaInt(rgbaInt: Int) : ColorRgba = {
+    val red = UByte((rgbaInt >> 16) & 0xff)
+    val green = UByte((rgbaInt >> 8) & 0xff)
+    val blue = UByte(rgbaInt & 0xff)
+    val alpha = UByte((rgbaInt >> 24) & 0xff)
+
+    ColorRgba(red, green, blue, alpha)
   }
 
   /**
