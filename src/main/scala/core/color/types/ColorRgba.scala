@@ -61,7 +61,7 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   /**
    * @return Tuple with RGBA channel values converted to float (in range from 0f to 1f)
    */
-  def rbgaValuesAsFloats: (Float, Float, Float, Float) = {
+  def rgbaValuesAsFloats: (Float, Float, Float, Float) = {
     val (r, g, b) = rgbValuesAsFloats
     val a: Float = alphaAsFloat
 
@@ -154,7 +154,7 @@ object ColorRgba {
     ColorRgba(normalizeColorChannelValue(red), normalizeColorChannelValue(green), normalizeColorChannelValue(blue), alpha)
   }
 
-  def fromRgbInt(rgbInt: Int) : ColorRgba = {
+  def fromRgbInt(rgbInt: Int): ColorRgba = {
     val red = UByte((rgbInt >> 16) & 0xff)
     val green = UByte((rgbInt >> 8) & 0xff)
     val blue = UByte(rgbInt & 0xff)
@@ -162,7 +162,7 @@ object ColorRgba {
     ColorRgba(red, green, blue, UByte(255))
   }
 
-  def fromRgbaInt(rgbaInt: Int) : ColorRgba = {
+  def fromRgbaInt(rgbaInt: Int): ColorRgba = {
     val red = UByte((rgbaInt >> 16) & 0xff)
     val green = UByte((rgbaInt >> 8) & 0xff)
     val blue = UByte(rgbaInt & 0xff)

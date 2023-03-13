@@ -60,8 +60,6 @@ class ColorRgbaSpec extends AnyFlatSpec {
     assert(ColorRgba.fromRgbaInt(rgbaInt) === expectedColor)
   }
 
-
-
   "ColorRgba" can "be converted to ColorHsla" in {
     implicit val precision: Precision = Precision(0.0099f)
 
@@ -98,5 +96,16 @@ class ColorRgbaSpec extends AnyFlatSpec {
     val colorHsva = colorRgba.asColorHsva
 
     assert(colorRgba == colorHsva.asColorRgba)
+  }
+
+  "ColorRgba values" can "be converted to float separately (in range from 0 to 1f)" in {
+    implicit val precision: Precision = Precision(0.0099f)
+
+    val colorRgba = ColorRgba.apply(200, 150, 10, 125)
+
+    assert(colorRgba.redAsFloat ~= 0.784f, "expected red %s, received %s" format(0.784f, colorRgba.redAsFloat))
+    assert(colorRgba.greenAsFloat ~= 0.588f, "expected green %s, received %s" format(0.588f, colorRgba.greenAsFloat))
+    assert(colorRgba.blueAsFloat ~= 0.039f, "expected blue %s, received %s" format(0.039f, colorRgba.blueAsFloat))
+    assert(colorRgba.alphaAsFloat ~= 0.5f, "expected alpha %s, received %s" format(0.5f, colorRgba.alphaAsFloat))
   }
 }
