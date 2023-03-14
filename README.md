@@ -48,9 +48,13 @@ Currently, there are implementations of the following grayscale algorithms:
 ![Alt text](src/main/resources/result/grayscale_single_color_channel_blue_strawberry.png)
 
 ##### Lightness
+Calculates and uses as grayscale lightness using formula from [this paper](https://www.academia.edu/13506981).
+
 ![Alt text](src/main/resources/result/grayscale_lightness_strawberry.png)
 
 ##### Lightness (HSL)
+Calculates and uses as grayscale lightness using formula from HSL color format.
+
 ![Alt text](src/main/resources/result/grayscale_lightness_hsl_strawberry.png)
 
 #### Inversion
