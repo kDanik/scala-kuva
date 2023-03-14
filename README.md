@@ -47,6 +47,12 @@ Currently, there are implementations of the following grayscale algorithms:
 ##### Single channel (blue)
 ![Alt text](src/main/resources/result/grayscale_single_color_channel_blue_strawberry.png)
 
+##### Lightness
+![Alt text](src/main/resources/result/grayscale_lightness_strawberry.png)
+
+##### Lightness (HSL)
+![Alt text](src/main/resources/result/grayscale_lightness_hsl_strawberry.png)
+
 #### Inversion
 
 Inversion can be applied to colors to create the opposite color (with inversion of alpha channel or without)
