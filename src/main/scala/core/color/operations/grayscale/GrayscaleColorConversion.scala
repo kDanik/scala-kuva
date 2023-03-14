@@ -5,6 +5,8 @@ import core.color.types.{Color, ColorRgba}
 
 import spire.math.UByte
 
+import scala.math.*
+
 /**
  * Grayscale color is a color that only represents an amount of light
  */
@@ -84,6 +86,7 @@ object GrayscaleColorConversion {
 
   private def applyDecompositionMinGrayscale(color: Color): ColorRgba = {
     val colorRgba = color.asColorRgba
+
     val minChannelValue = UByte(calculateMinimumColoChannelValue(colorRgba))
 
     ColorRgba(minChannelValue, minChannelValue, minChannelValue, colorRgba.alpha)
@@ -92,8 +95,13 @@ object GrayscaleColorConversion {
   private def applyLightnessGrayscale(color: Color): ColorRgba = {
     val colorRgba = color.asColorRgba
 
+    // formula for calculation of lightness from RGB
+    // source: https://www.researchgate.net/publication/221755665
     val y = 0.2126f * colorRgba.redAsFloat + 0.7152f * colorRgba.greenAsFloat + 0.0722f * colorRgba.blueAsFloat
-    val lightness = 0.01f * (116 * y - 16)
+
+    def f(t: Float): Float = (if (t > 0.00024601254f) pow(t, 1f / 3f) else (1f / 3f) * pow(29f / 6f, 2f) * t + 4f / 29f).toFloat
+
+    val lightness = 0.01f * (116 * f(y) - 16)
 
     ColorRgba(lightness, lightness, lightness, colorRgba.alpha)
   }
@@ -106,7 +114,6 @@ object GrayscaleColorConversion {
 
     ColorRgba(lightnessHsl, lightnessHsl, lightnessHsl, colorRgba.alpha)
   }
-
 
   private def calculateMaximumColoChannelValue(colorRgba: ColorRgba): Int = {
     colorRgba.red.intValue.max(colorRgba.green.intValue).max(colorRgba.blue.intValue)
