@@ -7,7 +7,7 @@ package core.color.operations.grayscale
  * AVERAGING (quick and dirty) - Calculates average of red, green and blue
  *
  * LUMA - Correcting for the human eye, conversion will weight each color based on how the human eye perceives it.
- * BT709 and BT601 are different LUMA formulas based on recommendation of ITU-R
+ * BT709 and BT601 (Luminance) are different LUMA formulas based on recommendation of ITU-R
  *
  * DESATURATION - Desaturating works by converting color to an HSL, then changing the saturation to zero. Results in a flatter, softer grayscale image.
  *
@@ -15,7 +15,11 @@ package core.color.operations.grayscale
  *
  * DECOMPOSITION_MIN - uses minimum value of one of RGB channel for values of all other channels
  *
- * DECOMPOSITION_MAX - uses maximum value of one of RGB channel for values of all other channels
+ * DECOMPOSITION_MAX (also known as Value) - uses maximum value of one of RGB channel for values of all other channels
+ *
+ * LIGHTNESS - is a perceptually uniform grayscale representation used in the CIELAB and CIELUV color spaces
+ *
+ * LIGHTNESS_HSL - is the L channel in the HLS (Hue, Lightness, and Saturation) color space.
  */
 enum GrayscaleConversionAlgorithm:
   case AVERAGING,
@@ -26,4 +30,6 @@ enum GrayscaleConversionAlgorithm:
   SINGLE_COLOR_CHANNEL_GREEN,
   SINGLE_COLOR_CHANNEL_BLUE,
   DECOMPOSITION_MIN,
-  DECOMPOSITION_MAX
+  DECOMPOSITION_MAX,
+  LIGHTNESS,
+  LIGHTNESS_HSL

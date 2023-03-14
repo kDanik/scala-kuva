@@ -52,6 +52,14 @@ object ImageWrapperTemp {
       (color: Color) => GrayscaleColorConversion.applyGrayscale(color, GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_BLUE))
 
     applyOperationToEachPixelOfImage("src/main/resources/source/strawberry.png",
+      "src/main/resources/result/grayscale_lightness_strawberry.png",
+      (color: Color) => GrayscaleColorConversion.applyGrayscale(color, GrayscaleConversionAlgorithm.LIGHTNESS))
+
+    applyOperationToEachPixelOfImage("src/main/resources/source/strawberry.png",
+      "src/main/resources/result/grayscale_lightness_hsl_strawberry.png",
+      (color: Color) => GrayscaleColorConversion.applyGrayscale(color, GrayscaleConversionAlgorithm.LIGHTNESS_HSL))
+
+    applyOperationToEachPixelOfImage("src/main/resources/source/strawberry.png",
       "src/main/resources/result/color_inversion_strawberry.png",
       (color: Color) => ColorInversion.invertColor(color, false))
   }

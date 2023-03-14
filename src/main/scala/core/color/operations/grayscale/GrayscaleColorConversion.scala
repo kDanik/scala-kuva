@@ -27,6 +27,8 @@ object GrayscaleColorConversion {
       case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_BLUE => applySingleChannelBlueGrayscale(color)
       case GrayscaleConversionAlgorithm.DECOMPOSITION_MIN => applyDecompositionMinGrayscale(color)
       case GrayscaleConversionAlgorithm.DECOMPOSITION_MAX => applyDecompositionMaxGrayscale(color)
+      case GrayscaleConversionAlgorithm.LIGHTNESS => applyLightnessGrayscale(color)
+      case GrayscaleConversionAlgorithm.LIGHTNESS_HSL => applyLightnessHslGrayscale(color)
     }
   }
 
@@ -35,55 +37,82 @@ object GrayscaleColorConversion {
   }
 
   private def applyLumaBT709Grayscale(color: Color): ColorRgba = {
-    val colorRGBA = color.asColorRgba
-    val grey = UByte((colorRGBA.red.intValue * 0.2126f + colorRGBA.red.intValue * 0.7152f + colorRGBA.blue.intValue * 0.0722f).round)
+    val colorRgba = color.asColorRgba
+    val grey = ColorRgba.normalizeColorChannelValue((colorRgba.red.intValue * 0.2126f + colorRgba.red.intValue * 0.7152f + colorRgba.blue.intValue * 0.0722f).round)
 
-    ColorRgba(grey, grey, grey, colorRGBA.alpha)
+    ColorRgba(grey, grey, grey, colorRgba.alpha)
   }
 
   private def applyLumaBT601Grayscale(color: Color): ColorRgba = {
-    val colorRGBA = color.asColorRgba
-    val grey = UByte((colorRGBA.red.intValue * 0.299f + colorRGBA.red.intValue * 0.587f + colorRGBA.blue.intValue * 0.114f).round)
+    val colorRgba = color.asColorRgba
+    val grey = ColorRgba.normalizeColorChannelValue((colorRgba.red.intValue * 0.299f + colorRgba.red.intValue * 0.587f + colorRgba.blue.intValue * 0.114f).round)
 
-    ColorRgba(grey, grey, grey, colorRGBA.alpha)
+    ColorRgba(grey, grey, grey, colorRgba.alpha)
   }
 
   private def applyAveragingGrayscale(color: Color): ColorRgba = {
-    val colorRGBA = color.asColorRgba
-    val averageColorValue = UByte(((colorRGBA.red.intValue + colorRGBA.blue.intValue + colorRGBA.green.intValue) / 3f).round)
+    val colorRgba = color.asColorRgba
+    val averageColorValue = ColorRgba.normalizeColorChannelValue(((colorRgba.red.intValue + colorRgba.blue.intValue + colorRgba.green.intValue) / 3f).round)
 
-    ColorRgba(averageColorValue, averageColorValue, averageColorValue, colorRGBA.alpha)
+    ColorRgba(averageColorValue, averageColorValue, averageColorValue, colorRgba.alpha)
   }
 
   private def applySingleChannelRedGrayscale(color: Color): ColorRgba = {
-    val colorRGBA = color.asColorRgba
+    val colorRgba = color.asColorRgba
 
-    ColorRgba(colorRGBA.red, colorRGBA.red, colorRGBA.red, colorRGBA.alpha)
+    ColorRgba(colorRgba.red, colorRgba.red, colorRgba.red, colorRgba.alpha)
   }
 
   private def applySingleChannelGreenGrayscale(color: Color): ColorRgba = {
-    val colorRGBA = color.asColorRgba
+    val colorRgba = color.asColorRgba
 
-    ColorRgba(colorRGBA.green, colorRGBA.green, colorRGBA.green, colorRGBA.alpha)
+    ColorRgba(colorRgba.green, colorRgba.green, colorRgba.green, colorRgba.alpha)
   }
 
   private def applySingleChannelBlueGrayscale(color: Color): ColorRgba = {
-    val colorRGBA = color.asColorRgba
+    val colorRgba = color.asColorRgba
 
-    ColorRgba(colorRGBA.blue, colorRGBA.blue, colorRGBA.blue, colorRGBA.alpha)
+    ColorRgba(colorRgba.blue, colorRgba.blue, colorRgba.blue, colorRgba.alpha)
   }
 
   private def applyDecompositionMaxGrayscale(color: Color): ColorRgba = {
-    val colorRGBA = color.asColorRgba
-    val maxChannelValue = UByte(colorRGBA.red.intValue.max(colorRGBA.green.intValue).max(colorRGBA.blue.intValue))
+    val colorRgba = color.asColorRgba
+    val maxChannelValue = UByte(calculateMaximumColoChannelValue(colorRgba))
 
-    ColorRgba(maxChannelValue, maxChannelValue, maxChannelValue, colorRGBA.alpha)
+    ColorRgba(maxChannelValue, maxChannelValue, maxChannelValue, colorRgba.alpha)
   }
 
   private def applyDecompositionMinGrayscale(color: Color): ColorRgba = {
-    val colorRGBA = color.asColorRgba
-    val minChannelValue = UByte(colorRGBA.red.intValue.min(colorRGBA.green.intValue).min(colorRGBA.blue.intValue))
+    val colorRgba = color.asColorRgba
+    val minChannelValue = UByte(calculateMinimumColoChannelValue(colorRgba))
 
-    ColorRgba(minChannelValue, minChannelValue, minChannelValue, colorRGBA.alpha)
+    ColorRgba(minChannelValue, minChannelValue, minChannelValue, colorRgba.alpha)
+  }
+
+  private def applyLightnessGrayscale(color: Color): ColorRgba = {
+    val colorRgba = color.asColorRgba
+
+    val y = 0.2126f * colorRgba.redAsFloat + 0.7152f * colorRgba.greenAsFloat + 0.0722f * colorRgba.blueAsFloat
+    val lightness = 0.01f * (116 * y - 16)
+
+    ColorRgba(lightness, lightness, lightness, colorRgba.alpha)
+  }
+
+  private def applyLightnessHslGrayscale(color: Color): ColorRgba = {
+    val colorRgba = color.asColorRgba
+
+    // this is a bit faster, than converting color to HSL directly, because here we only need lightness from HSL
+    val lightnessHsl = (calculateMinimumColoChannelValue(colorRgba) + calculateMaximumColoChannelValue(colorRgba)) / 2
+
+    ColorRgba(lightnessHsl, lightnessHsl, lightnessHsl, colorRgba.alpha)
+  }
+
+
+  private def calculateMaximumColoChannelValue(colorRgba: ColorRgba): Int = {
+    colorRgba.red.intValue.max(colorRgba.green.intValue).max(colorRgba.blue.intValue)
+  }
+
+  private def calculateMinimumColoChannelValue(colorRgba: ColorRgba): Int = {
+    colorRgba.red.intValue.min(colorRgba.green.intValue).min(colorRgba.blue.intValue)
   }
 }

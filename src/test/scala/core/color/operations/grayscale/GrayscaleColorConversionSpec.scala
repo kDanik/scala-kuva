@@ -84,4 +84,22 @@ class GrayscaleColorConversionSpec extends AnyFlatSpec {
 
     assert(resultedGrayscaleColor == expectedGrayscaleColor)
   }
+
+  "GrayscaleColorConversion" can "apply grayscale using lightness algorithm" in {
+    val initialColor = ColorRgba.apply(255, 200, 100, 125)
+
+    val resultedGrayscaleColor = GrayscaleColorConversion.applyGrayscale(initialColor, GrayscaleConversionAlgorithm.LIGHTNESS)
+    val expectedGrayscaleColor = ColorRgba.apply(196, 196, 196, 125)
+
+    assert(resultedGrayscaleColor == expectedGrayscaleColor)
+  }
+
+  "GrayscaleColorConversion" can "apply grayscale using lightness (hsl) algorithm" in {
+    val initialColor = ColorRgba.apply(255, 200, 100, 125)
+
+    val resultedGrayscaleColor = GrayscaleColorConversion.applyGrayscale(initialColor, GrayscaleConversionAlgorithm.LIGHTNESS_HSL)
+    val expectedGrayscaleColor = ColorRgba.apply(177, 177, 177, 125)
+
+    assert(resultedGrayscaleColor == expectedGrayscaleColor)
+  }
 }
