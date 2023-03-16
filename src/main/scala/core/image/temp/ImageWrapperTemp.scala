@@ -16,7 +16,7 @@ import javax.imageio.ImageIO
 object ImageWrapperTemp {
   def main(args: Array[String]): Unit = {
     generateCocktailImageExamples()
-    generateCocktailImageExamples()
+    generateStrawberryImageExamples()
   }
 
   def generateStrawberryImageExamples(): Unit = {
