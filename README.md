@@ -85,9 +85,9 @@ Uses as grayscale color the value of red color channel
 
 Uses as grayscale color the value of green color channel
 
-<img src="src/main/resources/result/grayscale_single_color_channel_green_cocktail.png" alt="Picture of cocktail after applying single channel (green) grayscale" width="350">
+<img src="src/main/resources/result/grayscale_single_color_channel_green_strawberry.png" alt="Picture of strawberry after applying single channel (green) grayscale" width="350">
 
-<img src="src/main/resources/result/grayscale_single_color_channel_green_strawberry.png" alt="Picture of cocktail after applying single channel (green) grayscale" width="350">
+<img src="src/main/resources/result/grayscale_single_color_channel_green_cocktail.png" alt="Picture of cocktail after applying single channel (green) grayscale" width="350">
 
 ##### Single channel (blue)
 
@@ -109,9 +109,9 @@ Calculates and uses as grayscale lightness using formula from [this paper](https
 
 Calculates and uses as grayscale lightness using formula from HSL color format.
 
-<img src="src/main/resources/result/grayscale_lightness_hsl_cocktail.png" alt="Picture of strawberry after applying lightness (HSL) grayscale" width="350">
+<img src="src/main/resources/result/grayscale_lightness_hsl_strawberry.png" alt="Picture of strawberry after applying lightness (HSL) grayscale" width="350">
 
-<img src="src/main/resources/result/grayscale_lightness_hsl_strawberry.png" alt="Picture of cocktail after applying lightness (HSL) grayscale" width="350">
+<img src="src/main/resources/result/grayscale_lightness_hsl_cocktail.png" alt="Picture of cocktail after applying lightness (HSL) grayscale" width="350">
 
 #### Inversion
 
