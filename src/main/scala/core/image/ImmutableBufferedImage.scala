@@ -1,7 +1,9 @@
 package com.example
-package core.image.temp
+package core.image
 
 import core.color.types.{Color, ColorRgba}
+import core.image
+import core.image.{ImmutableBufferedImage, Pixel}
 
 import java.awt.image.BufferedImage
 
@@ -81,7 +83,7 @@ object ImmutableBufferedImage {
    */
   def apply(height: Int, width: Int): Option[ImmutableBufferedImage] = {
     if (isPositionNonNegative(width, height)) {
-      Option.apply(ImmutableBufferedImage(Vector.tabulate(height, width)((y, x) => Pixel(x, y, ColorRgba.apply(0, 0, 0, 0)))))
+      Option.apply(ImmutableBufferedImage(Vector.tabulate(height, width)((y, x) => image.Pixel(x, y, ColorRgba.apply(0, 0, 0, 0)))))
     } else Option.empty
   }
 
@@ -89,7 +91,7 @@ object ImmutableBufferedImage {
    * CreatesImmutableBufferedImage using data (size, pixel data) of BufferedImage (java awt)
    */
   def apply(bufferedImage: BufferedImage): ImmutableBufferedImage = {
-    def pixelFromBufferedImagePosition(x: Int, y: Int, bufferedImage: BufferedImage): Pixel = Pixel(x, y, ColorRgba.fromRgbaInt(bufferedImage.getRGB(x, y)))
+    def pixelFromBufferedImagePosition(x: Int, y: Int, bufferedImage: BufferedImage): Pixel = image.Pixel(x, y, ColorRgba.fromRgbaInt(bufferedImage.getRGB(x, y)))
 
     ImmutableBufferedImage(Vector.tabulate(bufferedImage.getHeight, bufferedImage.getWidth)((y, x) => pixelFromBufferedImagePosition(x, y, bufferedImage)))
   }

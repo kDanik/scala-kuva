@@ -2,7 +2,6 @@ package com.example
 package core.image
 
 import core.color.types.ColorRgba
-import core.image.temp.{ImmutableBufferedImage, Pixel}
 
 import org.scalatest.flatspec.AnyFlatSpec
 

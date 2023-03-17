@@ -1,7 +1,7 @@
 package com.example
-package core.image.temp
+package core.image
 
-import core.color.types.{Color, ColorRgba}
+import core.color.types.Color
 
 /**
  * This class represents on pixel on image
