@@ -41,6 +41,21 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]]) {
   }
 
   /**
+   * Sets / Replaces multiple pixels in ImmutableBufferedImage.
+   * This function is faster than using setPixel for each element of collection.
+   *
+   * @param pixels list of pixels that should be replaced with
+   * @return new ImmutableBufferedImage after changes
+   */
+  def setPixels(pixels: List[Pixel]): ImmutableBufferedImage = {
+    val validPixels = pixels.filter(pixel => isPositionInBounds(pixel.x, pixel.y))
+
+    val updatedImageRaster = validPixels.foldLeft(imageRaster)((updatedImageRaster, pixel) => updatedImageRaster.updated(pixel.y, updatedImageRaster(pixel.y).updated(pixel.x, pixel)))
+
+    this.copy(updatedImageRaster)
+  }
+
+  /**
    * Return Option with pixel for given coordinates.
    * If coordinates are out of bound empty Option will be returned.
    */
