@@ -2,6 +2,7 @@ package com.example
 package core.image
 
 import core.color.types.ColorRgba
+import util.BufferedImageCompareUtility
 
 import org.scalatest.flatspec.AnyFlatSpec
 
@@ -24,7 +25,7 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
     val sourceBufferedImage: BufferedImage = BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB)
     val immutableBufferedImage: ImmutableBufferedImage = ImmutableBufferedImage.apply(sourceBufferedImage)
 
-    immutableBufferedImage.asBufferedImage
+    assert(BufferedImageCompareUtility.compareImages(sourceBufferedImage, immutableBufferedImage.asBufferedImage))
   }
 
   "ImmutableBufferedImage getPixel" should "return color for valid coordinates" in {
@@ -56,7 +57,7 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
 
   "ImmutableBufferedImage setPixels" should "should create new ImmutableBufferedImage by changing multiple pixels" in {
     val immutableBufferedImage: ImmutableBufferedImage = ImmutableBufferedImage.apply(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
-    val pixels : List[Pixel] = List(Pixel(50, 22, ColorRgba.apply(255, 0, 0, 255)),Pixel(50, 23, ColorRgba.apply(255, 0, 255, 255)), Pixel(34, 22, ColorRgba.apply(255, 255, 0, 255)))
+    val pixels: List[Pixel] = List(Pixel(50, 22, ColorRgba.apply(255, 0, 0, 255)), Pixel(50, 23, ColorRgba.apply(255, 0, 255, 255)), Pixel(34, 22, ColorRgba.apply(255, 255, 0, 255)))
 
     val immutableBufferedImageAfterSetPixels: ImmutableBufferedImage = immutableBufferedImage.setPixels(pixels)
 
