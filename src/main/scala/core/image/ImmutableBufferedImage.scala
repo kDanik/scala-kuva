@@ -66,7 +66,7 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]]) {
   }
 
   /**
-   * Creates BufferedImage (java awt) using data of this object
+   * Creates BufferedImage (java awt) using data of this object.
    */
   def asBufferedImage: BufferedImage = {
     if (Height == 0 || Width == 0) {
@@ -84,11 +84,13 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]]) {
   }
 
   private def imageRasterContentAsBufferedImage: BufferedImage = {
-    val bufferedImage = BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB)
-
-    // this is a bit ugly, can it be done differently?
-    imageRaster.flatten.foreach((pixel: Pixel) => bufferedImage.setRGB(pixel.x, pixel.y, pixel.color.asColorRgba.RgbaInt))
-    bufferedImage
+    imageRaster
+      .flatten
+      .foldLeft(BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB))((bufferedImage, pixel) => {
+        val colorInt = pixel.color.asColorRgba.rgbaInt
+        bufferedImage.setRGB(pixel.x, pixel.y, colorInt)
+        bufferedImage
+      })
   }
 }
 
