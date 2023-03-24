@@ -4,17 +4,18 @@ package core.color.types
 import core.color.types.{Color, ColorHsla, ColorRgba}
 import core.support.{FloatWithAlmostEquals, Precision}
 
-import spire.math.{UByte, max}
+import spire.math.UByte
 
 final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255)) extends Color {
   /**
    * Representation of this color (excluding alpha) as single int value
    */
-  lazy val RgbInt: Int = (red.intValue << 16) | (green.intValue << 8) | blue.intValue
+  def rgbInt: Int = (red.intValue << 16) | (green.intValue << 8) | blue.intValue
+
   /**
    * Representation of this color as single int value
    */
-  lazy val RgbaInt: Int = (alpha.intValue << 24) | (red.intValue << 16) | (green.intValue << 8) | blue.intValue
+  def rgbaInt: Int = (alpha.intValue << 24) | (red.intValue << 16) | (green.intValue << 8) | blue.intValue
 
   override def asAwtColor: java.awt.Color = java.awt.Color(red.intValue, green.intValue, blue.intValue, alpha.intValue)
 

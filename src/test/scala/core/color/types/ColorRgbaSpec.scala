@@ -37,13 +37,13 @@ class ColorRgbaSpec extends AnyFlatSpec {
   "ColorRgba" can "be converted to RGB Int, that represents its value" in {
     val colorRgba = ColorRgba.apply(200, 150, 10, 155)
 
-    assert(colorRgba.RgbInt === 13145610)
+    assert(colorRgba.rgbInt === 13145610)
   }
 
   "ColorRgba" can "be converted to RGBA Int, that represents its value" in {
     val colorRgba = ColorRgba.apply(200, 150, 10, 155)
 
-    assert(colorRgba.RgbaInt === -1681353206)
+    assert(colorRgba.rgbaInt === -1681353206)
   }
 
   "ColorRgba" can "be created from RGB Int, that represents its value" in {
