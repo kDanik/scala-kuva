@@ -28,7 +28,7 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
     assert(BufferedImageCompareUtility.compareImages(sourceBufferedImage, immutableBufferedImage.asBufferedImage))
   }
 
-  "ImmutableBufferedImage getPixel" should "return color for valid coordinates" in {
+  "ImmutableBufferedImage getPixel" should "return pixel for valid coordinates" in {
     val immutableBufferedImage: ImmutableBufferedImage = ImmutableBufferedImage.apply(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
 
     assert(immutableBufferedImage.getPixel(10, 40).isDefined)
@@ -44,6 +44,27 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
     assert(immutableBufferedImage.getPixel(20, -1).isEmpty)
     assert(immutableBufferedImage.getPixel(2000, 10).isEmpty)
     assert(immutableBufferedImage.getPixel(10, 2000).isEmpty)
+  }
+
+  "ImmutableBufferedImage getPixels" should "return pixels for valid coordinate range" in {
+    val immutableBufferedImage: ImmutableBufferedImage = ImmutableBufferedImage.apply(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
+
+    assert(immutableBufferedImage.getPixels(10, 10, 10, 10).length == 1)
+    assert(immutableBufferedImage.getPixels(10, 10, 10, 10).head.x == 10)
+    assert(immutableBufferedImage.getPixels(10, 10, 10, 10).head.y == 10)
+
+    assert(immutableBufferedImage.getPixels(1, 4, 50, 130).length == 6350)
+    assert(immutableBufferedImage.getPixels(0, 0, 99, 249).length == 25000)
+  }
+
+  "ImmutableBufferedImage getPixels" should "return empty Seq for invalid coordinates" in {
+    val immutableBufferedImage: ImmutableBufferedImage = ImmutableBufferedImage.apply(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
+
+    assert(immutableBufferedImage.getPixels(-1, -1, 0, 0).isEmpty)
+    assert(immutableBufferedImage.getPixels(0, 0, 10, 251).isEmpty)
+    assert(immutableBufferedImage.getPixels(0, 0, 101, 10).isEmpty)
+    assert(immutableBufferedImage.getPixels(10, 0, 9, 10).isEmpty)
+    assert(immutableBufferedImage.getPixels(0, 10, 10, 9).isEmpty)
   }
 
   "ImmutableBufferedImage setPixel" should "should create new ImmutableBufferedImage by changing one pixel" in {

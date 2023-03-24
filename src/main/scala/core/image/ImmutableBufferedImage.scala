@@ -10,7 +10,13 @@ import java.awt.image.BufferedImage
 /**
  * This class is a primitive implementation of immutable image.
  * Its idea is to replace java mutable BufferedImage in code for image processing,
- * and later convert this class back to BufferedImage (if needed) for saving
+ * and later convert this class back to BufferedImage (if needed) for saving.
+ *
+ * Same as with java buffered image, image width and height is a bit different from pixel coordinate on image.
+ * First pixel coordinate will be (0, 0) and last, corner, coordinate (Width - 1, Height - 1).
+ * In normal images first pixel coordinate will be (1, 1) and last, corner, coordinate (Width, Height).
+ *
+ * That means that for image of size 250x250, pixel with coordinate (250, 250) doesn't exist. This should considered for get / set Pixel and other function.
  *
  * @param imageRaster 2D matrix with pixels for this image
  */
@@ -63,6 +69,21 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]]) {
     if (isPositionInBounds(x, y)) {
       Option.apply(imageRaster(y)(x))
     } else Option.empty
+  }
+
+  /**
+   * Returns sequence of pixels from image, using specified range (box).
+   *
+   * @param fromX get from (inclusive) which X coordinate. Must be higher than 0.
+   * @param fromY get from (inclusive) which Y coordinate. Must be higher than 0.
+   * @param toX   get until (inclusive) which X coordinate. Must be higher than fromX and lower than width of the image.
+   * @param toY   get until (inclusive) which Y coordinate. Must be higher than fromY and lower than height of the image.
+   * @return list of pixels in specified range or empty sequence for invalid input
+   */
+  def getPixels(fromX: Int, fromY: Int, toX: Int, toY: Int): Seq[Pixel] = {
+    if (isPositionInBounds(fromX, fromY) && isPositionInBounds(toX, toY) && (fromX <= toX) && (fromY <= toY)) {
+      imageRaster.slice(fromY, toY + 1).flatMap((pixelRow: Vector[Pixel]) => pixelRow.slice(fromX, toX + 1))
+    } else Seq.empty
   }
 
   /**
