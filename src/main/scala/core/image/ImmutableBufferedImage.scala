@@ -16,11 +16,13 @@ import java.awt.image.BufferedImage
  * First pixel coordinate will be (0, 0) and last, corner, coordinate (Width - 1, Height - 1).
  * In normal images first pixel coordinate will be (1, 1) and last, corner, coordinate (Width, Height).
  *
- * That means that for image of size 250x250, pixel with coordinate (250, 250) doesn't exist. This should considered for get / set Pixel and other function.
+ * That means that for image of size 250x250, pixel with coordinate (250, 250) doesn't exist.
+ * This should considered for get / set Pixel and other function.
  *
  * @param imageRaster 2D matrix with pixels for this image
+ * @param imageType   image type, identical to BufferedImage types, see TYPE_INT_RGB, TYPE_INT_ARGB, ...
  */
-final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]]) {
+final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imageType: Int) {
   /**
    * height of this image in pixels
    */
@@ -91,7 +93,7 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]]) {
    */
   def asBufferedImage: BufferedImage = {
     if (Height == 0 || Width == 0) {
-      BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB)
+      BufferedImage(Width, Height, imageType)
     } else {
       imageRasterContentAsBufferedImage
     }
@@ -117,11 +119,17 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]]) {
 
 object ImmutableBufferedImage {
   /**
-   * Creates ImmutableBufferedImage with given size (filled with (0,0,0,0) color)
+   * Creates ImmutableBufferedImage with given size (filled with (0,0,0,255) color).
+   *
    */
-  def apply(height: Int, width: Int): Option[ImmutableBufferedImage] = {
+  def apply(height: Int, width: Int, imageType: Int = BufferedImage.TYPE_INT_RGB): Option[ImmutableBufferedImage] = {
     if (isPositionNonNegative(width, height)) {
-      Option.apply(ImmutableBufferedImage(Vector.tabulate(height, width)((y, x) => image.Pixel(x, y, ColorRgba.apply(0, 0, 0, 0)))))
+      Option.apply(
+        ImmutableBufferedImage(
+          Vector.tabulate(height, width)((y, x) => image.Pixel(x, y, ColorRgba.apply(0, 0, 0, 255))),
+          imageType
+        )
+      )
     } else Option.empty
   }
 
@@ -131,7 +139,10 @@ object ImmutableBufferedImage {
   def apply(bufferedImage: BufferedImage): ImmutableBufferedImage = {
     def pixelFromBufferedImagePosition(x: Int, y: Int, bufferedImage: BufferedImage): Pixel = image.Pixel(x, y, ColorRgba.fromRgbaInt(bufferedImage.getRGB(x, y)))
 
-    ImmutableBufferedImage(Vector.tabulate(bufferedImage.getHeight, bufferedImage.getWidth)((y, x) => pixelFromBufferedImagePosition(x, y, bufferedImage)))
+    ImmutableBufferedImage(
+      Vector.tabulate(bufferedImage.getHeight, bufferedImage.getWidth)((y, x) => pixelFromBufferedImagePosition(x, y, bufferedImage)),
+      bufferedImage.getType
+    )
   }
 
   def isPositionNonNegative(x: Int, y: Int): Boolean = {
