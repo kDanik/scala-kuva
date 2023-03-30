@@ -131,12 +131,11 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imag
 
   private def imageRasterContentAsBufferedImage: BufferedImage = {
     imageRaster.flatten
-      .foldLeft(BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB))(
-        (bufferedImage, pixel) => {
-          val colorInt = pixel.color.asColorRgba.rgbaInt
-          bufferedImage.setRGB(pixel.x, pixel.y, colorInt)
-          bufferedImage
-        })
+      .foldLeft(BufferedImage(Width, Height, imageType))((bufferedImage, pixel) => {
+        val colorInt = pixel.color.asColorRgba.rgbaInt
+        bufferedImage.setRGB(pixel.x, pixel.y, colorInt)
+        bufferedImage
+      })
   }
 }
 
