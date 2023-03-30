@@ -6,7 +6,9 @@ import core.support.{FloatWithAlmostEquals, Precision}
 
 import spire.math.UByte
 
-final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255)) extends Color {
+final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte = UByte(255))
+    extends Color {
+
   /**
    * Representation of this color (excluding alpha) as single int value
    */
@@ -15,9 +17,11 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   /**
    * Representation of this color as single int value
    */
-  def rgbaInt: Int = (alpha.intValue << 24) | (red.intValue << 16) | (green.intValue << 8) | blue.intValue
+  def rgbaInt: Int =
+    (alpha.intValue << 24) | (red.intValue << 16) | (green.intValue << 8) | blue.intValue
 
-  override def asAwtColor: java.awt.Color = java.awt.Color(red.intValue, green.intValue, blue.intValue, alpha.intValue)
+  override def asAwtColor: java.awt.Color =
+    java.awt.Color(red.intValue, green.intValue, blue.intValue, alpha.intValue)
 
   override def asColorRgba: ColorRgba = this
 
@@ -33,8 +37,7 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
       calculateHue(chroma, value, r, g, b),
       calculateHslSaturation(value, lightness),
       lightness,
-      alpha
-    )
+      alpha)
   }
 
   override def asColorHsva: ColorHsva = {
@@ -48,19 +51,20 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
       calculateHue(chroma, value, r, g, b),
       calculateHsvSaturation(value, chroma),
       value,
-      alpha
-    )
+      alpha)
   }
 
   /**
-   * @return Tuple with RGB (excluding alpha) channel values converted to float (in range from 0f to 1f)
+   * @return
+   *   Tuple with RGB (excluding alpha) channel values converted to float (in range from 0f to 1f)
    */
   def rgbValuesAsFloats: (Float, Float, Float) = {
     (redAsFloat, greenAsFloat, blueAsFloat)
   }
 
   /**
-   * @return Tuple with RGBA channel values converted to float (in range from 0f to 1f)
+   * @return
+   *   Tuple with RGBA channel values converted to float (in range from 0f to 1f)
    */
   def rgbaValuesAsFloats: (Float, Float, Float, Float) = {
     val (r, g, b) = rgbValuesAsFloats
@@ -70,28 +74,32 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   }
 
   /**
-   * @return Alpha channel value as float (in range from 0f to 1f)
+   * @return
+   *   Alpha channel value as float (in range from 0f to 1f)
    */
   def alphaAsFloat: Float = {
     alpha.toFloat / 255
   }
 
   /**
-   * @return Red channel value as float (in range from 0f to 1f)
+   * @return
+   *   Red channel value as float (in range from 0f to 1f)
    */
   def redAsFloat: Float = {
     red.toFloat / 255
   }
 
   /**
-   * @return Green channel value as float (in range from 0f to 1f)
+   * @return
+   *   Green channel value as float (in range from 0f to 1f)
    */
   def greenAsFloat: Float = {
     green.toFloat / 255
   }
 
   /**
-   * @return Blue channel value as float (in range from 0f to 1f)
+   * @return
+   *   Blue channel value as float (in range from 0f to 1f)
    */
   def blueAsFloat: Float = {
     blue.toFloat / 255
@@ -116,8 +124,7 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
 
     if ((lightness ~= 0) || (lightness ~= 1)) {
       0
-    }
-    else {
+    } else {
       (value - lightness) / lightness.min(1 - lightness)
     }
   }
@@ -127,8 +134,7 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
 
     if (value ~= 0) {
       0
-    }
-    else {
+    } else {
       chroma / value
     }
   }
@@ -140,19 +146,35 @@ object ColorRgba {
   }
 
   def apply(red: Int, green: Int, blue: Int, alpha: Int): ColorRgba = {
-    ColorRgba(normalizeColorChannelValue(red), normalizeColorChannelValue(green), normalizeColorChannelValue(blue), normalizeColorChannelValue(alpha))
+    ColorRgba(
+      normalizeColorChannelValue(red),
+      normalizeColorChannelValue(green),
+      normalizeColorChannelValue(blue),
+      normalizeColorChannelValue(alpha))
   }
 
   def apply(red: Int, green: Int, blue: Int, alpha: UByte): ColorRgba = {
-    ColorRgba(normalizeColorChannelValue(red), normalizeColorChannelValue(green), normalizeColorChannelValue(blue), alpha)
+    ColorRgba(
+      normalizeColorChannelValue(red),
+      normalizeColorChannelValue(green),
+      normalizeColorChannelValue(blue),
+      alpha)
   }
 
   def apply(red: Float, green: Float, blue: Float, alpha: Float): ColorRgba = {
-    ColorRgba(normalizeColorChannelValue(red), normalizeColorChannelValue(green), normalizeColorChannelValue(blue), normalizeColorChannelValue(alpha))
+    ColorRgba(
+      normalizeColorChannelValue(red),
+      normalizeColorChannelValue(green),
+      normalizeColorChannelValue(blue),
+      normalizeColorChannelValue(alpha))
   }
 
   def apply(red: Float, green: Float, blue: Float, alpha: UByte): ColorRgba = {
-    ColorRgba(normalizeColorChannelValue(red), normalizeColorChannelValue(green), normalizeColorChannelValue(blue), alpha)
+    ColorRgba(
+      normalizeColorChannelValue(red),
+      normalizeColorChannelValue(green),
+      normalizeColorChannelValue(blue),
+      alpha)
   }
 
   def fromRgbInt(rgbInt: Int): ColorRgba = {
@@ -173,18 +195,18 @@ object ColorRgba {
   }
 
   /**
-   * Converts color values from float (in standard range from 0 to 1f)
-   * to UByte, used for color channel values in ColorRgba.
-   * If value is outside of range (0-1f), closest valid value will be used (so 0 or 1f)
+   * Converts color values from float (in standard range from 0 to 1f) to UByte, used for color
+   * channel values in ColorRgba. If value is outside of range (0-1f), closest valid value will be
+   * used (so 0 or 1f)
    */
   def normalizeColorChannelValue(colorChannelValue: Float): UByte = {
     UByte((colorChannelValue.max(0f).min(1f) * 255).round)
   }
 
   /**
-   * Converts color values from integer (in standard range from 0 to 255)
-   * to UByte, used for color channel values in ColorRgba.
-   * If value is outside of range (0-255), closest valid value will be used (so 0 or 255)
+   * Converts color values from integer (in standard range from 0 to 255) to UByte, used for color
+   * channel values in ColorRgba. If value is outside of range (0-255), closest valid value will
+   * be used (so 0 or 255)
    */
   def normalizeColorChannelValue(colorChannelValue: Int): UByte = {
     UByte(colorChannelValue.max(0).min(255))

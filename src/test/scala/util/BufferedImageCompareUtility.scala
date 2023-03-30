@@ -8,7 +8,8 @@ object BufferedImageCompareUtility {
   /**
    * Compares 2 image (pixel by pixel).
    *
-   * @return true if images are of same size and have same pixels. Otherwise false
+   * @return
+   *   true if images are of same size and have same pixels. Otherwise false
    */
   def compareImages(imageA: BufferedImage, imageB: BufferedImage): Boolean = {
     if (areImagesOfSameSize(imageA, imageB)) {
@@ -27,6 +28,7 @@ object BufferedImageCompareUtility {
   }
 
   private def areImagesOfSameSize(imageA: BufferedImage, imageB: BufferedImage): Boolean = {
-    imageA.getWidth() == imageB.getWidth() && imageA.getHeight() == imageB.getHeight()
+    imageA.getWidth() == imageB.getWidth() && imageA.getHeight() == imageB
+      .getHeight()
   }
 }

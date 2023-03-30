@@ -5,7 +5,9 @@ import core.support.{FloatWithAlmostEquals, Precision}
 
 import spire.math.UByte
 
-final case class ColorHsva(hue: Float, saturation: Float, value: Float, alpha: UByte = UByte(255)) extends Color, HsvaHsla {
+final case class ColorHsva(hue: Float, saturation: Float, value: Float, alpha: UByte = UByte(255))
+    extends Color,
+      HsvaHsla {
   override def asAwtColor: java.awt.Color = asColorRgba.asAwtColor
 
   override def asColorRgba: ColorRgba = {
@@ -22,7 +24,9 @@ final case class ColorHsva(hue: Float, saturation: Float, value: Float, alpha: U
     implicit val precision: Precision = Precision(0.0001f)
 
     val lightness = value * (1 - saturation / 2)
-    val saturationHSL = if ((lightness ~= 0) || (lightness ~= 1)) 0 else (value - lightness) / lightness.min(1 - lightness)
+    val saturationHSL =
+      if ((lightness ~= 0) || (lightness ~= 1)) 0
+      else (value - lightness) / lightness.min(1 - lightness)
 
     ColorHsla(hue, saturationHSL, lightness, alpha)
   }
@@ -30,8 +34,8 @@ final case class ColorHsva(hue: Float, saturation: Float, value: Float, alpha: U
   override def asColorHsva: ColorHsva = this
 
   /**
-   * Check if is this ColorHsva almost equals to another ColorHsva.
-   * This function should be used instead of equals because of floating point precision problems
+   * Check if is this ColorHsva almost equals to another ColorHsva. This function should be used
+   * instead of equals because of floating point precision problems
    */
   def almostEquals(obj: ColorHsva): Boolean = {
     implicit val precision: Precision = Precision(0.001f)

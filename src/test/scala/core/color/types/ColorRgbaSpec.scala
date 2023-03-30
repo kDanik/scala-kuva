@@ -66,10 +66,18 @@ class ColorRgbaSpec extends AnyFlatSpec {
     val colorRgba = ColorRgba.apply(200, 150, 10, 125)
     val colorHsla = colorRgba.asColorHsla
 
-    assert(colorHsla.hue ~= 44.21f, "Conversion failed: expected hue %s, received %s" format(44.21f, colorHsla.hue))
-    assert(colorHsla.lightness ~= 0.411f, "Conversion failed: expected lightness %s, received %s" format(0.411f, colorHsla.lightness))
-    assert(colorHsla.saturation ~= 0.9f, "Conversion failed: expected saturation %s, received %s" format(0.9f, colorHsla.saturation))
-    assert(colorHsla.alpha == UByte(125), "Conversion failed: expected alpha %s, received %s" format(UByte(125), colorHsla.alpha))
+    assert(
+      colorHsla.hue ~= 44.21f,
+      "Conversion failed: expected hue %s, received %s" format (44.21f, colorHsla.hue))
+    assert(
+      colorHsla.lightness ~= 0.411f,
+      "Conversion failed: expected lightness %s, received %s" format (0.411f, colorHsla.lightness))
+    assert(
+      colorHsla.saturation ~= 0.9f,
+      "Conversion failed: expected saturation %s, received %s" format (0.9f, colorHsla.saturation))
+    assert(
+      colorHsla.alpha == UByte(125),
+      "Conversion failed: expected alpha %s, received %s" format (UByte(125), colorHsla.alpha))
   }
 
   "ColorRgba" can "be converted to ColorHsla and back to ColorRgba, keeping same values" in {
@@ -85,10 +93,18 @@ class ColorRgbaSpec extends AnyFlatSpec {
     val colorRgba = ColorRgba.apply(200, 150, 10, 125)
     val colorHsva = colorRgba.asColorHsva
 
-    assert(colorHsva.hue ~= 44.21f, "Conversion failed: expected hue %s, received %s" format(44.21f, colorHsva.hue))
-    assert(colorHsva.value ~= 0.78f, "Conversion failed: expected lightness %s, received %s" format(0.78f, colorHsva.value))
-    assert(colorHsva.saturation ~= 0.95f, "Conversion failed: expected saturation %s, received %s" format(0.95f, colorHsva.saturation))
-    assert(colorHsva.alpha == UByte(125), "Conversion failed: expected alpha %s, received %s" format(UByte(125), colorHsva.alpha))
+    assert(
+      colorHsva.hue ~= 44.21f,
+      "Conversion failed: expected hue %s, received %s" format (44.21f, colorHsva.hue))
+    assert(
+      colorHsva.value ~= 0.78f,
+      "Conversion failed: expected lightness %s, received %s" format (0.78f, colorHsva.value))
+    assert(
+      colorHsva.saturation ~= 0.95f,
+      "Conversion failed: expected saturation %s, received %s" format (0.95f, colorHsva.saturation))
+    assert(
+      colorHsva.alpha == UByte(125),
+      "Conversion failed: expected alpha %s, received %s" format (UByte(125), colorHsva.alpha))
   }
 
   "ColorRgba" can "be converted to ColorHsva and back to ColorRgba, keeping same values" in {
@@ -103,9 +119,17 @@ class ColorRgbaSpec extends AnyFlatSpec {
 
     val colorRgba = ColorRgba.apply(200, 150, 10, 125)
 
-    assert(colorRgba.redAsFloat ~= 0.784f, "expected red %s, received %s" format(0.784f, colorRgba.redAsFloat))
-    assert(colorRgba.greenAsFloat ~= 0.588f, "expected green %s, received %s" format(0.588f, colorRgba.greenAsFloat))
-    assert(colorRgba.blueAsFloat ~= 0.039f, "expected blue %s, received %s" format(0.039f, colorRgba.blueAsFloat))
-    assert(colorRgba.alphaAsFloat ~= 0.5f, "expected alpha %s, received %s" format(0.5f, colorRgba.alphaAsFloat))
+    assert(
+      colorRgba.redAsFloat ~= 0.784f,
+      "expected red %s, received %s" format (0.784f, colorRgba.redAsFloat))
+    assert(
+      colorRgba.greenAsFloat ~= 0.588f,
+      "expected green %s, received %s" format (0.588f, colorRgba.greenAsFloat))
+    assert(
+      colorRgba.blueAsFloat ~= 0.039f,
+      "expected blue %s, received %s" format (0.039f, colorRgba.blueAsFloat))
+    assert(
+      colorRgba.alphaAsFloat ~= 0.5f,
+      "expected alpha %s, received %s" format (0.5f, colorRgba.alphaAsFloat))
   }
 }

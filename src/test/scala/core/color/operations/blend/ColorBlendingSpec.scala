@@ -7,8 +7,8 @@ import org.scalatest.flatspec.AnyFlatSpec
 import spire.math.UByte
 
 /**
- * This test can only check expected color output.
- * The exact validity of blending can be better checked with real images.
+ * This test can only check expected color output. The exact validity of blending can be better
+ * checked with real images.
  */
 class ColorBlendingSpec extends AnyFlatSpec {
   "Color blending" should "work using simple alpha compositing algorithm" in {
@@ -17,6 +17,8 @@ class ColorBlendingSpec extends AnyFlatSpec {
 
     val expectedBlendedColor = ColorRgba.apply(37, 30, 95, 222)
 
-    ColorBlending.blend(backgroundColor, foregroundColor, blendMode = BlendMode.SIMPLE_ALPHA_COMPOSITING).equals(expectedBlendedColor)
+    ColorBlending
+      .blend(backgroundColor, foregroundColor, blendMode = BlendMode.SIMPLE_ALPHA_COMPOSITING)
+      .equals(expectedBlendedColor)
   }
 }

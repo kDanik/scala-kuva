@@ -11,12 +11,16 @@ import scala.math.*
  * Grayscale color is a color that only represents an amount of light
  */
 object GrayscaleColorConversion {
+
   /**
    * Using initial color and selected grayscale algorithms, creates new grayscale color.
    *
-   * @param color     initial color
-   * @param algorithm see GrayscaleConversionAlgorithm
-   * @return grayscale color as ColorRgba
+   * @param color
+   *   initial color
+   * @param algorithm
+   *   see GrayscaleConversionAlgorithm
+   * @return
+   *   grayscale color as ColorRgba
    */
   def applyGrayscale(color: Color, algorithm: GrayscaleConversionAlgorithm): ColorRgba = {
     algorithm match {
@@ -24,9 +28,12 @@ object GrayscaleColorConversion {
       case GrayscaleConversionAlgorithm.LUMA_BT601 => applyLumaBT601Grayscale(color)
       case GrayscaleConversionAlgorithm.LUMA_BT709 => applyLumaBT709Grayscale(color)
       case GrayscaleConversionAlgorithm.AVERAGING => applyAveragingGrayscale(color)
-      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_RED => applySingleChannelRedGrayscale(color)
-      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_GREEN => applySingleChannelGreenGrayscale(color)
-      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_BLUE => applySingleChannelBlueGrayscale(color)
+      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_RED =>
+        applySingleChannelRedGrayscale(color)
+      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_GREEN =>
+        applySingleChannelGreenGrayscale(color)
+      case GrayscaleConversionAlgorithm.SINGLE_COLOR_CHANNEL_BLUE =>
+        applySingleChannelBlueGrayscale(color)
       case GrayscaleConversionAlgorithm.DECOMPOSITION_MIN => applyDecompositionMinGrayscale(color)
       case GrayscaleConversionAlgorithm.DECOMPOSITION_MAX => applyDecompositionMaxGrayscale(color)
       case GrayscaleConversionAlgorithm.LIGHTNESS => applyLightnessGrayscale(color)
@@ -40,21 +47,24 @@ object GrayscaleColorConversion {
 
   private def applyLumaBT709Grayscale(color: Color): ColorRgba = {
     val colorRgba = color.asColorRgba
-    val grey = ColorRgba.normalizeColorChannelValue((colorRgba.red.intValue * 0.2126f + colorRgba.red.intValue * 0.7152f + colorRgba.blue.intValue * 0.0722f).round)
+    val grey = ColorRgba.normalizeColorChannelValue(
+      (colorRgba.red.intValue * 0.2126f + colorRgba.red.intValue * 0.7152f + colorRgba.blue.intValue * 0.0722f).round)
 
     ColorRgba(grey, grey, grey, colorRgba.alpha)
   }
 
   private def applyLumaBT601Grayscale(color: Color): ColorRgba = {
     val colorRgba = color.asColorRgba
-    val grey = ColorRgba.normalizeColorChannelValue((colorRgba.red.intValue * 0.299f + colorRgba.red.intValue * 0.587f + colorRgba.blue.intValue * 0.114f).round)
+    val grey = ColorRgba.normalizeColorChannelValue(
+      (colorRgba.red.intValue * 0.299f + colorRgba.red.intValue * 0.587f + colorRgba.blue.intValue * 0.114f).round)
 
     ColorRgba(grey, grey, grey, colorRgba.alpha)
   }
 
   private def applyAveragingGrayscale(color: Color): ColorRgba = {
     val colorRgba = color.asColorRgba
-    val averageColorValue = ColorRgba.normalizeColorChannelValue(((colorRgba.red.intValue + colorRgba.blue.intValue + colorRgba.green.intValue) / 3f).round)
+    val averageColorValue = ColorRgba.normalizeColorChannelValue(
+      ((colorRgba.red.intValue + colorRgba.blue.intValue + colorRgba.green.intValue) / 3f).round)
 
     ColorRgba(averageColorValue, averageColorValue, averageColorValue, colorRgba.alpha)
   }
@@ -97,9 +107,11 @@ object GrayscaleColorConversion {
 
     // formula for calculation of lightness from RGB
     // source: https://www.researchgate.net/publication/221755665
-    val y = 0.2126f * colorRgba.redAsFloat + 0.7152f * colorRgba.greenAsFloat + 0.0722f * colorRgba.blueAsFloat
+    val y =
+      0.2126f * colorRgba.redAsFloat + 0.7152f * colorRgba.greenAsFloat + 0.0722f * colorRgba.blueAsFloat
 
-    def f(t: Float): Float = (if (t > 0.00024601254f) pow(t, 1f / 3f) else (1f / 3f) * pow(29f / 6f, 2f) * t + 4f / 29f).toFloat
+    def f(t: Float): Float = (if (t > 0.00024601254f) pow(t, 1f / 3f)
+                              else (1f / 3f) * pow(29f / 6f, 2f) * t + 4f / 29f).toFloat
 
     val lightness = 0.01f * (116 * f(y) - 16)
 
@@ -110,7 +122,8 @@ object GrayscaleColorConversion {
     val colorRgba = color.asColorRgba
 
     // this is a bit faster, than converting color to HSL directly, because here we only need lightness from HSL
-    val lightnessHsl = (calculateMinimumColoChannelValue(colorRgba) + calculateMaximumColoChannelValue(colorRgba)) / 2
+    val lightnessHsl = (calculateMinimumColoChannelValue(
+      colorRgba) + calculateMaximumColoChannelValue(colorRgba)) / 2
 
     ColorRgba(lightnessHsl, lightnessHsl, lightnessHsl, colorRgba.alpha)
   }
