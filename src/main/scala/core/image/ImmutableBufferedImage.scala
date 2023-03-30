@@ -35,10 +35,7 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imag
   /**
    * width of this image in pixels
    */
-  lazy val Width = imageRaster.headOption match {
-    case Some(value) => value.length
-    case None => 0
-  }
+  lazy val Width = imageRaster.headOption.fold(0)(_.length)
 
   /**
    * Sets / Replaces one pixel in ImmutableBufferedImage
@@ -64,8 +61,7 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imag
    *   new ImmutableBufferedImage after changes
    */
   def setPixels(pixels: List[Pixel]): ImmutableBufferedImage = {
-    val validPixels =
-      pixels.filter(pixel => isPositionInBounds(pixel.x, pixel.y))
+    val validPixels = pixels.filter(pixel => isPositionInBounds(pixel.x, pixel.y))
 
     val updatedImageRaster =
       validPixels.foldLeft(imageRaster)((updatedImageRaster, pixel) =>
@@ -80,7 +76,7 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imag
    */
   def getPixel(x: Int, y: Int): Option[Pixel] = {
     if (isPositionInBounds(x, y)) {
-      Option.apply(imageRaster(y)(x))
+      Option(imageRaster(y)(x))
     } else Option.empty
   }
 
@@ -101,13 +97,42 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imag
    *   list of pixels in specified range or empty sequence for invalid input
    */
   def getPixels(fromX: Int, fromY: Int, toX: Int, toY: Int): Seq[Pixel] = {
-    if (isPositionInBounds(fromX, fromY) && isPositionInBounds(
-        toX,
-        toY) && (fromX <= toX) && (fromY <= toY)) {
+    if (isPositionInBounds(fromX, fromY) && isPositionInBounds(toX, toY)
+      && (fromX <= toX) && (fromY <= toY)) {
       imageRaster
         .slice(fromY, toY + 1)
         .flatMap((pixelRow: Vector[Pixel]) => pixelRow.slice(fromX, toX + 1))
-    } else Seq.empty
+    } else Seq.empty // TODO for invalid input it makes more sense to have option or error
+  }
+
+  /**
+   * @return
+   *   Sequence that contains all Pixel-s of this image
+   */
+  def getAllPixels(): Seq[Pixel] = {
+    getPixels(0, 0, Width - 1, Height - 1)
+  }
+
+  /**
+   * Creates new ImmutableBufferedImage by applying operation to color of each pixel
+   * @param operation
+   *   operation to apply to each pixel color
+   * @return
+   *   new ImmutableBufferedImage resulting by applying operation to color of each pixel
+   */
+  def mapPixels(operation: Pixel => Pixel): ImmutableBufferedImage = {
+    this.copy(imageRaster.map((row: Vector[Pixel]) => row.map(operation)))
+  }
+
+  /**
+   * Creates new ImmutableBufferedImage by applying operation to color of each pixel
+   * @param operation
+   *   operation to apply to each pixel color
+   * @return
+   *   new ImmutableBufferedImage resulting by applying operation to color of each pixel
+   */
+  def mapPixelColors(operation: Color => Color): ImmutableBufferedImage = {
+    mapPixels((pixel: Pixel) => Pixel(pixel.x, pixel.y, operation(pixel.color)))
   }
 
   /**
