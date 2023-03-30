@@ -202,18 +202,9 @@ object ImageExampleMain {
   def applyOperationToEachPixelOfImage(
       sourceImagePath: String,
       resultedImagePath: String,
-      colorOperation: Color => ColorRgba): Unit = {
+      colorOperation: Color => Color): Unit = {
     val immutableBufferedImage = loadImage(sourceImagePath)
-    val width = immutableBufferedImage.Width
-    val height = immutableBufferedImage.Height
-
-    var resultedImage =
-      ImmutableBufferedImage(height, width, immutableBufferedImage.imageType).get;
-
-    for (x <- 0 until width; y <- 0 until height) {
-      resultedImage = resultedImage.setPixel(
-        Pixel(x, y, colorOperation(immutableBufferedImage.getPixel(x, y).get.color)));
-    }
+    val resultedImage = immutableBufferedImage.mapPixelColors(colorOperation)
 
     writeImage(resultedImagePath, resultedImage)
   }
@@ -222,7 +213,7 @@ object ImageExampleMain {
       sourceBackgroundImagePath: String,
       sourceForegroundImagePath: String,
       resultedImagePath: String,
-      colorOperation: (ColorRgba, ColorRgba) => ColorRgba): Unit = {
+      colorOperation: (Color, Color) => Color): Unit = {
     val bufferedImageBackground = loadImage(sourceBackgroundImagePath)
     val bufferedImageForeground = loadImage(sourceForegroundImagePath)
 
