@@ -192,9 +192,9 @@ object ImageExampleMain {
       (color: Color) => ColorInversion.invertColor(color, false))
 
     combineTwoImageInOne(
-      "src/main/resources/source/dice.png",
-      "src/main/resources/source/light.png",
-      "src/main/resources/result/blend.png",
+      "src/main/resources/source/blend/abstract_background.png",
+      "src/main/resources/source/blend/abstract_foreground.png",
+      "src/main/resources/result/blend/blend_simple_alpha_compositing.png",
       (background: Color, foreground: Color) =>
         ColorBlending.blend(background, foreground, BlendMode.SIMPLE_ALPHA_COMPOSITING))
   }

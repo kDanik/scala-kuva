@@ -3,15 +3,15 @@
 **scala-kuva** (kuva means "picture" in Finnish) is supposed to be a Scala library for color (and later image)
 processing, manipulation, and filters.
 
-## Functionality
+### Functionality
 
-### Color types
+## Color types
 
 Currently, there are implementations for 3 color formats: **RGB(A)**, **HSL(A)**, and **HSV(A)**.
 
 They can be converted between each other and converted to java.awt.Color.
 
-### Color manipulation
+## Color manipulation
 
 Pictures used to demonstrate different color operations/filters below:
 
@@ -19,7 +19,7 @@ Pictures used to demonstrate different color operations/filters below:
 
 <img src="src/main/resources/source/cocktail.png" alt="Original picture of cocktail" width="350">
 
-#### Grayscale
+### Grayscale
 
 Currently, this library contains these implementations of grayscale algorithms:
 
@@ -113,7 +113,7 @@ Calculates and uses as grayscale lightness using formula from HSL color format.
 
 <img src="src/main/resources/result/grayscale_lightness_hsl_cocktail.png" alt="Picture of cocktail after applying lightness (HSL) grayscale" width="350">
 
-#### Inversion
+### Inversion
 
 Color inversion is a photo effect that flips all colors to their opposite hue on the color wheel (with inversion of
 alpha channel or without).
@@ -122,15 +122,27 @@ alpha channel or without).
 
 <img src="src/main/resources/result/color_inversion_cocktail.png" alt="Picture of cocktail after inversion" width="350">
 
-#### Blending colors
+### Blending colors
+
+To demonstrate different color blending algorithms 2 abstract (background and foreground) images will be used.
+
+Background (initial image):
+
+<img src="src/main/resources/source/blend/abstract_background.png" alt="Abstract background" width="200">
+
+Foreground (overlay image):
+
+<img src="src/main/resources/source/blend/abstract_foreground.png" alt="Abstract foreground" width="200">
+
+##### Simple Alpha Compositing
+
+<img src="src/main/resources/result/blend/blend_simple_alpha_compositing.png" alt="Color blending with alpha compositing algorithm" width="200">
+
+### Darken
 
 ...
 
-#### Darken
-
-...
-
-#### Lighten
+### Lighten
 
 ...
 

@@ -167,7 +167,7 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imag
 object ImmutableBufferedImage {
 
   /**
-   * Creates ImmutableBufferedImage with given size (filled with (0,0,0,255) color).
+   * Creates ImmutableBufferedImage with given size (filled with pixels with (0,0,0,255) color).
    */
   def apply(
       height: Int,

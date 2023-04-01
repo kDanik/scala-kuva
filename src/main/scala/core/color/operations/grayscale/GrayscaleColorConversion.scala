@@ -121,7 +121,7 @@ object GrayscaleColorConversion {
   private def applyLightnessHslGrayscale(color: Color): ColorRgba = {
     val colorRgba = color.asColorRgba
 
-    // this is a bit faster, than converting color to HSL directly, because here we only need lightness from HSL
+    // Using this formula is faster than converting color to ColorHSLA and using lightness
     val lightnessHsl = (calculateMinimumColoChannelValue(
       colorRgba) + calculateMaximumColoChannelValue(colorRgba)) / 2
 

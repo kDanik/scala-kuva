@@ -24,7 +24,7 @@ package core.color.operations.grayscale
  * LIGHTNESS - is a perceptually uniform grayscale representation used in the CIELAB and CIELUV
  * color spaces
  *
- * LIGHTNESS_HSL - is the L channel in the HLS (Hue, Lightness, and Saturation) color space.
+ * LIGHTNESS_HSL - is the L channel in the HSL (Hue, Saturation and Lightness) color space.
  */
 enum GrayscaleConversionAlgorithm:
   case AVERAGING,

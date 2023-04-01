@@ -6,15 +6,25 @@ import core.support.{FloatWithAlmostEquals, Precision}
 import spire.math.UByte
 
 /**
- * HSL (for hue, saturation, lightness) is alternative representations of the RGB color model.
- * A in HSLA stands for alpha / transparency.
+ * HSL (for hue, saturation, lightness) is alternative representations of the RGB color model. A
+ * in HSLA stands for alpha / transparency.
  *
- * @param hue        in range from 0f to 360f
- * @param saturation in range from 0f to 1f
- * @param lightness  in range from 0f to 1f
- * @param alpha      in range from 0 to 255
+ * @param hue
+ *   in range from 0f to 360f
+ * @param saturation
+ *   in range from 0f to 1f
+ * @param lightness
+ *   in range from 0f to 1f
+ * @param alpha
+ *   in range from 0 to 255
  */
-final case class ColorHsla(hue: Float, saturation: Float, lightness: Float, alpha: UByte = UByte(255)) extends Color, HsvaHsla {
+final case class ColorHsla(
+    hue: Float,
+    saturation: Float,
+    lightness: Float,
+    alpha: UByte = UByte(255))
+    extends Color,
+      HsvaHsla {
   override def asAwtColor: java.awt.Color = asColorRgba.asAwtColor
 
   override def asColorRgba: ColorRgba = {
@@ -39,8 +49,8 @@ final case class ColorHsla(hue: Float, saturation: Float, lightness: Float, alph
   }
 
   /**
-   * Check if is this ColorHsla almost equals to another ColorHsla.
-   * This function should be used instead of equals because of floating point precision problems
+   * Check if is this ColorHsla almost equals to another ColorHsla. This function should be used
+   * instead of equals because of floating point precision problems
    */
   def almostEquals(obj: ColorHsla): Boolean = {
     implicit val precision: Precision = Precision(0.001f)
