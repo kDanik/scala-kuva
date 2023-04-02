@@ -4,7 +4,7 @@ package core.image
 import core.color.types.Color
 
 /**
- * This class represents on pixel on image
+ * This class represents one pixel on image
  *
  * @param x
  *   x coordinate on image
