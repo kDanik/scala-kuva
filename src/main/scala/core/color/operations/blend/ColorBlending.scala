@@ -5,6 +5,10 @@ import core.color.operations.grayscale.GrayscaleColorConversion.*
 import core.color.operations.grayscale.GrayscaleConversionAlgorithm
 import core.color.types.{Color, ColorRgba}
 
+import com.example.core.color.operations.blend.BlendMode.DISSOLVE
+
+import scala.util.Random
+
 /**
  * Most formulas for color blending are from SVG Spec
  * ([[https://dev.w3.org/SVG/modules/compositing/master/]])
@@ -25,7 +29,18 @@ object ColorBlending {
     blendMode match {
       case BlendMode.SIMPLE_ALPHA_COMPOSITING =>
         blendUsingAlphaCompositing(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case DISSOLVE =>
+        blendUsingDissolveAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingDissolveAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    val totalOpacity = backgroundColor.alpha.intValue + foregroundColor.alpha.intValue
+
+    if (Random.nextFloat() * totalOpacity < backgroundColor.alpha.intValue) backgroundColor
+    else foregroundColor
   }
 
   private def blendUsingAlphaCompositing(
