@@ -1,11 +1,13 @@
 package com.example
-package core.image.temp
+package temp
 
 import core.color.operations.blend.{BlendMode, ColorBlending}
 import core.color.operations.grayscale.{GrayscaleColorConversion, GrayscaleConversionAlgorithm}
 import core.color.operations.inversion.ColorInversion
 import core.color.types.{Color, ColorRgba}
 import core.image.{ImmutableBufferedImage, Pixel}
+
+import com.example.core.image.operations.binarization.OtsuBinarization
 
 import java.awt.image.BufferedImage
 import java.io.{File, IOException}
@@ -197,6 +199,14 @@ object ImageExampleMain {
       "src/main/resources/result/blend/blend_simple_alpha_compositing.png",
       (background: Color, foreground: Color) =>
         ColorBlending.blend(background, foreground, BlendMode.SIMPLE_ALPHA_COMPOSITING))
+
+    writeImage(
+      "src/main/resources/result/otsu_binarization_sheep.png",
+      OtsuBinarization.binarizeImage(
+        loadImage("src/main/resources/source/sheep.png").mapPixelColors(
+          GrayscaleColorConversion
+            .applyGrayscale(_, GrayscaleConversionAlgorithm.LUMA_BT601)),
+        0.05))
   }
 
   def applyOperationToEachPixelOfImage(

@@ -138,6 +138,20 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_simple_alpha_compositing.png" alt="Color blending with alpha compositing algorithm" width="200">
 
+### Binarization
+
+Binarization is the process of converting a multi-tone grayscale image into a two-tone black and white image. This is achieved by finding a threshold value, which is then used to create the binary output.
+
+#### Otsu's method
+Otsu's method is a thresholding technique used to separate an image into foreground and background pixels. 
+It calculates the optimal threshold value by maximizing the between-class variance of pixel intensities.
+
+Otsu's method requires the image to be **converted into grayscale before applying the algorithm**, and the resulting threshold value may vary depending on the specific grayscale conversion algorithm used.
+
+
+<img src="src/main/resources/source/sheep.png" alt="Source sheep image" width="250">
+<img src="src/main/resources/result/otsu_binarization_sheep.png" alt="Sheep image binarized with Otsu's method " width="250">
+
 ### Darken
 
 ...
