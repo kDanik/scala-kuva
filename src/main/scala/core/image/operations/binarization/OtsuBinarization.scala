@@ -41,12 +41,13 @@ object OtsuBinarization {
    *   step (0 to 1) for threshold values. Lower step results into better precision of the
    *   algorithm, but significantly impacts performance
    * @return
-   *   least variance threshold (value from 0f to 1f)
+   *   least variance (Otsu's) threshold (value from 0f to 1f). This threshold splits image into
+   *   background and foreground by their color value.
    */
   def findLeastVarianceThreshold(
       sourceGrayscaleImage: ImmutableBufferedImage,
       step: BigDecimal): Float = {
-    val allPixels = sourceGrayscaleImage.getAllPixels()
+    val allPixels = sourceGrayscaleImage.allPixelsAsSeq()
 
     val totalWeight = allPixels.length
     val colorThresholds = calculateColorThresholdsRange(sourceGrayscaleImage, step)
@@ -89,7 +90,7 @@ object OtsuBinarization {
     val currentThresholdVariance =
       weightForeground * varianceForeground + weightBackground * varianceBackground
 
-    // if current variance is smaller than current least variance, current threshold is now least variance threshold
+    // if current variance is less than current least variance, current threshold is now least variance threshold
     val (nextLeastVariance, nextLeastVarianceThreshold) =
       if (leastVariance > currentThresholdVariance) (currentThresholdVariance, currentThreshold)
       else (leastVariance, leastVarianceThreshold)
@@ -112,9 +113,10 @@ object OtsuBinarization {
     val pixelValues = pixels.map(_.color.asColorRgba.redAsFloat)
     val mean = pixelValues.sum / pixelValues.length
 
-    val varianceSum: Double =
-      pixelValues.foldLeft[Double](0)((varianceSum: Double, pixelValue: Float) =>
-        varianceSum + math.pow(pixelValue - mean, 2))
+    val varianceSum: Float =
+      pixelValues
+        .fold[Float](0)((varianceSum: Float, pixelValue: Float) =>
+          (varianceSum + math.pow(pixelValue - mean, 2)).floatValue)
 
     math.sqrt(varianceSum / pixelValues.length).floatValue
   }
@@ -129,23 +131,21 @@ object OtsuBinarization {
       maximumColorValue(sourceGrayscaleImage)) - step by step
   }
 
-  private def minimumColorValue(grayscaleImage: ImmutableBufferedImage): Double = {
+  private def minimumColorValue(grayscaleImage: ImmutableBufferedImage): Float = {
     grayscaleImage
-      .getAllPixels()
+      .allPixelsAsSeq()
       .min(GrayscalePixelOrdering)
       .color
       .asColorRgba
       .redAsFloat
-      .doubleValue
   }
 
-  private def maximumColorValue(grayscaleImage: ImmutableBufferedImage): Double = {
+  private def maximumColorValue(grayscaleImage: ImmutableBufferedImage): Float = {
     grayscaleImage
-      .getAllPixels()
+      .allPixelsAsSeq()
       .max(GrayscalePixelOrdering)
       .color
       .asColorRgba
       .redAsFloat
-      .doubleValue
   }
 }

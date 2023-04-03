@@ -75,11 +75,11 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
     assert(immutableBufferedImage.getPixels(0, 10, 10, 9).isEmpty)
   }
 
-  "ImmutableBufferedImage getAllPixels" should "return Seq with all pixels of this image" in {
+  "ImmutableBufferedImage allPixelsAsSeq" should "return Seq with all pixels of this image" in {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
 
-    assert(immutableBufferedImage.getAllPixels().length == 25000)
+    assert(immutableBufferedImage.allPixelsAsSeq().length == 25000)
   }
 
   "ImmutableBufferedImage setPixel" should "should create new ImmutableBufferedImage by changing one pixel" in {

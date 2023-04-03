@@ -109,7 +109,7 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imag
    * @return
    *   Sequence that contains all Pixel-s of this image
    */
-  def getAllPixels(): Seq[Pixel] = {
+  def allPixelsAsSeq(): Seq[Pixel] = {
     getPixels(0, 0, Width - 1, Height - 1)
   }
 
