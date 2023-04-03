@@ -16,7 +16,7 @@ object BinarizationImageExamplesMain {
     val binarizedImage = OtsuBinarization.binarizeImage(sourceGrayscaleImage, 0.05)
 
     ImageExampleFileUtil.writeImage(
-      "src/main/resources/result/blend/dissolve.png",
+      "src/main/resources/result/otsu_binarization_sheep.png",
       binarizedImage)
   }
 
