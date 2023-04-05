@@ -1,7 +1,7 @@
 package com.example
 package core.color.operations.blend
 
-import core.color.operations.blend.BlendMode.{DISSOLVE, MULTIPLY}
+import core.color.operations.blend.BlendMode.{DISSOLVE, MULTIPLY, SCREEN}
 import core.color.operations.blend.ColorBlending.{blendSingleChannelUsingAlphaCompositing, calculateStandardBlendedAlpha, preMultiplyRgbValues, unMultiplyFinalColorChannel}
 import core.color.operations.grayscale.GrayscaleColorConversion.*
 import core.color.operations.grayscale.GrayscaleConversionAlgorithm
@@ -33,6 +33,8 @@ object ColorBlending {
         blendUsingDissolveAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case MULTIPLY =>
         blendUsingMultiplyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case SCREEN =>
+        blendUsingScreenAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
   }
 
@@ -60,9 +62,40 @@ object ColorBlending {
     }
   }
 
+  private def blendUsingScreenAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    val alphaBg = backgroundColor.alphaAsFloat
+    val alphaFg = foregroundColor.alphaAsFloat
+
+    if (alphaFg == 0f || alphaBg == 0f) {
+      // for screen blend fully transparent colors must be ignored
+      if (alphaFg == 0f) backgroundColor else foregroundColor
+    } else {
+
+      val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
+      val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
+
+      val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
+
+      ColorRgba.apply(
+        /*
+        TODO
+          this and multiply (and maybe alpha compositing) blend modes can be combined with high order function,
+          as main difference is formula / function, that is applied in the end to each color channel.
+          It would be best to do that after most of blend modes are added, tested with examples and covered with unit tests.
+         */
+        unMultiplyFinalColorChannel(1f - (1f - redFg) * (1 - redBg), finalAlpha),
+        unMultiplyFinalColorChannel(1f - (1f - greenFg) * (1 - greenBg), finalAlpha),
+        unMultiplyFinalColorChannel(1f - (1f - blueFg) * (1 - blueBg), finalAlpha),
+        finalAlpha)
+    }
+  }
+
   private def blendUsingDissolveAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
+    // TODO if one of colors is transparent calculation here is redundant and can be removed
     val totalOpacity = backgroundColor.alpha.intValue + foregroundColor.alpha.intValue
 
     if (Random.nextFloat() * totalOpacity < backgroundColor.alpha.intValue) backgroundColor
