@@ -142,6 +142,14 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/dissolve.png" alt="Color blending with dissolve algorithm" width="200">
 
+##### Multiply
+
+<img src="src/main/resources/result/blend/blend_multiply.png" alt="Color blending with dissolve algorithm" width="200">
+
+##### Screen
+
+<img src="src/main/resources/result/blend/blend_screen.png" alt="Color blending with screen algorithm" width="200">
+
 ### Binarization
 
 Binarization is the process of converting a multi-tone grayscale image into a two-tone black and white image. This is achieved by finding a threshold value, which is then used to create the binary output.
