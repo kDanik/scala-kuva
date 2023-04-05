@@ -1,11 +1,11 @@
 package com.example
 package core.color.operations.blend
 
+import core.color.operations.blend.BlendMode.{DISSOLVE, MULTIPLY}
+import core.color.operations.blend.ColorBlending.{blendSingleChannelUsingAlphaCompositing, calculateStandardBlendedAlpha, preMultiplyRgbValues, unMultiplyFinalColorChannel}
 import core.color.operations.grayscale.GrayscaleColorConversion.*
 import core.color.operations.grayscale.GrayscaleConversionAlgorithm
 import core.color.types.{Color, ColorRgba}
-
-import com.example.core.color.operations.blend.BlendMode.DISSOLVE
 
 import scala.util.Random
 
@@ -31,6 +31,32 @@ object ColorBlending {
         blendUsingAlphaCompositing(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case DISSOLVE =>
         blendUsingDissolveAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case MULTIPLY =>
+        blendUsingMultiplyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+    }
+  }
+
+  private def blendUsingMultiplyAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    val alphaBg = backgroundColor.alphaAsFloat
+    val alphaFg = foregroundColor.alphaAsFloat
+
+    if (alphaFg == 0f || alphaBg == 0f) {
+      // for multiply blend fully transparent colors must be ignored
+      if (alphaFg == 0f) backgroundColor else foregroundColor
+    } else {
+
+      val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
+      val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
+
+      val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
+
+      ColorRgba.apply(
+        unMultiplyFinalColorChannel(redFg * redBg, finalAlpha),
+        unMultiplyFinalColorChannel(greenFg * greenBg, finalAlpha),
+        unMultiplyFinalColorChannel(blueFg * blueBg, finalAlpha),
+        finalAlpha)
     }
   }
 
@@ -49,10 +75,8 @@ object ColorBlending {
     val alphaBg = backgroundColor.alphaAsFloat
     val alphaFg = foregroundColor.alphaAsFloat
 
-    val (redBg: Float, greenBg: Float, blueBg: Float) =
-      preMultiplyRgbValues(backgroundColor.rgbValuesAsFloats, alphaBg)
-    val (redFg: Float, greenFg: Float, blueFg: Float) =
-      preMultiplyRgbValues(foregroundColor.rgbValuesAsFloats, alphaFg)
+    val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
+    val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
 
     val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
 
@@ -93,12 +117,10 @@ object ColorBlending {
   }
 
   /**
-   * Pre multiplies rgb values (tuple) by their alpha. This helps to improve correctness of
-   * blending
+   * Pre multiplies rgb values of input color by their alpha and returns it as tuple of floats.
+   * This helps to improve correctness of blending.
    */
-  private def preMultiplyRgbValues(
-      rgbValues: (Float, Float, Float),
-      alpha: Float): (Float, Float, Float) = {
-    (rgbValues._1 * alpha, rgbValues._2 * alpha, rgbValues._3 * alpha)
+  private def preMultiplyRgbValues(colorRgba: ColorRgba, alpha: Float): (Float, Float, Float) = {
+    (colorRgba.redAsFloat * alpha, colorRgba.greenAsFloat * alpha, colorRgba.blueAsFloat * alpha)
   }
 }
