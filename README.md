@@ -128,27 +128,27 @@ To demonstrate different color blending algorithms 2 abstract (background and fo
 
 Background (initial image):
 
-<img src="src/main/resources/source/blend/abstract_background.png" alt="Abstract background" width="200">
+<img src="src/main/resources/source/blend/abstract_background.png" alt="Abstract background" width="300">
 
 Foreground (overlay image):
 
-<img src="src/main/resources/source/blend/abstract_foreground.png" alt="Abstract foreground" width="200">
+<img src="src/main/resources/source/blend/abstract_foreground.png" alt="Abstract foreground" width="300">
 
 ##### Simple Alpha Compositing
 
-<img src="src/main/resources/result/blend/blend_simple_alpha_compositing.png" alt="Color blending with alpha compositing algorithm" width="200">
+<img src="src/main/resources/result/blend/blend_simple_alpha_compositing.png" alt="Color blending with alpha compositing algorithm" width="300">
 
 ##### Dissolve
 
-<img src="src/main/resources/result/blend/dissolve.png" alt="Color blending with dissolve algorithm" width="200">
+<img src="src/main/resources/result/blend/dissolve.png" alt="Color blending with dissolve algorithm" width="300">
 
 ##### Multiply
 
-<img src="src/main/resources/result/blend/blend_multiply.png" alt="Color blending with dissolve algorithm" width="200">
+<img src="src/main/resources/result/blend/blend_multiply.png" alt="Color blending with dissolve algorithm" width="300">
 
 ##### Screen
 
-<img src="src/main/resources/result/blend/blend_screen.png" alt="Color blending with screen algorithm" width="200">
+<img src="src/main/resources/result/blend/blend_screen.png" alt="Color blending with screen algorithm" width="300">
 
 ### Binarization
 
