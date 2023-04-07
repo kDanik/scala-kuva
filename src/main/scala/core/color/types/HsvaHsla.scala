@@ -12,7 +12,7 @@ trait HsvaHsla {
   def hslHsvToRGB(h: Float, c: Float, x: Float, m: Float, alpha: UByte): ColorRgba = {
     val (r1, g1, b1) = hslToRGBHelper(h, c, x)
 
-    ColorRgba.apply(r1 + m, g1 + m, b1 + m, alpha)
+    ColorRgba(r1 + m, g1 + m, b1 + m, alpha)
   }
 
   private def hslToRGBHelper(h: Float, c: Float, x: Float): (Float, Float, Float) = {

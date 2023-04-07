@@ -174,10 +174,9 @@ object ImmutableBufferedImage {
       width: Int,
       imageType: Int = BufferedImage.TYPE_INT_RGB): Option[ImmutableBufferedImage] = {
     if (isPositionNonNegative(width, height)) {
-      Option.apply(
+      Option(
         ImmutableBufferedImage(
-          Vector.tabulate(height, width)((y, x) =>
-            image.Pixel(x, y, ColorRgba.apply(0, 0, 0, 255))),
+          Vector.tabulate(height, width)((y, x) => image.Pixel(x, y, ColorRgba(0, 0, 0, 255))),
           imageType))
     } else Option.empty
   }

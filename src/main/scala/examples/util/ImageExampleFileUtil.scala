@@ -13,7 +13,7 @@ object ImageExampleFileUtil {
    * images must be present and this function only used for generating and reading example images
    */
   def loadImage(path: String): ImmutableBufferedImage = {
-    ImmutableBufferedImage.apply(ImageIO.read(File(path)))
+    ImmutableBufferedImage(ImageIO.read(File(path)))
   }
 
   /**

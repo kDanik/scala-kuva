@@ -14,10 +14,10 @@ import spire.math.UByte
  */
 class ColorBlendingSpec extends AnyFlatSpec {
   "Color blending" should "work using simple alpha compositing algorithm" in {
-    val backgroundColor = ColorRgba.apply(100, 30, 230, 100)
-    val foregroundColor = ColorRgba.apply(30, 30, 80, 200)
+    val backgroundColor = ColorRgba(100, 30, 230, 100)
+    val foregroundColor = ColorRgba(30, 30, 80, 200)
 
-    val expectedBlendedColor = ColorRgba.apply(37, 30, 95, 222)
+    val expectedBlendedColor = ColorRgba(37, 30, 95, 222)
 
     ColorBlending
       .blend(backgroundColor, foregroundColor, blendMode = BlendMode.SIMPLE_ALPHA_COMPOSITING)

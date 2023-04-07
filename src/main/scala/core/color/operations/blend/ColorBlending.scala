@@ -54,7 +54,7 @@ object ColorBlending {
 
       val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
 
-      ColorRgba.apply(
+      ColorRgba(
         unMultiplyFinalColorChannel(redFg * redBg, finalAlpha),
         unMultiplyFinalColorChannel(greenFg * greenBg, finalAlpha),
         unMultiplyFinalColorChannel(blueFg * blueBg, finalAlpha),
@@ -78,7 +78,7 @@ object ColorBlending {
 
       val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
 
-      ColorRgba.apply(
+      ColorRgba(
         /*
         TODO
           this and multiply (and maybe alpha compositing) blend modes can be combined with high order function,
@@ -113,7 +113,7 @@ object ColorBlending {
 
     val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
 
-    ColorRgba.apply(
+    ColorRgba(
       unMultiplyFinalColorChannel(
         blendSingleChannelUsingAlphaCompositing(redBg, redFg, alphaFg),
         finalAlpha),
