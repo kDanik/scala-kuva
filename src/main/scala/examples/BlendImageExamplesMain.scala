@@ -13,6 +13,7 @@ object BlendImageExamplesMain {
       "src/main/resources/result/blend/blend_simple_alpha_compositing.png")
     blendTwoImages(BlendMode.MULTIPLY, "src/main/resources/result/blend/blend_multiply.png")
     blendTwoImages(BlendMode.SCREEN, "src/main/resources/result/blend/blend_screen.png")
+    blendTwoImages(BlendMode.OVERLAY, "src/main/resources/result/blend/blend_overlay.png")
   }
 
   private def blendTwoImages(blendMode: BlendMode, resultedImagePath: String): Unit = {

@@ -1,7 +1,7 @@
 package com.example
 package core.color.operations.blend
 
-import core.color.operations.blend.BlendMode.{DISSOLVE, MULTIPLY, SCREEN}
+import core.color.operations.blend.BlendMode.*
 import core.color.operations.blend.ColorBlending.{blendSingleChannelUsingAlphaCompositing, calculateStandardBlendedAlpha, preMultiplyRgbValues, unMultiplyFinalColorChannel}
 import core.color.operations.grayscale.GrayscaleColorConversion.*
 import core.color.operations.grayscale.GrayscaleConversionAlgorithm
@@ -35,6 +35,8 @@ object ColorBlending {
         blendUsingMultiplyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case SCREEN =>
         blendUsingScreenAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case OVERLAY =>
+        blendUsingOverlayAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
   }
 
@@ -85,10 +87,62 @@ object ColorBlending {
           as main difference is formula / function, that is applied in the end to each color channel.
           It would be best to do that after most of blend modes are added, tested with examples and covered with unit tests.
          */
-        unMultiplyFinalColorChannel(1f - (1f - redFg) * (1 - redBg), finalAlpha),
-        unMultiplyFinalColorChannel(1f - (1f - greenFg) * (1 - greenBg), finalAlpha),
-        unMultiplyFinalColorChannel(1f - (1f - blueFg) * (1 - blueBg), finalAlpha),
+        unMultiplyFinalColorChannel(
+          blendSingleChannelUsingScreenAlgorithm(redBg, redFg),
+          finalAlpha),
+        unMultiplyFinalColorChannel(
+          blendSingleChannelUsingScreenAlgorithm(greenBg, greenFg),
+          finalAlpha),
+        unMultiplyFinalColorChannel(
+          blendSingleChannelUsingScreenAlgorithm(blueBg, blueFg),
+          finalAlpha),
         finalAlpha)
+    }
+  }
+
+  private def blendSingleChannelUsingScreenAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    1f - (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
+  }
+
+  private def blendUsingOverlayAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    val alphaBg = backgroundColor.alphaAsFloat
+    val alphaFg = foregroundColor.alphaAsFloat
+
+    if (alphaFg == 0f || alphaBg == 0f) {
+      // for overlay blend fully transparent colors must be ignored
+      if (alphaFg == 0f) backgroundColor else foregroundColor
+    } else {
+
+      val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
+      val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
+
+      val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
+
+      ColorRgba(
+        unMultiplyFinalColorChannel(
+          blendSingleChannelUsingOverlayAlgorithm(redBg, redFg),
+          finalAlpha),
+        unMultiplyFinalColorChannel(
+          blendSingleChannelUsingOverlayAlgorithm(greenBg, greenFg),
+          finalAlpha),
+        unMultiplyFinalColorChannel(
+          blendSingleChannelUsingOverlayAlgorithm(blueBg, blueFg),
+          finalAlpha),
+        finalAlpha)
+    }
+  }
+
+  private def blendSingleChannelUsingOverlayAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    if (premultipliedBackgroundChannelValue < 0.5f) {
+      premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue * 2
+    } else {
+      1f - 2 * (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
     }
   }
 

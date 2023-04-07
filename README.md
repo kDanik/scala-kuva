@@ -150,6 +150,10 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_screen.png" alt="Color blending with screen algorithm" width="300">
 
+##### Overlay
+
+<img src="src/main/resources/result/blend/blend_overlay.png" alt="Color blending with overlay algorithm" width="300">
+
 ### Binarization
 
 Binarization is the process of converting a multi-tone grayscale image into a two-tone black and white image. This is achieved by finding a threshold value, which is then used to create the binary output.
