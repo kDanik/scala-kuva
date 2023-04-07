@@ -132,7 +132,6 @@ object OtsuBinarization {
 
   private def minimumColorValue(grayscaleImage: ImmutableBufferedImage): Float = {
     grayscaleImage
-      .allPixelsAsSeq()
       .min(GrayscalePixelOrdering)
       .color
       .asColorRgba
@@ -140,11 +139,6 @@ object OtsuBinarization {
   }
 
   private def maximumColorValue(grayscaleImage: ImmutableBufferedImage): Float = {
-    grayscaleImage
-      .allPixelsAsSeq()
-      .max(GrayscalePixelOrdering)
-      .color
-      .asColorRgba
-      .redAsFloat
+    grayscaleImage.max(GrayscalePixelOrdering).color.asColorRgba.redAsFloat
   }
 }

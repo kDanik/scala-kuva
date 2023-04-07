@@ -25,7 +25,9 @@ import java.awt.image.BufferedImage
  * @param imageType
  *   image type, identical to BufferedImage types, see TYPE_INT_RGB, TYPE_INT_ARGB, ...
  */
-final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imageType: Int) {
+final case class ImmutableBufferedImage(
+    private val imageRaster: Vector[Vector[Pixel]],
+    imageType: Int) {
 
   /**
    * height of this image in pixels
@@ -152,6 +154,26 @@ final case class ImmutableBufferedImage(imageRaster: Vector[Vector[Pixel]], imag
    */
   def isPositionInBounds(x: Int, y: Int): Boolean = {
     ImmutableBufferedImage.isPositionNonNegative(x, y) && (x < Width && y < Height)
+  }
+
+  /**
+   * @param orderingMethod
+   *   defines how pixels will be compared
+   * @return
+   *   Pixel with maximum value
+   */
+  def max(orderingMethod: Ordering[Pixel]): Pixel = {
+    this.imageRaster.flatten.max(orderingMethod)
+  }
+
+  /**
+   * @param orderingMethod
+   *   defines how pixels will be compared
+   * @return
+   *   Pixel with minimum value
+   */
+  def min(orderingMethod: Ordering[Pixel]): Pixel = {
+    this.imageRaster.flatten.min(orderingMethod)
   }
 
   private def imageRasterContentAsBufferedImage: BufferedImage = {
