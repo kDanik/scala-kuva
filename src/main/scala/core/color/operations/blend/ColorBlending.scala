@@ -88,14 +88,13 @@ object ColorBlending {
     val backgroundAlpha = backgroundColor.alpha.intValue
     val foregroundAlpha = foregroundColor.alpha.intValue
 
-    if (foregroundAlpha != 0) {
-      if (backgroundAlpha != 0) {
-        val totalOpacity = backgroundAlpha + foregroundAlpha
+    if (foregroundAlpha != 0 && backgroundAlpha != 0) {
 
-        if (Random.nextFloat() * totalOpacity < backgroundAlpha) backgroundColor
-        else foregroundColor
+      val totalOpacity = backgroundAlpha + foregroundAlpha
 
-      } else foregroundColor
+      if (Random.nextFloat() * totalOpacity < backgroundAlpha) backgroundColor
+      else foregroundColor
+
     } else backgroundColor
   }
 
@@ -135,17 +134,13 @@ object ColorBlending {
           background: Float,
           foreground: Float,
           alphaForeground: Float) => Float,
-      blendFullyTransparentColors: Boolean = false,
-      handleTransparentColor: (
-          alphaForeground: Float,
-          background: ColorRgba,
-          foreground: ColorRgba) => ColorRgba = nonTransparentColor) = {
+      blendFullyTransparentColors: Boolean = false) = {
     val alphaBg = backgroundColor.alphaAsFloat
     val alphaFg = foregroundColor.alphaAsFloat
 
     if (!blendFullyTransparentColors && (alphaFg == 0f || alphaBg == 0f)) {
       // fully transparent color can produce invalid blend result for some algorithms
-      handleTransparentColor(alphaFg, backgroundColor, foregroundColor)
+      backgroundColor
     } else {
 
       val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
@@ -165,13 +160,6 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
-  }
-
-  private def nonTransparentColor(
-      alphaForeground: Float,
-      backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
-    if (alphaForeground == 0f) backgroundColor else foregroundColor
   }
 
   private def blendSingleChannelUsingScreenAlgorithm(
