@@ -2,12 +2,12 @@ package com.example
 package core.color.types
 
 /**
- * Base trait for color format / type
+ * Base trait for different color spaces.
  */
 trait Color {
 
   /**
-   * Converts this color to java.awt.Color
+   * Converts this color to java.awt.Color (RGB(A) java color).
    *
    * @return
    *   new java.awt.Color with values equivalent to this color value
@@ -15,7 +15,7 @@ trait Color {
   def asAwtColor: java.awt.Color
 
   /**
-   * Converts this color to ColorRgba
+   * Converts this color to ColorRgba color space.
    *
    * @return
    *   new ColorRgba with values equivalent to this color value
@@ -23,7 +23,7 @@ trait Color {
   def asColorRgba: ColorRgba
 
   /**
-   * Converts this color to ColorHsla (Hue, saturation, lightness, alpha)
+   * Converts this color to ColorHsla (Hue, saturation, lightness, alpha) color space.
    *
    * @return
    *   new ColorHsla with values equivalent to this color value
@@ -31,7 +31,7 @@ trait Color {
   def asColorHsla: ColorHsla
 
   /**
-   * Converts this color to ColorHsva (Hue, saturation, value, alpha)
+   * Converts this color to ColorHsva (Hue, saturation, value, alpha) color space
    *
    * @return
    *   new ColorHsva with values equivalent to this color value
