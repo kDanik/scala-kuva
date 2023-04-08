@@ -157,6 +157,11 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_hard_light.png" alt="Color blending with hard light algorithm" width="300">
 
+##### Soft Light
+
+<img src="src/main/resources/result/blend/blend_soft_light.png" alt="Color blending with soft light algorithm" width="300">
+
+
 ### Binarization
 
 Binarization is the process of converting a multi-tone grayscale image into a two-tone black and white image. This is
