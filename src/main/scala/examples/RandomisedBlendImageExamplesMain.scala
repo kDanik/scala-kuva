@@ -17,6 +17,8 @@ object RandomisedBlendImageExamplesMain {
       (background: Color, foreground: Color) =>
         ColorBlending.blend(background, foreground, BlendMode.DISSOLVE))
 
-    ImageExampleFileUtil.writeImage("src/main/resources/result/blend/dissolve.png", resultedImage)
+    ImageExampleFileUtil.writeImage(
+      "src/main/resources/result/blend/blend_dissolve.png",
+      resultedImage)
   }
 }

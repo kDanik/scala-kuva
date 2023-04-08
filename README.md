@@ -47,7 +47,6 @@ Calculates **min** value of 3 color channels and uses it as grayscale color.
 
 <img src="src/main/resources/result/grayscale_decomposition_min_cocktail.png" alt="Picture of cocktail after applying decomposition (min) grayscale" width="350">
 
-
 ##### Desaturation
 
 This algorithm first convert color to HSL and then reduces saturation to 0.
@@ -140,7 +139,7 @@ Foreground (overlay image):
 
 ##### Dissolve
 
-<img src="src/main/resources/result/blend/dissolve.png" alt="Color blending with dissolve algorithm" width="300">
+<img src="src/main/resources/result/blend/blend_dissolve.png" alt="Color blending with dissolve algorithm" width="300">
 
 ##### Multiply
 
@@ -156,13 +155,16 @@ Foreground (overlay image):
 
 ### Binarization
 
-Binarization is the process of converting a multi-tone grayscale image into a two-tone black and white image. This is achieved by finding a threshold value, which is then used to create the binary output.
+Binarization is the process of converting a multi-tone grayscale image into a two-tone black and white image. This is
+achieved by finding a threshold value, which is then used to create the binary output.
 
 #### Otsu's method
-Otsu's method is a thresholding technique used to separate an image into foreground and background pixels. 
+
+Otsu's method is a thresholding technique used to separate an image into foreground and background pixels.
 It calculates the optimal threshold value by maximizing the between-class variance of pixel intensities.
 
-Otsu's method requires the image to be **converted into grayscale before applying the algorithm**, and the resulting threshold value may vary depending on the specific grayscale conversion algorithm used.
+Otsu's method requires the image to be **converted into grayscale before applying the algorithm**, and the resulting
+threshold value may vary depending on the specific grayscale conversion algorithm used.
 
 
 <img src="src/main/resources/source/sheep.png" alt="Source sheep image" width="250">

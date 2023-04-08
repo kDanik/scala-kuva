@@ -40,39 +40,100 @@ object ColorBlending {
     }
   }
 
+  private def blendUsingOverlayAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (backgroundColor: Float, foregroundColor: Float, _: Float) =>
+        blendSingleChannelUsingOverlayAlgorithm(backgroundColor, foregroundColor))
+  }
+
   private def blendUsingMultiplyAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    val alphaBg = backgroundColor.alphaAsFloat
-    val alphaFg = foregroundColor.alphaAsFloat
-
-    if (alphaFg == 0f || alphaBg == 0f) {
-      // for multiply blend fully transparent colors must be ignored
-      if (alphaFg == 0f) backgroundColor else foregroundColor
-    } else {
-
-      val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
-      val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
-
-      val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
-
-      ColorRgba(
-        unMultiplyFinalColorChannel(redFg * redBg, finalAlpha),
-        unMultiplyFinalColorChannel(greenFg * greenBg, finalAlpha),
-        unMultiplyFinalColorChannel(blueFg * blueBg, finalAlpha),
-        finalAlpha)
-    }
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        foregroundColor * backgroundColor)
   }
 
   private def blendUsingScreenAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (backgroundColor: Float, foregroundColor: Float, _: Float) =>
+        blendSingleChannelUsingScreenAlgorithm(backgroundColor, foregroundColor))
+  }
+
+  private def blendUsingDissolveAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    val backgroundAlpha = backgroundColor.alpha.intValue
+    val foregroundAlpha = foregroundColor.alpha.intValue
+
+    if (foregroundAlpha != 0) {
+      if (backgroundAlpha != 0) {
+        val totalOpacity = backgroundAlpha + foregroundAlpha
+
+        if (Random.nextFloat() * totalOpacity < backgroundAlpha) backgroundColor
+        else foregroundColor
+
+      } else foregroundColor
+    } else backgroundColor
+  }
+
+  private def blendUsingAlphaCompositing(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = blendSingleChannelUsingAlphaCompositing)
+  }
+
+  /**
+   * Blends two colors using specified blend algorithm. This function also premultiplies color
+   * values, before applying blend algorithm.
+   * @param backgroundColor
+   *   Background (or base) color
+   * @param foregroundColor
+   *   Foreground (or overlay) color
+   * @param blendAlgorithmForOneChannel
+   *   blend function used to convert 2 color channels (background and foreground) int 1. Values
+   *   of color channels are premultiplied by default
+   * @param blendFullyTransparentColors
+   *   Should fully transparent colors (background or foreground) be blended or handled
+   *   differently? Default value is false
+   * @param handleTransparentColor
+   *   Function that will be used to handle transparent colors if blendFullyTransparentColors is
+   *   false. Default value "nonTransparentColor" function, that will return either background or
+   *   foreground, depending which one is non (fully) transparent.
+   * @return
+   *   resulting color after applying specified blend algorithm
+   */
+  private def blendWithPremultipliedAlpha(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba,
+      blendAlgorithmForOneChannel: (
+          background: Float,
+          foreground: Float,
+          alphaForeground: Float) => Float,
+      blendFullyTransparentColors: Boolean = false,
+      handleTransparentColor: (
+          alphaForeground: Float,
+          background: ColorRgba,
+          foreground: ColorRgba) => ColorRgba = nonTransparentColor) = {
     val alphaBg = backgroundColor.alphaAsFloat
     val alphaFg = foregroundColor.alphaAsFloat
 
-    if (alphaFg == 0f || alphaBg == 0f) {
-      // for screen blend fully transparent colors must be ignored
-      if (alphaFg == 0f) backgroundColor else foregroundColor
+    if (!blendFullyTransparentColors && (alphaFg == 0f || alphaBg == 0f)) {
+      // fully transparent color can produce invalid blend result for some algorithms
+      handleTransparentColor(alphaFg, backgroundColor, foregroundColor)
     } else {
 
       val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
@@ -81,59 +142,30 @@ object ColorBlending {
       val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
 
       ColorRgba(
-        /*
-        TODO
-          this and multiply (and maybe alpha compositing) blend modes can be combined with high order function,
-          as main difference is formula / function, that is applied in the end to each color channel.
-          It would be best to do that after most of blend modes are added, tested with examples and covered with unit tests.
-         */
         unMultiplyFinalColorChannel(
-          blendSingleChannelUsingScreenAlgorithm(redBg, redFg),
+          blendAlgorithmForOneChannel(redBg, redFg, alphaFg),
           finalAlpha),
         unMultiplyFinalColorChannel(
-          blendSingleChannelUsingScreenAlgorithm(greenBg, greenFg),
+          blendAlgorithmForOneChannel(greenBg, greenFg, alphaFg),
           finalAlpha),
         unMultiplyFinalColorChannel(
-          blendSingleChannelUsingScreenAlgorithm(blueBg, blueFg),
+          blendAlgorithmForOneChannel(blueBg, blueFg, alphaFg),
           finalAlpha),
         finalAlpha)
     }
+  }
+
+  private def nonTransparentColor(
+      alphaForeground: Float,
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    if (alphaForeground == 0f) backgroundColor else foregroundColor
   }
 
   private def blendSingleChannelUsingScreenAlgorithm(
       premultipliedBackgroundChannelValue: Float,
       premultipliedForegroundChannelValue: Float): Float = {
     1f - (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
-  }
-
-  private def blendUsingOverlayAlgorithm(
-      backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
-    val alphaBg = backgroundColor.alphaAsFloat
-    val alphaFg = foregroundColor.alphaAsFloat
-
-    if (alphaFg == 0f || alphaBg == 0f) {
-      // for overlay blend fully transparent colors must be ignored
-      if (alphaFg == 0f) backgroundColor else foregroundColor
-    } else {
-
-      val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
-      val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
-
-      val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
-
-      ColorRgba(
-        unMultiplyFinalColorChannel(
-          blendSingleChannelUsingOverlayAlgorithm(redBg, redFg),
-          finalAlpha),
-        unMultiplyFinalColorChannel(
-          blendSingleChannelUsingOverlayAlgorithm(greenBg, greenFg),
-          finalAlpha),
-        unMultiplyFinalColorChannel(
-          blendSingleChannelUsingOverlayAlgorithm(blueBg, blueFg),
-          finalAlpha),
-        finalAlpha)
-    }
   }
 
   private def blendSingleChannelUsingOverlayAlgorithm(
@@ -144,40 +176,6 @@ object ColorBlending {
     } else {
       1f - 2 * (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
     }
-  }
-
-  private def blendUsingDissolveAlgorithm(
-      backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
-    // TODO if one of colors is transparent calculation here is redundant and can be removed
-    val totalOpacity = backgroundColor.alpha.intValue + foregroundColor.alpha.intValue
-
-    if (Random.nextFloat() * totalOpacity < backgroundColor.alpha.intValue) backgroundColor
-    else foregroundColor
-  }
-
-  private def blendUsingAlphaCompositing(
-      backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
-    val alphaBg = backgroundColor.alphaAsFloat
-    val alphaFg = foregroundColor.alphaAsFloat
-
-    val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
-    val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
-
-    val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
-
-    ColorRgba(
-      unMultiplyFinalColorChannel(
-        blendSingleChannelUsingAlphaCompositing(redBg, redFg, alphaFg),
-        finalAlpha),
-      unMultiplyFinalColorChannel(
-        blendSingleChannelUsingAlphaCompositing(greenBg, greenFg, alphaFg),
-        finalAlpha),
-      unMultiplyFinalColorChannel(
-        blendSingleChannelUsingAlphaCompositing(blueBg, blueFg, alphaFg),
-        finalAlpha),
-      finalAlpha)
   }
 
   private def blendSingleChannelUsingAlphaCompositing(
