@@ -15,6 +15,7 @@ object BlendImageExamplesMain {
     blendTwoImages(BlendMode.SCREEN, "src/main/resources/result/blend/blend_screen.png")
     blendTwoImages(BlendMode.OVERLAY, "src/main/resources/result/blend/blend_overlay.png")
     blendTwoImages(BlendMode.HARD_LIGHT, "src/main/resources/result/blend/blend_hard_light.png")
+    blendTwoImages(BlendMode.SOFT_LIGHT, "src/main/resources/result/blend/blend_soft_light.png")
   }
 
   private def blendTwoImages(blendMode: BlendMode, resultedImagePath: String): Unit = {

@@ -39,7 +39,19 @@ object ColorBlending {
         blendUsingOverlayAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case HARD_LIGHT =>
         blendUsingHardLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case SOFT_LIGHT =>
+        blendUsingSoftLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingSoftLightAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingSoftLightAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingHardLightAlgorithm(
@@ -165,7 +177,7 @@ object ColorBlending {
   private def blendSingleChannelUsingScreenAlgorithm(
       premultipliedBackgroundChannelValue: Float,
       premultipliedForegroundChannelValue: Float): Float = {
-    1f - (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
+    1 - (1 - premultipliedForegroundChannelValue) * (1 - premultipliedBackgroundChannelValue)
   }
 
   private def blendSingleChannelUsingOverlayAlgorithm(
@@ -174,7 +186,7 @@ object ColorBlending {
     if (premultipliedBackgroundChannelValue < 0.5f) {
       premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue * 2
     } else {
-      1f - 2 * (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
+      1 - 2 * (1 - premultipliedForegroundChannelValue) * (1 - premultipliedBackgroundChannelValue)
     }
   }
 
@@ -182,9 +194,24 @@ object ColorBlending {
       premultipliedBackgroundChannelValue: Float,
       premultipliedForegroundChannelValue: Float): Float = {
     if (premultipliedBackgroundChannelValue < 0.5f) {
-      1f - 2 * (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
+      1 - 2 * (1 - premultipliedForegroundChannelValue) * (1 - premultipliedBackgroundChannelValue)
     } else {
       premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue * 2
+    }
+  }
+
+  private def blendSingleChannelUsingSoftLightAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    if (premultipliedForegroundChannelValue <= 0.5f) {
+      premultipliedBackgroundChannelValue - (1 - 2 * premultipliedForegroundChannelValue) * premultipliedBackgroundChannelValue * (1 - premultipliedBackgroundChannelValue)
+    } else {
+      val gW3CBackground: Float =
+        if (premultipliedBackgroundChannelValue <= 0.25f)
+          ((premultipliedBackgroundChannelValue * 16 - 12) * premultipliedBackgroundChannelValue + 4) * premultipliedBackgroundChannelValue
+        else math.sqrt(premultipliedBackgroundChannelValue).floatValue
+
+      premultipliedBackgroundChannelValue * (premultipliedForegroundChannelValue * 2 - 1) * (gW3CBackground - premultipliedBackgroundChannelValue)
     }
   }
 

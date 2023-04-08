@@ -7,16 +7,9 @@ package core.color.operations.blend
 enum BlendMode:
   case
     /**
-     * Normal blend mode will simply replace all corresponding pixels of background image with
-     * pixels from foreground. Normal blend mode shouldn't be used for images with transparent
-     * colors, instead SIMPLE_ALPHA_COMPOSITING should be used.
-     *
-     * TODO NOT IMPLEMENTED YET
-     */
-    NORMAL,
-    /**
-     * Alpha compositing work in the same way as normal blend mode, except it also takes in
-     * account transparency of colors to create a more complex and flexible blend.
+     * Results in the top layer's shape, as defined by its alpha channel, appearing over the
+     * bottom layer. Alpha compositing work in the same way as normal blend mode, except it also
+     * takes in account transparency of colors to create a more complex and flexible blend.
      */
     SIMPLE_ALPHA_COMPOSITING,
     /**
@@ -48,8 +41,13 @@ enum BlendMode:
      * blend mode. Hard light doesn't have connection to Soft Light blend, except similar name.
      */
     HARD_LIGHT,
-    SOFT_LIGHT_PHOTOSHOP,
-    SOFT_LIGHT_W3C,
+    /**
+     * Soft light blend mode adjusts the brightness and contrast of the underlying layer based on
+     * the luminance value of the top layer. If the blend color is brighter than 50% gray, it
+     * creates a dodging effect that lightens the image, while a blend color darker than 50% gray
+     * creates a burning effect that darkens the image.
+     */
+    SOFT_LIGHT,
     SCREEN_DODGE,
     COLOR_DODGE,
     LINEAR_DODGE,
