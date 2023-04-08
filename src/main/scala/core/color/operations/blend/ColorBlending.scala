@@ -37,7 +37,19 @@ object ColorBlending {
         blendUsingScreenAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case OVERLAY =>
         blendUsingOverlayAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case HARD_LIGHT =>
+        blendUsingHardLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingHardLightAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingHardLightAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingOverlayAlgorithm(
@@ -175,6 +187,16 @@ object ColorBlending {
       premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue * 2
     } else {
       1f - 2 * (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
+    }
+  }
+
+  private def blendSingleChannelUsingHardLightAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    if (premultipliedBackgroundChannelValue < 0.5f) {
+      1f - 2 * (1f - premultipliedForegroundChannelValue) * (1f - premultipliedBackgroundChannelValue)
+    } else {
+      premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue * 2
     }
   }
 
