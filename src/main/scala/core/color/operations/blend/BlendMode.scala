@@ -48,7 +48,6 @@ enum BlendMode:
      * creates a burning effect that darkens the image.
      */
     SOFT_LIGHT,
-    SCREEN_DODGE,
     COLOR_DODGE,
     LINEAR_DODGE,
     DIVIDE_DODGE,
