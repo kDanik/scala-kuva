@@ -161,9 +161,13 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_soft_light.png" alt="Color blending with soft light algorithm" width="300">
 
-##### Screen Dodge
+##### Color Dodge
 
-<img src="src/main/resources/result/blend/blend_screen_dodge.png" alt="Color blending with screen dodge algorithm" width="300">
+<img src="src/main/resources/result/blend/blend_color_dodge.png" alt="Color blending with color dodge algorithm" width="300">
+
+##### Linear Dodge
+
+<img src="src/main/resources/result/blend/blend_color_dodge.png" alt="Color blending with linear dodge algorithm" width="300">
 
 
 ### Binarization

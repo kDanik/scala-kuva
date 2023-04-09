@@ -17,6 +17,9 @@ object BlendImageExamplesMain {
     blendTwoImages(BlendMode.HARD_LIGHT, "src/main/resources/result/blend/blend_hard_light.png")
     blendTwoImages(BlendMode.SOFT_LIGHT, "src/main/resources/result/blend/blend_soft_light.png")
     blendTwoImages(BlendMode.COLOR_DODGE, "src/main/resources/result/blend/blend_color_dodge.png")
+    blendTwoImages(
+      BlendMode.LINEAR_DODGE,
+      "src/main/resources/result/blend/blend_linear_dodge.png")
   }
 
   private def blendTwoImages(blendMode: BlendMode, resultedImagePath: String): Unit = {
