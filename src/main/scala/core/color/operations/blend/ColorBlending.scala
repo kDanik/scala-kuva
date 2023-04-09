@@ -41,7 +41,19 @@ object ColorBlending {
         blendUsingHardLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case SOFT_LIGHT =>
         blendUsingSoftLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case SCREEN_DODGE =>
+        blendUsingScreenDodgeAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingScreenDodgeAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingScreenDodgeAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingSoftLightAlgorithm(
@@ -172,6 +184,12 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
+  }
+
+  private def blendSingleChannelUsingScreenDodgeAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    premultipliedBackgroundChannelValue / (1 - premultipliedForegroundChannelValue)
   }
 
   private def blendSingleChannelUsingScreenAlgorithm(
