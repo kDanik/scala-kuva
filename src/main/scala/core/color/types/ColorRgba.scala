@@ -106,8 +106,10 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   }
 
   private def calculateHue(chroma: Float, value: Float, r: Float, g: Float, b: Float): Float = {
+    // TODO should it be precision constant ?
     implicit val precision: Precision = Precision(0.0001f)
-    if (chroma ~= 0f) { // could be Precision constant
+
+    if (chroma ~= 0f) {
       0
     } else if (value ~= r) {
       60 * (((g - b) / chroma) % 2)
@@ -178,20 +180,23 @@ object ColorRgba {
   }
 
   def fromRgbInt(rgbInt: Int): ColorRgba = {
-    val red = UByte((rgbInt >> 16) & 0xff)
-    val green = UByte((rgbInt >> 8) & 0xff)
-    val blue = UByte(rgbInt & 0xff)
+    val (red: UByte, green: UByte, blue: UByte) = rgbTupleFromRgbInt(rgbInt)
 
     ColorRgba(red, green, blue, UByte(255))
   }
 
   def fromRgbaInt(rgbaInt: Int): ColorRgba = {
-    val red = UByte((rgbaInt >> 16) & 0xff)
-    val green = UByte((rgbaInt >> 8) & 0xff)
-    val blue = UByte(rgbaInt & 0xff)
+    val (red: UByte, green: UByte, blue: UByte) = rgbTupleFromRgbInt(rgbaInt)
     val alpha = UByte((rgbaInt >> 24) & 0xff)
 
     ColorRgba(red, green, blue, alpha)
+  }
+
+  private def rgbTupleFromRgbInt(rgbInt: Int) = {
+    val red = UByte((rgbInt >> 16) & 0xff)
+    val green = UByte((rgbInt >> 8) & 0xff)
+    val blue = UByte(rgbInt & 0xff)
+    (red, green, blue)
   }
 
   /**
@@ -200,7 +205,11 @@ object ColorRgba {
    * used (so 0 or 1f)
    */
   def normalizeColorChannelValue(colorChannelValue: Float): UByte = {
-    UByte((colorChannelValue.max(0f).min(1f) * 255).round)
+    if (colorChannelValue < 0f) {
+      UByte(0)
+    } else if (colorChannelValue > 1f) {
+      UByte(255)
+    } else UByte((colorChannelValue * 255).round)
   }
 
   /**
@@ -209,6 +218,10 @@ object ColorRgba {
    * be used (so 0 or 255)
    */
   def normalizeColorChannelValue(colorChannelValue: Int): UByte = {
-    UByte(colorChannelValue.max(0).min(255))
+    if (colorChannelValue < 0) {
+      UByte(0)
+    } else if (colorChannelValue > 255) {
+      UByte(255)
+    } else UByte(colorChannelValue)
   }
 }
