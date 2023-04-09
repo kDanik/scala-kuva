@@ -50,7 +50,6 @@ enum BlendMode:
     SOFT_LIGHT,
     COLOR_DODGE,
     LINEAR_DODGE,
-    DIVIDE_DODGE,
     MULTIPLY_BURN,
     COLOR_BURN,
     LINEAR_BURN,

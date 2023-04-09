@@ -7,6 +7,8 @@ import core.color.operations.grayscale.GrayscaleColorConversion.*
 import core.color.operations.grayscale.GrayscaleConversionAlgorithm
 import core.color.types.{Color, ColorRgba}
 
+import core.support.{FloatWithAlmostEquals, Precision}
+
 import scala.util.Random
 
 /**
@@ -14,6 +16,7 @@ import scala.util.Random
  * ([[https://dev.w3.org/SVG/modules/compositing/master/]])
  */
 object ColorBlending {
+  private implicit val AlmostEqualPrecision: Precision = Precision(0.0001f)
 
   /**
    * @param backgroundColor
@@ -174,7 +177,7 @@ object ColorBlending {
     val alphaBg = backgroundColor.alphaAsFloat
     val alphaFg = foregroundColor.alphaAsFloat
 
-    if (!blendFullyTransparentColors && (alphaFg == 0f || alphaBg == 0f)) {
+    if (!blendFullyTransparentColors && ((alphaFg ~= 0f) || (alphaBg ~= 0f))) {
       // fully transparent color can produce invalid blend result for some algorithms
       backgroundColor
     } else {
