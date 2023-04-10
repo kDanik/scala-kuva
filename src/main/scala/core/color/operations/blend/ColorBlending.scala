@@ -6,7 +6,6 @@ import core.color.operations.blend.ColorBlending.{blendSingleChannelUsingAlphaCo
 import core.color.operations.grayscale.GrayscaleColorConversion.*
 import core.color.operations.grayscale.GrayscaleConversionAlgorithm
 import core.color.types.{Color, ColorRgba}
-
 import core.support.{FloatWithAlmostEquals, Precision}
 
 import scala.util.Random
@@ -64,7 +63,19 @@ object ColorBlending {
         blendUsingLightenOnlyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case DARKEN_ONLY =>
         blendUsingDarkenOnlyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case DIVIDE =>
+        blendUsingDivideAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingDivideAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingDivideAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingLightenOnlyAlgorithm(
@@ -204,7 +215,7 @@ object ColorBlending {
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        foregroundColor * backgroundColor)
+        blendSingleChannelUsingMultiplyAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingScreenAlgorithm(
@@ -295,6 +306,20 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
+  }
+
+  private def blendSingleChannelUsingDivideAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    if (premultipliedForegroundChannelValue > 0f)
+      premultipliedBackgroundChannelValue / premultipliedForegroundChannelValue
+    else 1
+  }
+
+  private def blendSingleChannelUsingMultiplyAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue
   }
 
   private def blendSingleChannelUsingLightenOnlyAlgorithm(
