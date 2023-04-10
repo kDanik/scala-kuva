@@ -181,6 +181,11 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_vivid_light.png" alt="Color blending with vivid light algorithm" width="300">
 
+##### Linear Light
+
+<img src="src/main/resources/result/blend/blend_linear_light.png" alt="Color blending with linear light algorithm" width="300">
+
+
 ### Binarization
 
 Binarization is the process of converting a multi-tone grayscale image into a two-tone black and white image. This is
