@@ -331,7 +331,7 @@ object ColorBlending {
           ((premultipliedBackgroundChannelValue * 16 - 12) * premultipliedBackgroundChannelValue + 4) * premultipliedBackgroundChannelValue
         else math.sqrt(premultipliedBackgroundChannelValue).floatValue
 
-      premultipliedBackgroundChannelValue * (premultipliedForegroundChannelValue * 2 - 1) * (gW3CBackground - premultipliedBackgroundChannelValue)
+      premultipliedBackgroundChannelValue + (premultipliedForegroundChannelValue * 2 - 1) * (gW3CBackground - premultipliedBackgroundChannelValue)
     }
   }
 
