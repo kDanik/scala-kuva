@@ -173,6 +173,11 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_color_burn.png" alt="Color blending with color burn algorithm" width="300">
 
+##### Linear Burn
+
+<img src="src/main/resources/result/blend/blend_linear_burn.png" alt="Color blending with linear burn algorithm" width="300">
+
+
 ### Binarization
 
 Binarization is the process of converting a multi-tone grayscale image into a two-tone black and white image. This is
