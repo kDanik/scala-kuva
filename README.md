@@ -177,6 +177,9 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_linear_burn.png" alt="Color blending with linear burn algorithm" width="300">
 
+##### Vivid Light
+
+<img src="src/main/resources/result/blend/blend_vivid_light.png" alt="Color blending with vivid light algorithm" width="300">
 
 ### Binarization
 

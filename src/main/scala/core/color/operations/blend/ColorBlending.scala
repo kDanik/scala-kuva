@@ -52,7 +52,19 @@ object ColorBlending {
         blendUsingColorBurnAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case LINEAR_BURN =>
         blendUsingLinearBurnAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case VIVID_LIGHT =>
+        blendUsingVividLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingVividLightAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingVividLightAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingLinearBurnAlgorithm(
@@ -222,6 +234,17 @@ object ColorBlending {
           blendAlgorithmForOneChannel(blueBg, blueFg, alphaFg),
           finalAlpha),
         finalAlpha)
+    }
+  }
+
+  private def blendSingleChannelUsingVividLightAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+
+    if (premultipliedForegroundChannelValue > 0.5f) {
+      premultipliedBackgroundChannelValue / (2 * (1 - premultipliedForegroundChannelValue))
+    } else {
+      1 - (1 - premultipliedBackgroundChannelValue) / (2 * premultipliedForegroundChannelValue)
     }
   }
 
