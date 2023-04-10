@@ -58,7 +58,19 @@ object ColorBlending {
         blendUsingLinearLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case DIFFERENCE =>
         blendUsingDifferenceAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case SUBTRACT =>
+        blendUsingSubtractAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingSubtractAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingSubtractAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingDifferenceAlgorithm(
@@ -260,6 +272,15 @@ object ColorBlending {
         finalAlpha)
     }
   }
+
+  private def blendSingleChannelUsingSubtractAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    if (premultipliedBackgroundChannelValue > premultipliedForegroundChannelValue) {
+      premultipliedBackgroundChannelValue - premultipliedForegroundChannelValue
+    } else 0
+  }
+
   private def blendSingleChannelUsingDifferenceAlgorithm(
       premultipliedBackgroundChannelValue: Float,
       premultipliedForegroundChannelValue: Float): Float = {

@@ -189,6 +189,10 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_difference.png" alt="Color blending with difference algorithm" width="300">
 
+##### Subtract
+
+<img src="src/main/resources/result/blend/blend_subtract.png" alt="Color blending with subtract algorithm" width="300">
+
 
 ### Binarization
 

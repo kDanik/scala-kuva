@@ -80,6 +80,11 @@ object BlendImageExamplesMain {
       "src/main/resources/result/blend/blend_difference.png",
       backgroundImagePath,
       foregroundImagePath)
+    blendTwoImages(
+      BlendMode.SUBTRACT,
+      "src/main/resources/result/blend/blend_subtract.png",
+      backgroundImagePath,
+      foregroundImagePath)
   }
 
   private def blendExamplesGradients(): Unit = {
@@ -149,6 +154,11 @@ object BlendImageExamplesMain {
     blendTwoImages(
       BlendMode.DIFFERENCE,
       "src/main/resources/result/blend/gradient/blend_difference.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.SUBTRACT,
+      "src/main/resources/result/blend/gradient/blend_subtract.png",
       backgroundImagePath,
       foregroundImagePath)
   }
