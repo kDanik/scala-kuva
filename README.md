@@ -185,6 +185,10 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_linear_light.png" alt="Color blending with linear light algorithm" width="300">
 
+##### Difference
+
+<img src="src/main/resources/result/blend/blend_difference.png" alt="Color blending with difference algorithm" width="300">
+
 
 ### Binarization
 

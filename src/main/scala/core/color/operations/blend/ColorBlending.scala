@@ -56,7 +56,19 @@ object ColorBlending {
         blendUsingVividLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case LINEAR_LIGHT =>
         blendUsingLinearLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case DIFFERENCE =>
+        blendUsingDifferenceAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingDifferenceAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingDifferenceAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingLinearLightAlgorithm(
@@ -247,6 +259,11 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
+  }
+  private def blendSingleChannelUsingDifferenceAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    (premultipliedBackgroundChannelValue - premultipliedForegroundChannelValue).abs
   }
 
   private def blendSingleChannelUsingVividLightAlgorithm(

@@ -75,6 +75,11 @@ object BlendImageExamplesMain {
       "src/main/resources/result/blend/blend_linear_light.png",
       backgroundImagePath,
       foregroundImagePath)
+    blendTwoImages(
+      BlendMode.DIFFERENCE,
+      "src/main/resources/result/blend/blend_difference.png",
+      backgroundImagePath,
+      foregroundImagePath)
   }
 
   private def blendExamplesGradients(): Unit = {
@@ -139,6 +144,11 @@ object BlendImageExamplesMain {
     blendTwoImages(
       BlendMode.LINEAR_LIGHT,
       "src/main/resources/result/blend/gradient/blend_linear_light.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.DIFFERENCE,
+      "src/main/resources/result/blend/gradient/blend_difference.png",
       backgroundImagePath,
       foregroundImagePath)
   }
