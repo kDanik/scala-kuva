@@ -60,7 +60,31 @@ object ColorBlending {
         blendUsingDifferenceAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case SUBTRACT =>
         blendUsingSubtractAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case LIGHTEN_ONLY =>
+        blendUsingLightenOnlyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case DARKEN_ONLY =>
+        blendUsingDarkenOnlyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingLightenOnlyAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingLightenOnlyAlgorithm(backgroundColor, foregroundColor))
+  }
+
+  private def blendUsingDarkenOnlyAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingDarkenOnlyAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingSubtractAlgorithm(
@@ -271,6 +295,18 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
+  }
+
+  private def blendSingleChannelUsingLightenOnlyAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    premultipliedBackgroundChannelValue.max(premultipliedForegroundChannelValue)
+  }
+
+  private def blendSingleChannelUsingDarkenOnlyAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    premultipliedBackgroundChannelValue.min(premultipliedForegroundChannelValue)
   }
 
   private def blendSingleChannelUsingSubtractAlgorithm(

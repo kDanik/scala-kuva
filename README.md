@@ -193,6 +193,16 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_subtract.png" alt="Color blending with subtract algorithm" width="300">
 
+##### Lighten only
+
+<img src="src/main/resources/result/blend/blend_lighten_only.png" alt="Color blending with lighten only algorithm" width="300">
+
+
+##### Darken only
+
+<img src="src/main/resources/result/blend/blend_darken_only.png" alt="Color blending with darken only algorithm" width="300">
+
+
 
 ### Binarization
 

@@ -85,6 +85,16 @@ object BlendImageExamplesMain {
       "src/main/resources/result/blend/blend_subtract.png",
       backgroundImagePath,
       foregroundImagePath)
+    blendTwoImages(
+      BlendMode.LIGHTEN_ONLY,
+      "src/main/resources/result/blend/blend_lighten_only.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.DARKEN_ONLY,
+      "src/main/resources/result/blend/blend_darken_only.png",
+      backgroundImagePath,
+      foregroundImagePath)
   }
 
   private def blendExamplesGradients(): Unit = {
@@ -159,6 +169,16 @@ object BlendImageExamplesMain {
     blendTwoImages(
       BlendMode.SUBTRACT,
       "src/main/resources/result/blend/gradient/blend_subtract.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.LIGHTEN_ONLY,
+      "src/main/resources/result/blend/gradient/blend_lighten_only.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.DARKEN_ONLY,
+      "src/main/resources/result/blend/gradient/blend_darken_only.png",
       backgroundImagePath,
       foregroundImagePath)
   }
