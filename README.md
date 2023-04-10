@@ -169,6 +169,9 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_color_dodge.png" alt="Color blending with linear dodge algorithm" width="300">
 
+##### Color Burn
+
+<img src="src/main/resources/result/blend/blend_color_burn.png" alt="Color blending with color burn algorithm" width="300">
 
 ### Binarization
 

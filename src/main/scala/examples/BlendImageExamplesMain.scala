@@ -20,6 +20,7 @@ object BlendImageExamplesMain {
     blendTwoImages(
       BlendMode.LINEAR_DODGE,
       "src/main/resources/result/blend/blend_linear_dodge.png")
+    blendTwoImages(BlendMode.COLOR_BURN, "src/main/resources/result/blend/blend_color_burn.png")
   }
 
   private def blendTwoImages(blendMode: BlendMode, resultedImagePath: String): Unit = {
