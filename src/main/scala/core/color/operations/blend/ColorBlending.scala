@@ -65,7 +65,19 @@ object ColorBlending {
         blendUsingDarkenOnlyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case DIVIDE =>
         blendUsingDivideAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case HARD_MIX =>
+        blendUsingHardMixAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingHardMixAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingHardMixAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingDivideAlgorithm(
@@ -306,6 +318,13 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
+  }
+
+  private def blendSingleChannelUsingHardMixAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    if (premultipliedBackgroundChannelValue + premultipliedForegroundChannelValue >= 1f) 1f
+    else 0f
   }
 
   private def blendSingleChannelUsingDivideAlgorithm(

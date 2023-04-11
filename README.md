@@ -201,11 +201,13 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_lighten_only.png" alt="Color blending with lighten only algorithm" width="300">
 
-
 ##### Darken only
 
 <img src="src/main/resources/result/blend/blend_darken_only.png" alt="Color blending with darken only algorithm" width="300">
 
+##### Hard mix
+
+<img src="src/main/resources/result/blend/blend_hard_mix.png" alt="Color blending with hard mix algorithm" width="300">
 
 
 ### Binarization

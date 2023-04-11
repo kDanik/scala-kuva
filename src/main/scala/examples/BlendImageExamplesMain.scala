@@ -100,6 +100,11 @@ object BlendImageExamplesMain {
       "src/main/resources/result/blend/blend_divide.png",
       backgroundImagePath,
       foregroundImagePath)
+    blendTwoImages(
+      BlendMode.HARD_MIX,
+      "src/main/resources/result/blend/blend_hard_mix.png",
+      backgroundImagePath,
+      foregroundImagePath)
   }
 
   private def blendExamplesGradients(): Unit = {
@@ -189,6 +194,11 @@ object BlendImageExamplesMain {
     blendTwoImages(
       BlendMode.DIVIDE,
       "src/main/resources/result/blend/gradient/blend_divide.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.HARD_MIX,
+      "src/main/resources/result/blend/gradient/blend_hard_mix.png",
       backgroundImagePath,
       foregroundImagePath)
   }
