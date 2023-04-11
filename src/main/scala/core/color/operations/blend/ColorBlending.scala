@@ -69,7 +69,19 @@ object ColorBlending {
         blendUsingHardMixAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case PIN_LIGHT =>
         blendUsingPinLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case REFLECT =>
+        blendUsingReflectAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingReflectAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingReflectAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingPinLightAlgorithm(
@@ -330,6 +342,15 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
+  }
+
+  private def blendSingleChannelUsingReflectAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    if (premultipliedForegroundChannelValue != 1f) {
+      (premultipliedBackgroundChannelValue * premultipliedBackgroundChannelValue / (1f - premultipliedForegroundChannelValue))
+        .min(1f)
+    } else premultipliedForegroundChannelValue
   }
 
   private def blendSingleChannelUsingPinLightAlgorithm(

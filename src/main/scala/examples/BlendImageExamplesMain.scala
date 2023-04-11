@@ -110,6 +110,11 @@ object BlendImageExamplesMain {
       "src/main/resources/result/blend/blend_pin_light.png",
       backgroundImagePath,
       foregroundImagePath)
+    blendTwoImages(
+      BlendMode.REFLECT,
+      "src/main/resources/result/blend/blend_reflect.png",
+      backgroundImagePath,
+      foregroundImagePath)
   }
 
   private def blendExamplesGradients(): Unit = {
@@ -209,6 +214,11 @@ object BlendImageExamplesMain {
     blendTwoImages(
       BlendMode.PIN_LIGHT,
       "src/main/resources/result/blend/gradient/blend_pin_light.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.REFLECT,
+      "src/main/resources/result/blend/gradient/blend_reflect.png",
       backgroundImagePath,
       foregroundImagePath)
   }

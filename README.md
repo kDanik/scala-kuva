@@ -213,6 +213,10 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_pin_light.png" alt="Color blending with pin light algorithm" width="300">
 
+##### Reflect
+
+<img src="src/main/resources/result/blend/blend_reflect.png" alt="Color blending with reflect algorithm" width="300">
+
 
 ### Binarization
 
