@@ -71,7 +71,19 @@ object ColorBlending {
         blendUsingPinLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case REFLECT =>
         blendUsingReflectAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case EXCLUSION =>
+        blendUsingExclusionAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingExclusionAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingExclusionAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingReflectAlgorithm(
@@ -342,6 +354,12 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
+  }
+
+  private def blendSingleChannelUsingExclusionAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    (premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue + premultipliedBackgroundChannelValue) - (2 * premultipliedForegroundChannelValue * premultipliedBackgroundChannelValue)
   }
 
   private def blendSingleChannelUsingReflectAlgorithm(

@@ -217,6 +217,10 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_reflect.png" alt="Color blending with reflect algorithm" width="300">
 
+##### Exclusion
+
+<img src="src/main/resources/result/blend/blend_exclusion.png" alt="Color blending with exclusion algorithm" width="300">
+
 
 ### Binarization
 
