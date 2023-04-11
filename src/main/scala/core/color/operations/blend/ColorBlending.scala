@@ -73,7 +73,19 @@ object ColorBlending {
         blendUsingReflectAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case EXCLUSION =>
         blendUsingExclusionAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case GEOMETRIC_MEAN =>
+        blendUsingGeometricMeanAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingGeometricMeanAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingGeometricMeanAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingExclusionAlgorithm(
@@ -354,6 +366,14 @@ object ColorBlending {
           finalAlpha),
         finalAlpha)
     }
+  }
+
+  private def blendSingleChannelUsingGeometricMeanAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    math
+      .sqrt(premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue)
+      .floatValue
   }
 
   private def blendSingleChannelUsingExclusionAlgorithm(

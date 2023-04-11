@@ -221,6 +221,10 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_exclusion.png" alt="Color blending with exclusion algorithm" width="300">
 
+##### Geometric mean
+
+<img src="src/main/resources/result/blend/blend_geometric_mean.png" alt="Color blending with geometric mean algorithm" width="300">
+
 
 ### Binarization
 

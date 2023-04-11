@@ -120,6 +120,11 @@ object BlendImageExamplesMain {
       "src/main/resources/result/blend/blend_exclusion.png",
       backgroundImagePath,
       foregroundImagePath)
+    blendTwoImages(
+      BlendMode.GEOMETRIC_MEAN,
+      "src/main/resources/result/blend/blend_geometric_mean.png",
+      backgroundImagePath,
+      foregroundImagePath)
   }
 
   private def blendExamplesGradients(): Unit = {
@@ -229,6 +234,11 @@ object BlendImageExamplesMain {
     blendTwoImages(
       BlendMode.EXCLUSION,
       "src/main/resources/result/blend/gradient/blend_exclusion.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.GEOMETRIC_MEAN,
+      "src/main/resources/result/blend/gradient/blend_geometric_mean.png",
       backgroundImagePath,
       foregroundImagePath)
   }
