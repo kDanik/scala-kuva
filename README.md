@@ -209,6 +209,10 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_hard_mix.png" alt="Color blending with hard mix algorithm" width="300">
 
+##### Pin light
+
+<img src="src/main/resources/result/blend/blend_pin_light.png" alt="Color blending with pin light algorithm" width="300">
+
 
 ### Binarization
 

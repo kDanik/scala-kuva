@@ -67,7 +67,19 @@ object ColorBlending {
         blendUsingDivideAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case HARD_MIX =>
         blendUsingHardMixAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case PIN_LIGHT =>
+        blendUsingPinLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
     }
+  }
+
+  private def blendUsingPinLightAlgorithm(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba): ColorRgba = {
+    blendWithPremultipliedAlpha(
+      backgroundColor,
+      foregroundColor,
+      blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
+        blendSingleChannelUsingPinLightAlgorithm(backgroundColor, foregroundColor))
   }
 
   private def blendUsingHardMixAlgorithm(
@@ -317,6 +329,20 @@ object ColorBlending {
           blendAlgorithmForOneChannel(blueBg, blueFg, alphaFg),
           finalAlpha),
         finalAlpha)
+    }
+  }
+
+  private def blendSingleChannelUsingPinLightAlgorithm(
+      premultipliedBackgroundChannelValue: Float,
+      premultipliedForegroundChannelValue: Float): Float = {
+    if (premultipliedForegroundChannelValue < 0.5f) {
+      blendSingleChannelUsingDarkenOnlyAlgorithm(
+        premultipliedBackgroundChannelValue,
+        2 * premultipliedForegroundChannelValue)
+    } else {
+      blendSingleChannelUsingLightenOnlyAlgorithm(
+        premultipliedBackgroundChannelValue,
+        2 * (premultipliedForegroundChannelValue - 0.5f))
     }
   }
 
