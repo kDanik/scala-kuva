@@ -398,9 +398,13 @@ object ColorBlending {
       premultipliedForegroundChannelValue: Float): Float = {
 
     if (premultipliedForegroundChannelValue < 0.5f) {
-      1 - (1 - premultipliedBackgroundChannelValue) / (2 * premultipliedForegroundChannelValue)
+      blendSingleChannelUsingColorBurnAlgorithm(
+        premultipliedBackgroundChannelValue,
+        2 * premultipliedForegroundChannelValue)
     } else {
-      premultipliedBackgroundChannelValue / (2 * (1 - premultipliedForegroundChannelValue))
+      blendSingleChannelUsingColorDodgeAlgorithm(
+        premultipliedBackgroundChannelValue,
+        2 * (premultipliedForegroundChannelValue - 0.5f))
     }
   }
 
@@ -408,9 +412,13 @@ object ColorBlending {
       premultipliedBackgroundChannelValue: Float,
       premultipliedForegroundChannelValue: Float): Float = {
     if (premultipliedForegroundChannelValue < 0.5f) {
-      premultipliedBackgroundChannelValue + 2 * premultipliedForegroundChannelValue - 1
+      blendSingleChannelUsingLinearBurnAlgorithm(
+        premultipliedBackgroundChannelValue,
+        2 * premultipliedForegroundChannelValue)
     } else {
-      premultipliedBackgroundChannelValue + 2 * (premultipliedForegroundChannelValue - 0.5f)
+      blendSingleChannelUsingLinearDodgeAlgorithm(
+        premultipliedBackgroundChannelValue,
+        2 * (premultipliedForegroundChannelValue - 0.5f))
     }
   }
 
@@ -457,11 +465,9 @@ object ColorBlending {
   private def blendSingleChannelUsingHardLightAlgorithm(
       premultipliedBackgroundChannelValue: Float,
       premultipliedForegroundChannelValue: Float): Float = {
-    if (premultipliedBackgroundChannelValue < 0.5f) {
-      1 - 2 * (1 - premultipliedForegroundChannelValue) * (1 - premultipliedBackgroundChannelValue)
-    } else {
-      premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue * 2
-    }
+    blendSingleChannelUsingOverlayAlgorithm(
+      premultipliedForegroundChannelValue,
+      premultipliedBackgroundChannelValue)
   }
 
   private def blendSingleChannelUsingSoftLightAlgorithm(
