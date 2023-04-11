@@ -63,4 +63,6 @@ enum BlendMode:
     HARD_MIX,
     REFLECT,
     EXCLUSION,
-    GEOMETRIC_MEAN
+    GEOMETRIC_MEAN,
+    LUMINOSITY,
+    COLOR

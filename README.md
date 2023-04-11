@@ -225,6 +225,14 @@ Foreground (overlay image):
 
 <img src="src/main/resources/result/blend/blend_geometric_mean.png" alt="Color blending with geometric mean algorithm" width="300">
 
+##### Luminosity
+
+<img src="src/main/resources/result/blend/blend_luminosity.png" alt="Color blending with geometric luminosity algorithm" width="300">
+
+##### Color
+
+<img src="src/main/resources/result/blend/blend_color.png" alt="Color blending with geometric color(HSL) algorithm" width="300">
+
 
 ### Binarization
 

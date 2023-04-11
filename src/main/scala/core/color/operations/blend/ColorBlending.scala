@@ -5,8 +5,10 @@ import core.color.operations.blend.BlendMode.*
 import core.color.operations.blend.ColorBlending.{blendSingleChannelUsingAlphaCompositing, calculateStandardBlendedAlpha, preMultiplyRgbValues, unMultiplyFinalColorChannel}
 import core.color.operations.grayscale.GrayscaleColorConversion.*
 import core.color.operations.grayscale.GrayscaleConversionAlgorithm
-import core.color.types.{Color, ColorRgba}
+import core.color.types.{Color, ColorHsla, ColorRgba}
 import core.support.{FloatWithAlmostEquals, Precision}
+
+import spire.math.UByte
 
 import scala.util.Random
 
@@ -75,6 +77,38 @@ object ColorBlending {
         blendUsingExclusionAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case GEOMETRIC_MEAN =>
         blendUsingGeometricMeanAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+      case LUMINOSITY =>
+        blendUsingLuminosityAlgorithm(backgroundColor.asColorHsla, foregroundColor.asColorHsla)
+      case COLOR =>
+        blendUsingColorAlgorithm(backgroundColor.asColorHsla, foregroundColor.asColorHsla)
+    }
+  }
+
+  private def blendUsingColorAlgorithm(
+      backgroundColor: ColorHsla,
+      foregroundColor: ColorHsla): ColorRgba = {
+    if ((backgroundColor.alpha == UByte(0)) || foregroundColor.alpha == UByte(0))
+      backgroundColor.asColorRgba
+    else {
+      ColorHsla(
+        foregroundColor.hue,
+        foregroundColor.saturation,
+        backgroundColor.lightness,
+        backgroundColor.alpha).asColorRgba
+    }
+  }
+
+  private def blendUsingLuminosityAlgorithm(
+      backgroundColor: ColorHsla,
+      foregroundColor: ColorHsla): ColorRgba = {
+    if ((backgroundColor.alpha == UByte(0)) || foregroundColor.alpha == UByte(0))
+      backgroundColor.asColorRgba
+    else {
+      ColorHsla(
+        backgroundColor.hue,
+        backgroundColor.saturation,
+        foregroundColor.lightness,
+        backgroundColor.alpha).asColorRgba
     }
   }
 
@@ -326,10 +360,6 @@ object ColorBlending {
    * @param blendFullyTransparentColors
    *   Should fully transparent colors (background or foreground) be blended or handled
    *   differently? Default value is false
-   * @param handleTransparentColor
-   *   Function that will be used to handle transparent colors if blendFullyTransparentColors is
-   *   false. Default value "nonTransparentColor" function, that will return either background or
-   *   foreground, depending which one is non (fully) transparent.
    * @return
    *   resulting color after applying specified blend algorithm
    */
@@ -379,7 +409,7 @@ object ColorBlending {
   private def blendSingleChannelUsingExclusionAlgorithm(
       premultipliedBackgroundChannelValue: Float,
       premultipliedForegroundChannelValue: Float): Float = {
-    (premultipliedBackgroundChannelValue * premultipliedForegroundChannelValue + premultipliedBackgroundChannelValue) - (2 * premultipliedForegroundChannelValue * premultipliedBackgroundChannelValue)
+    premultipliedBackgroundChannelValue + premultipliedForegroundChannelValue - (2 * premultipliedForegroundChannelValue * premultipliedBackgroundChannelValue)
   }
 
   private def blendSingleChannelUsingReflectAlgorithm(

@@ -125,6 +125,16 @@ object BlendImageExamplesMain {
       "src/main/resources/result/blend/blend_geometric_mean.png",
       backgroundImagePath,
       foregroundImagePath)
+    blendTwoImages(
+      BlendMode.LUMINOSITY,
+      "src/main/resources/result/blend/blend_luminosity.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.COLOR,
+      "src/main/resources/result/blend/blend_color.png",
+      backgroundImagePath,
+      foregroundImagePath)
   }
 
   private def blendExamplesGradients(): Unit = {
@@ -239,6 +249,16 @@ object BlendImageExamplesMain {
     blendTwoImages(
       BlendMode.GEOMETRIC_MEAN,
       "src/main/resources/result/blend/gradient/blend_geometric_mean.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.LUMINOSITY,
+      "src/main/resources/result/blend/gradient/blend_luminosity.png",
+      backgroundImagePath,
+      foregroundImagePath)
+    blendTwoImages(
+      BlendMode.COLOR,
+      "src/main/resources/result/blend/gradient/blend_color.png",
       backgroundImagePath,
       foregroundImagePath)
   }
