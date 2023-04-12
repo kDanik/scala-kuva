@@ -115,7 +115,7 @@ object ColorBlending {
   private def blendUsingGeometricMeanAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -125,7 +125,7 @@ object ColorBlending {
   private def blendUsingExclusionAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -135,7 +135,7 @@ object ColorBlending {
   private def blendUsingReflectAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -145,7 +145,7 @@ object ColorBlending {
   private def blendUsingPinLightAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -155,7 +155,7 @@ object ColorBlending {
   private def blendUsingHardMixAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -165,7 +165,7 @@ object ColorBlending {
   private def blendUsingDivideAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -175,7 +175,7 @@ object ColorBlending {
   private def blendUsingLightenOnlyAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -185,7 +185,7 @@ object ColorBlending {
   private def blendUsingDarkenOnlyAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -195,7 +195,7 @@ object ColorBlending {
   private def blendUsingSubtractAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -205,7 +205,7 @@ object ColorBlending {
   private def blendUsingDifferenceAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -215,7 +215,7 @@ object ColorBlending {
   private def blendUsingLinearLightAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -225,7 +225,7 @@ object ColorBlending {
   private def blendUsingVividLightAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -235,7 +235,7 @@ object ColorBlending {
   private def blendUsingLinearBurnAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -245,7 +245,7 @@ object ColorBlending {
   private def blendUsingColorBurnAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -255,7 +255,7 @@ object ColorBlending {
   private def blendUsingLinearDodgeAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -265,7 +265,7 @@ object ColorBlending {
   private def blendUsingColorDodgeAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -275,7 +275,7 @@ object ColorBlending {
   private def blendUsingSoftLightAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -285,7 +285,7 @@ object ColorBlending {
   private def blendUsingHardLightAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -295,7 +295,7 @@ object ColorBlending {
   private def blendUsingOverlayAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (backgroundColor: Float, foregroundColor: Float, _: Float) =>
@@ -305,7 +305,7 @@ object ColorBlending {
   private def blendUsingMultiplyAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
@@ -315,7 +315,7 @@ object ColorBlending {
   private def blendUsingScreenAlgorithm(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (backgroundColor: Float, foregroundColor: Float, _: Float) =>
@@ -341,15 +341,15 @@ object ColorBlending {
   private def blendUsingAlphaCompositing(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba): ColorRgba = {
-    blendWithPremultipliedAlpha(
+    blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = blendSingleChannelUsingAlphaCompositing)
   }
 
   /**
-   * Blends two colors using specified blend algorithm. This function also premultiplies color
-   * values, before applying blend algorithm.
+   * Blends two colors using specified blend algorithm. If colors are not fully opaque, values
+   * will be premultiplied and final alpha calculated.
    * @param backgroundColor
    *   Background (or base) color
    * @param foregroundColor
@@ -363,7 +363,7 @@ object ColorBlending {
    * @return
    *   resulting color after applying specified blend algorithm
    */
-  private def blendWithPremultipliedAlpha(
+  private def blend(
       backgroundColor: ColorRgba,
       foregroundColor: ColorRgba,
       blendAlgorithmForOneChannel: (
@@ -375,27 +375,73 @@ object ColorBlending {
     val alphaFg = foregroundColor.alphaAsFloat
 
     if (!blendFullyTransparentColors && ((alphaFg ~= 0f) || (alphaBg ~= 0f))) {
-      // fully transparent color can produce invalid blend result for some algorithms
+      // fully transparent colors can produce invalid blend result for most blend algorithms
+      // (especially if used with premultiplied alpha)
       backgroundColor
     } else {
-
-      val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
-      val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
-
-      val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
-
-      ColorRgba(
-        unMultiplyFinalColorChannel(
-          blendAlgorithmForOneChannel(redBg, redFg, alphaFg),
-          finalAlpha),
-        unMultiplyFinalColorChannel(
-          blendAlgorithmForOneChannel(greenBg, greenFg, alphaFg),
-          finalAlpha),
-        unMultiplyFinalColorChannel(
-          blendAlgorithmForOneChannel(blueBg, blueFg, alphaFg),
-          finalAlpha),
-        finalAlpha)
+      if ((alphaFg ~= alphaBg) && (alphaBg ~= 1)) {
+        blendOpaqueColors(backgroundColor, foregroundColor, blendAlgorithmForOneChannel)
+      } else {
+        blendTransparentColors(
+          backgroundColor,
+          alphaBg,
+          foregroundColor,
+          alphaFg,
+          blendAlgorithmForOneChannel)
+      }
     }
+  }
+
+  /**
+   * Blends opaque colors by applying specified blendAlgorithmForOneChannel (for each channel).
+   * This function does the same as blendTransparentColors(), but for opaque colors, as for them
+   * calculation of alpha and pre-multiplication of values has no effect.
+   */
+  private def blendOpaqueColors(
+      backgroundColor: ColorRgba,
+      foregroundColor: ColorRgba,
+      blendAlgorithmForOneChannel: (
+          background: Float,
+          foreground: Float,
+          alphaForeground: Float) => Float): ColorRgba = {
+    val (redBg, greenBg, blueBg) = backgroundColor.rgbValuesAsFloats
+    val (redFg, greenFg, blueFg) = foregroundColor.rgbValuesAsFloats
+
+    ColorRgba(
+      blendAlgorithmForOneChannel(redBg, redFg, 1f),
+      blendAlgorithmForOneChannel(greenBg, greenFg, 1f),
+      blendAlgorithmForOneChannel(blueBg, blueFg, 1f),
+      255)
+  }
+
+  /**
+   * Blends transparent colors by applying specified blendAlgorithmForOneChannel (for each
+   * channel). Final alpha will be calculated and values will be premultiplied before
+   * calculations.
+   */
+  private def blendTransparentColors(
+      backgroundColor: ColorRgba,
+      alphaBg: Float,
+      foregroundColor: ColorRgba,
+      alphaFg: Float,
+      blendAlgorithmForOneChannel: (
+          background: Float,
+          foreground: Float,
+          alphaForeground: Float) => Float): ColorRgba = {
+    val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
+    val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
+
+    val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
+
+    ColorRgba(
+      unMultiplyFinalColorChannel(blendAlgorithmForOneChannel(redBg, redFg, alphaFg), finalAlpha),
+      unMultiplyFinalColorChannel(
+        blendAlgorithmForOneChannel(greenBg, greenFg, alphaFg),
+        finalAlpha),
+      unMultiplyFinalColorChannel(
+        blendAlgorithmForOneChannel(blueBg, blueFg, alphaFg),
+        finalAlpha),
+      finalAlpha)
   }
 
   private def blendSingleChannelUsingGeometricMeanAlgorithm(
