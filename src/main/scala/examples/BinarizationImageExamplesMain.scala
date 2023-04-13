@@ -13,7 +13,7 @@ object BinarizationImageExamplesMain {
 
     val sourceGrayscaleImage = sourceImage.mapPixelColors(
       GrayscaleColorConversion.applyGrayscale(_, GrayscaleConversionAlgorithm.LUMA_BT601))
-    val binarizedImage = OtsuBinarization.binarizeImage(sourceGrayscaleImage, 0.05)
+    val binarizedImage = OtsuBinarization.binarizeImage(sourceGrayscaleImage)
 
     ImageExampleFileUtil.writeImage(
       "src/main/resources/result/otsu_binarization_sheep.png",

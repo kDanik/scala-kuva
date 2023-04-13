@@ -15,17 +15,19 @@ object OtsuBinarization {
    * to image.
    * @param sourceGrayscaleImage
    *   source image (this must be a grayscale image!)
-   * @param step
-   *   step (0 to 1) for threshold values. Lower step results into better precision of the
-   *   algorithm, but significantly impacts performance
+   * @param histogramNumberOfBins
+   *   Histogram number of bins will control how precise will be threshold calculations.
+   *   Increasing number of bins will significantly worsen speed of the calculations. Reducing
+   *   number of bins will reduce quality, precision of calculations and can result into sub
+   *   optimal threshold.
    * @return
    *   binarized image
    */
   def binarizeImage(
       sourceGrayscaleImage: ImmutableBufferedImage,
-      step: BigDecimal = BigDecimal(0.1)): ImmutableBufferedImage = {
+      histogramNumberOfBins: Int = 256): ImmutableBufferedImage = {
 
-    val threshold = findLeastVarianceThreshold(sourceGrayscaleImage, step)
+    val threshold = findLeastVarianceThreshold(sourceGrayscaleImage, histogramNumberOfBins)
 
     sourceGrayscaleImage.mapPixelColors((color: Color) =>
       if (color.asColorRgba.redAsFloat > threshold) ColorRgba(255, 255, 255, 255)
@@ -36,20 +38,20 @@ object OtsuBinarization {
    * Calculates color threshold for image binarization using Otsu's method.
    * @param sourceGrayscaleImage
    *   source image (this must be a grayscale image!)
-   * @param step
-   *   step (0 to 1) for threshold values. Lower step results into better precision of the
-   *   algorithm, but significantly impacts performance
+   * @param histogramNumberOfBins
+   *   Histogram number of bins
    * @return
    *   least variance (Otsu's) threshold (value from 0f to 1f). This threshold splits image into
    *   background and foreground by their color value.
    */
   def findLeastVarianceThreshold(
       sourceGrayscaleImage: ImmutableBufferedImage,
-      step: BigDecimal): Float = {
+      histogramNumberOfBins: Int): Float = {
     val allPixels = sourceGrayscaleImage.allPixelsAsSeq()
 
     val totalWeight = allPixels.length
-    val colorThresholds = calculateColorThresholdsRange(sourceGrayscaleImage, step)
+    val colorThresholds =
+      calculateColorThresholdsRange(sourceGrayscaleImage, histogramNumberOfBins)
 
     findLeastVarianceThreshold(
       Float.MaxValue,
@@ -125,7 +127,10 @@ object OtsuBinarization {
    */
   private def calculateColorThresholdsRange(
       sourceGrayscaleImage: ImmutableBufferedImage,
-      step: BigDecimal): NumericRange.Inclusive[BigDecimal] = {
+      histogramNumberOfBins: Int): NumericRange.Inclusive[BigDecimal] = {
+    val step = BigDecimal(1.0 / histogramNumberOfBins)
+    println(step)
+
     BigDecimal(minimumColorValue(sourceGrayscaleImage)) + step to BigDecimal(
       maximumColorValue(sourceGrayscaleImage)) - step by step
   }
