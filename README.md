@@ -104,6 +104,7 @@ alpha channel or without).
 ### Blending colors
 
 To demonstrate different color blending algorithms 2 abstract (background and foreground) images will be used.
+There also additional examples in src/main/resources/source/blend/gradient folder.
 
 Background (initial image):
 
