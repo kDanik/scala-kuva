@@ -88,6 +88,12 @@ Calculates and uses as grayscale lightness using formula from HSL color format.
 
 <img src="src/main/resources/result/grayscale_lightness_hsl_cocktail.png" alt="Picture of cocktail after applying lightness (HSL) grayscale" width="350">
 
+##### Middle value
+
+Calculates and uses as grayscale middle value of the RGB channels
+
+<img src="src/main/resources/result/grayscale_middle_value_cocktail.png" alt="Picture of cocktail after applying middle value rayscale" width="350">
+
 ### Inversion
 
 Color inversion is a photo effect that flips all colors to their opposite hue on the color wheel (with inversion of

@@ -38,7 +38,20 @@ object GrayscaleColorConversion {
       case GrayscaleConversionAlgorithm.DECOMPOSITION_MAX => applyDecompositionMaxGrayscale(color)
       case GrayscaleConversionAlgorithm.LIGHTNESS => applyLightnessGrayscale(color)
       case GrayscaleConversionAlgorithm.LIGHTNESS_HSL => applyLightnessHslGrayscale(color)
+      case GrayscaleConversionAlgorithm.MIDDLE_VALUE => applyMiddleValueGrayscale(color)
     }
+  }
+
+  private def applyMiddleValueGrayscale(color: Color): ColorRgba = {
+    val colorRgba = color.asColorRgba
+    val middleValue =
+      math.max(
+        math.min(colorRgba.red.intValue, colorRgba.blue.intValue),
+        math.min(
+          math.max(colorRgba.red.intValue, colorRgba.blue.intValue),
+          colorRgba.green.intValue))
+
+    ColorRgba(middleValue, middleValue, middleValue, colorRgba.alpha)
   }
 
   private def applyDesaturationGrayscale(color: Color): ColorRgba = {

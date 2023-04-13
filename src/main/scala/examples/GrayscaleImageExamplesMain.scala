@@ -74,5 +74,10 @@ object GrayscaleImageExamplesMain {
       "src/main/resources/result/grayscale_lightness_hsl_cocktail.png",
       cocktailImage.mapPixelColors(
         GrayscaleColorConversion.applyGrayscale(_, GrayscaleConversionAlgorithm.LIGHTNESS_HSL)))
+
+    ImageExampleFileUtil.writeImage(
+      "src/main/resources/result/grayscale_middle_value_cocktail.png",
+      cocktailImage.mapPixelColors(
+        GrayscaleColorConversion.applyGrayscale(_, GrayscaleConversionAlgorithm.MIDDLE_VALUE)))
   }
 }

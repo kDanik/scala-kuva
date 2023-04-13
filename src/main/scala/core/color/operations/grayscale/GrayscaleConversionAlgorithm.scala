@@ -54,4 +54,9 @@ enum GrayscaleConversionAlgorithm:
      * LIGHTNESS_HSL uses Lightness value from the HSL (Hue, Saturation and Lightness) color
      * space.
      */
-    LIGHTNESS_HSL
+    LIGHTNESS_HSL,
+    /**
+     * Middle value grayscale uses middle value of RGB channel as grayscale value. So for example
+     * for RGB(100, 200, 120) it will use 120.
+     */
+    MIDDLE_VALUE
