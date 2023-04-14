@@ -129,7 +129,6 @@ object OtsuBinarization {
       sourceGrayscaleImage: ImmutableBufferedImage,
       histogramNumberOfBins: Int): NumericRange.Inclusive[BigDecimal] = {
     val step = BigDecimal(1.0 / histogramNumberOfBins)
-    println(step)
 
     BigDecimal(minimumColorValue(sourceGrayscaleImage)) + step to BigDecimal(
       maximumColorValue(sourceGrayscaleImage)) - step by step

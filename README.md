@@ -92,7 +92,13 @@ Calculates and uses as grayscale lightness using formula from HSL color format.
 
 Calculates and uses as grayscale middle value of the RGB channels
 
-<img src="src/main/resources/result/grayscale_middle_value_cocktail.png" alt="Picture of cocktail after applying middle value rayscale" width="350">
+<img src="src/main/resources/result/grayscale_middle_value_cocktail.png" alt="Picture of cocktail after applying middle value grayscale" width="350">
+
+### N-shades of gray (using Luma 601 for initial grayscale)
+
+Converts grayscale image to grayscale image with limited number of shades. (Example image has 8 shades of gray)
+
+<img src="src/main/resources/result/n_shade_of_gray_cocktail.png" alt="Picture of cocktail after applying N-shades of gray algorithm (8 shades)" width="350">
 
 ### Inversion
 
