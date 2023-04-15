@@ -1,25 +1,31 @@
-# scala-kuva
+# Description
 
-**scala-kuva** (kuva means "picture" in Finnish) is supposed to be a Scala library for color (and later image)
-processing, manipulation, and filters.
+**Scala Kuva** is a Scala library that focuses on image and color processing and filtering.
 
-### Functionality
+# Functionality
 
 ## Color types
 
-Currently, there are implementations for 3 color formats: **RGB(A)**, **HSL(A)**, and **HSV(A)**.
+The library contains implementations for three color formats: **RGB(A)**, **HSL(A)**, and **HSV(A)**.
+These formats can be converted between each other and can also be converted to java.awt.Color.
 
-They can be converted between each other and converted to java.awt.Color.
+## Immutable image
 
-## Color manipulation
+This library uses an immutable image for all image operations. 
+The immutable image can be created from a java.awt.image.BufferedImage and also converted to it.
 
-Picture used to demonstrate different color operations/filters below:
+The base of the immutable image is a two-dimensional vector of immutable Pixels.
+
+## Color and image manipulation
+
+There are various operations that can be applied to images and colors. 
+Currently, the library has implementations for most popular grayscale algorithms, blend modes, binarization, and more.
+
+This initial image will be used to demonstrate the effects of the different operations.
 
 <img src="src/main/resources/source/cocktail.png" alt="Original picture of cocktail" width="350">
 
 ### Grayscale
-
-Currently, this library contains these implementations of grayscale algorithms:
 
 ##### Averaging
 
@@ -109,8 +115,8 @@ alpha channel or without).
 
 ### Blending colors
 
-To demonstrate different color blending algorithms 2 abstract (background and foreground) images will be used.
-There also additional examples in src/main/resources/source/blend/gradient folder.
+To demonstrate different color blending algorithms two abstract (background and foreground) images will be used.
+(There also additional examples in src/main/resources/source/blend/gradient folder)
 
 Background (initial image):
 
@@ -237,15 +243,3 @@ threshold value may vary depending on the specific grayscale conversion algorith
 
 <img src="src/main/resources/source/sheep.png" alt="Source sheep image" width="250">
 <img src="src/main/resources/result/otsu_binarization_sheep.png" alt="Sheep image binarized with Otsu's method " width="250">
-
-### Darken
-
-...
-
-### Lighten
-
-...
-
-#### Saturation
-
-...
