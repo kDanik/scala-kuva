@@ -43,8 +43,13 @@ object NShadesOfGray {
 
     val threshold = ((maximumValue - minimumValue) / (numberOfShades.floatValue - 1)).intValue
 
-    image.mapPixelColors(
-      applyNShadesOfGray(_, multiplierPerThreshold, threshold, numberOfShades, minimumValue))
+    if (threshold == 0) {
+      // TODO improve error handling for threshold == 0 (for too big numberOfShades)
+      image
+    } else {
+      image.mapPixelColors(
+        applyNShadesOfGray(_, multiplierPerThreshold, threshold, numberOfShades, minimumValue))
+    }
   }
 
   private def applyNShadesOfGray(
