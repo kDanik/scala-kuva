@@ -25,6 +25,12 @@ This initial image will be used to demonstrate the effects of the different oper
 
 <img src="src/main/resources/source/cocktail.png" alt="Original picture of cocktail" width="350">
 
+### Basic image operations
+
+#### Cropping
+
+<img src="src/main/resources/result/crop/cropped_cocktail.png" alt="Cropped picture of cocktail" width="200">
+
 ### Grayscale
 
 ##### Averaging

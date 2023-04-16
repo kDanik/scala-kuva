@@ -176,6 +176,41 @@ final case class ImmutableBufferedImage(
     this.imageRaster.flatten.min(orderingMethod)
   }
 
+  /**
+   * Create new immutable image by cropping this image. If input coordinates are invalid, error
+   * message will be returned instead.
+   * @param startX
+   *   X-coordinate of start position for cropping.
+   * @param startY
+   *   Y-coordinate of start position for cropping.
+   * @param endX
+   *   X-coordinate of end position for cropping. Must be above startX.
+   * @param endY
+   *   Y-coordinate of end position for cropping. Must be above startY.
+   * @return
+   *   New cropped image. If input coordinates are invalid, error message will be returned
+   *   instead.
+   */
+  def crop(
+      startX: Int,
+      startY: Int,
+      endX: Int,
+      endY: Int): Either[String, ImmutableBufferedImage] = {
+    if (isPositionInBounds(startX, startY) && isPositionInBounds(endX, endY)) {
+      if (endY > startY && endX > startX) {
+        val subImageWithIncorrectPixelCoordinates =
+          imageRaster.slice(startY, endY).map(_.slice(startX, endX))
+
+        val subImageWithCorrectedPixelCoordinates =
+          subImageWithIncorrectPixelCoordinates.map(_.map((oldPixel: Pixel) =>
+            Pixel(oldPixel.x - startX, oldPixel.y - startY, oldPixel.color)))
+
+        Right(ImmutableBufferedImage(subImageWithCorrectedPixelCoordinates, imageType))
+
+      } else Left("Start coordinate must be less than end coordinate!")
+    } else Left("Coordinates are not in bounds of the image!")
+  }
+
   private def imageRasterContentAsBufferedImage: BufferedImage = {
     imageRaster.flatten
       .foldLeft(BufferedImage(Width, Height, imageType))((bufferedImage, pixel) => {
