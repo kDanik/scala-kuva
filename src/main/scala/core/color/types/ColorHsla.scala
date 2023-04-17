@@ -40,8 +40,6 @@ final case class ColorHsla(
   override def asColorHsla: ColorHsla = this
 
   override def asColorHsva: ColorHsva = {
-    implicit val precision: Precision = Precision(0.001f)
-
     val value = lightness + saturation * lightness.min(1 - lightness)
     val saturationHSV = if (lightness ~= 0) 0 else 2 * (1 - lightness / value)
 
@@ -53,8 +51,6 @@ final case class ColorHsla(
    * instead of equals because of floating point precision problems
    */
   def almostEquals(obj: ColorHsla): Boolean = {
-    implicit val precision: Precision = Precision(0.001f)
-
     (hue ~= obj.hue) && (saturation ~= obj.saturation) && (lightness ~= obj.lightness) && (alpha == obj.alpha)
   }
 }

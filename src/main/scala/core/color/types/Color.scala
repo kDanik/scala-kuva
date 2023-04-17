@@ -1,10 +1,13 @@
 package com.example
 package core.color.types
 
+import core.support.Precision
+
 /**
  * Base trait for different color spaces.
  */
 trait Color {
+  implicit val floatCompartmentPrecision: Precision = Precision(0.001f)
 
   /**
    * Converts this color to java.awt.Color (RGB(A) java color).

@@ -106,9 +106,6 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   }
 
   private def calculateHue(chroma: Float, value: Float, r: Float, g: Float, b: Float): Float = {
-    // TODO should it be precision constant ?
-    implicit val precision: Precision = Precision(0.0001f)
-
     if (chroma ~= 0f) {
       0
     } else if (value ~= r) {
@@ -122,8 +119,6 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   }
 
   private def calculateHslSaturation(value: Float, lightness: Float): Float = {
-    implicit val precision: Precision = Precision(0.0001f)
-
     if ((lightness ~= 0) || (lightness ~= 1)) {
       0
     } else {
@@ -132,8 +127,6 @@ final case class ColorRgba(red: UByte, green: UByte, blue: UByte, alpha: UByte =
   }
 
   private def calculateHsvSaturation(value: Float, chroma: Float): Float = {
-    implicit val precision: Precision = Precision(0.0001f)
-
     if (value ~= 0) {
       0
     } else {
