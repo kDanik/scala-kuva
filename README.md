@@ -31,6 +31,14 @@ This initial image will be used to demonstrate the effects of the different oper
 
 <img src="src/main/resources/result/crop/cropped_cocktail.png" alt="Cropped picture of cocktail" width="200">
 
+#### Scaling
+
+##### Nearest Neighbor
+Example image is downscaled (to 400 x 500) using nearest neighbor algorithm.
+
+<img src="src/main/resources/result/scale/downscale_nearest_neighbor_cocktail.png" alt="Downscaled picture of cocktail" width="200">
+
+
 ### Grayscale
 
 ##### Averaging

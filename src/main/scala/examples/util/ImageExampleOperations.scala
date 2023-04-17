@@ -19,19 +19,22 @@ object ImageExampleOperations {
     val height = sourceBackgroundImage.Height
 
     // it also assumes images have same type
-    var resultedImage =
-      ImmutableBufferedImage(height, width, sourceBackgroundImage.imageType).get;
 
-    for (x <- 0 until width; y <- 0 until height) {
-      resultedImage = resultedImage.setPixel(
-        Pixel(
-          x,
-          y,
-          colorOperation(
-            sourceBackgroundImage.getPixel(x, y).get.color.asColorRgba,
-            sourceForegroundImage.getPixel(x, y).get.color.asColorRgba)))
+    ImmutableBufferedImage(height, width, sourceBackgroundImage.imageType) match {
+      case Right(image) => {
+        var resultedImage = image
+        for (x <- 0 until width; y <- 0 until height) {
+          resultedImage = resultedImage.setPixel(
+            Pixel(
+              x,
+              y,
+              colorOperation(
+                sourceBackgroundImage.getPixel(x, y).get.color.asColorRgba,
+                sourceForegroundImage.getPixel(x, y).get.color.asColorRgba)))
+        }
+
+        resultedImage
+      }
     }
-
-    resultedImage
   }
 }
