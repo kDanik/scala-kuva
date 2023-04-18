@@ -55,7 +55,8 @@ object ImageScaling {
   }
 
   /**
-   * Scales image to desired proportions, using bilinear interpolation algorithm.
+   * Scales image to desired proportions, using bilinear interpolation algorithm. Bilinear
+   * interpolation uses 4 nearest neighbors to determine the output.
    *
    * It is not recommended to use bilinear interpolation for downscaling.
    * @param sourceImage
