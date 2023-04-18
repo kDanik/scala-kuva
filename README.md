@@ -34,10 +34,20 @@ This initial image will be used to demonstrate the effects of the different oper
 #### Scaling
 
 ##### Nearest Neighbor
-Example image is downscaled (to 400 x 500) using nearest neighbor algorithm.
 
-<img src="src/main/resources/result/scale/downscale_nearest_neighbor_cocktail.png" alt="Downscaled picture of cocktail" width="200">
+Example image is downscaled (from 1024x1280 to 400 x 500) using nearest neighbor algorithm.
 
+<img src="src/main/resources/result/scale/downscale_nearest_neighbor_cocktail.png" alt="Downscaled (with nearest neighbor) picture of cocktail" width="200">
+
+Example image is upscaled (from 128x160 to 1024x1280) using nearest neighbor algorithm.
+
+<img src="src/main/resources/result/scale/upscale_nearest_neighbor_cocktail.png" alt="Upscaled (with nearest neighbor) picture of cocktail" width="300">
+
+##### Bilinear interpolation
+
+Example image is upscaled (from 128x160 to 1024x1280) using bilinear interpolation.
+
+<img src="src/main/resources/result/scale/upscale_bilinear_interpolation_cocktail.png" alt="Upscaled (with bilinear interpolation) picture of cocktail" width="300">
 
 ### Grayscale
 
