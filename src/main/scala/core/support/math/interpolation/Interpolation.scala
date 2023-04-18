@@ -124,4 +124,38 @@ object Interpolation {
 
     q0 * w0 + q1 * w1 + q2 * w2 + q3 * w3
   }
+
+  def bicubicInterpolation(
+      inputX: Float,
+      inputY: Float,
+      q00: Float,
+      q01: Float,
+      q02: Float,
+      q03: Float,
+      q10: Float,
+      q11: Float,
+      q12: Float,
+      q13: Float,
+      q20: Float,
+      q21: Float,
+      q22: Float,
+      q23: Float,
+      q30: Float,
+      q31: Float,
+      q32: Float,
+      q33: Float): Float = {
+    // calculate cubic interpolation for each row of surrounding pixels
+    val cubicInterpolationRow0 = cubicInterpolationOpenCV(inputX, q00, q01, q02, q03)
+    val cubicInterpolationRow1 = cubicInterpolationOpenCV(inputX, q10, q11, q12, q13)
+    val cubicInterpolationRow2 = cubicInterpolationOpenCV(inputX, q20, q21, q22, q23)
+    val cubicInterpolationRow3 = cubicInterpolationOpenCV(inputX, q30, q31, q32, q33)
+
+    // calculate final cubic interpolation using inputY and results of cubic interpolations for rows
+    cubicInterpolationOpenCV(
+      inputY,
+      cubicInterpolationRow0,
+      cubicInterpolationRow1,
+      cubicInterpolationRow2,
+      cubicInterpolationRow3)
+  }
 }

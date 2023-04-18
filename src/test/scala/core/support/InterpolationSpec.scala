@@ -42,4 +42,32 @@ class InterpolationSpec extends AnyFlatSpec {
 
     assert(Interpolation.cubicInterpolationOpenCV(0.25f, q0, q1, q2, q3) == 12.265625f)
   }
+
+  "bicubic" should "produce correct results" in {
+    val (q00, q01, q02, q03) = (10, 10, 20, 20)
+    val (q10, q11, q12, q13) = (10, 10, 20, 20)
+    val (q20, q21, q22, q23) = (10, 10, 20, 20)
+    val (q30, q31, q32, q33) = (30, 30, 40, 40)
+
+    assert(
+      Interpolation.bicubicInterpolation(
+        0.25f,
+        0.75f,
+        q00,
+        q01,
+        q02,
+        q03,
+        q10,
+        q11,
+        q12,
+        q13,
+        q20,
+        q21,
+        q22,
+        q23,
+        q30,
+        q31,
+        q32,
+        q33) == 10.15625)
+  }
 }
