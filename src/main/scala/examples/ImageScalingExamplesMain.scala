@@ -11,7 +11,7 @@ object ImageScalingExamplesMain {
     val cocktailLowRes =
       ImageExampleFileUtil.loadImage("src/main/resources/source/cocktail_low_res.png")
 
-    ImageScaling.scaleWithNearestNeighborAlgorithm(cocktailImage, 400, 500) match {
+    ImageScaling.scaleWithNearestNeighborAlgorithm(cocktailImage, 128, 160) match {
       case Right(resultedImage) =>
         ImageExampleFileUtil.writeImage(
           "src/main/resources/result/scale/downscale_nearest_neighbor_cocktail.png",
@@ -29,6 +29,13 @@ object ImageScalingExamplesMain {
       case Right(resultedImage) =>
         ImageExampleFileUtil.writeImage(
           "src/main/resources/result/scale/upscale_bilinear_interpolation_cocktail.png",
+          resultedImage)
+    }
+
+    ImageScaling.scaleWithBicubicInterpolation(cocktailLowRes, 1024, 1280) match {
+      case Right(resultedImage) =>
+        ImageExampleFileUtil.writeImage(
+          "src/main/resources/result/scale/upscale_bicubic_interpolation_cocktail.png",
           resultedImage)
     }
   }

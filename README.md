@@ -49,6 +49,12 @@ Example image is upscaled (from 128x160 to 1024x1280) using bilinear interpolati
 
 <img src="src/main/resources/result/scale/upscale_bilinear_interpolation_cocktail.png" alt="Upscaled (with bilinear interpolation) picture of cocktail" width="300">
 
+##### Bicubic interpolation
+
+Example image is upscaled (from 128x160 to 1024x1280) using bicubic interpolation.
+
+<img src="src/main/resources/result/scale/upscale_bilinear_interpolation_cocktail.png" alt="Upscaled (with bicubic interpolation) picture of cocktail" width="300">
+
 ### Grayscale
 
 ##### Averaging
