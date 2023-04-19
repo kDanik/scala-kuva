@@ -2,7 +2,7 @@ package com.example
 package examples.util
 
 import core.color.types.Color
-import core.image.{ImmutableBufferedImage, Pixel}
+import core.image.{ImmutableBufferedImage, Pixel, Position}
 
 /**
  * Operations from this object will be eventually replaced with better and more functional way.
@@ -26,11 +26,10 @@ object ImageExampleOperations {
         for (x <- 0 until width; y <- 0 until height) {
           resultedImage = resultedImage.setPixel(
             Pixel(
-              x,
-              y,
+              Position(x, y),
               colorOperation(
-                sourceBackgroundImage.getPixel(x, y).get.color.asColorRgba,
-                sourceForegroundImage.getPixel(x, y).get.color.asColorRgba)))
+                sourceBackgroundImage.getPixel(Position(x, y)).get.color.asColorRgba,
+                sourceForegroundImage.getPixel(Position(x, y)).get.color.asColorRgba)))
         }
 
         resultedImage

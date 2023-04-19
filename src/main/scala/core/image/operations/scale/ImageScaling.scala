@@ -2,7 +2,7 @@ package com.example
 package core.image.operations.scale
 
 import core.color.types.ColorRgba
-import core.image.{ImmutableBufferedImage, Pixel}
+import core.image.{ImmutableBufferedImage, Pixel, Position}
 import core.support.math.interpolation.Interpolation
 import core.support.{FloatWithAlmostEquals, Precision}
 
@@ -48,11 +48,11 @@ object ImageScaling {
     targetImage.mapPixels((pixel: Pixel) => {
       // calculate which pixel of source image should be used as nearest neighbor for target pixel
       val sourceX =
-        (pixel.x.floatValue() / targetWidth * sourceWidth).round.intValue.min(sourceWidth - 1)
+        (pixel.position.x / targetWidth * sourceWidth).round.intValue.min(sourceWidth - 1)
       val sourceY =
-        (pixel.y.floatValue() / targetHeight * sourceHeight).round.intValue.min(sourceHeight - 1)
+        (pixel.position.y / targetHeight * sourceHeight).round.intValue.min(sourceHeight - 1)
 
-      pixel.copy(color = sourceImage.getPixel(sourceX, sourceY).get.color)
+      pixel.copy(color = sourceImage.getPixel(Position(sourceX, sourceY)).get.color)
     })
   }
 
@@ -106,8 +106,8 @@ object ImageScaling {
       sourceWidth: Int,
       sourceHeight: Int): ColorRgba = {
     // calculate position of this pixel on source image
-    val sourceX = pixel.x.floatValue() / targetWidth * sourceWidth
-    val sourceY = pixel.y.floatValue() / targetHeight * sourceHeight
+    val sourceX = pixel.position.x / targetWidth * sourceWidth
+    val sourceY = pixel.position.y / targetHeight * sourceHeight
 
     // convert sourceX and sourceY to position (int value) of closest pixel (bottom left pixel in bilinear interpolation)
     val normalizedSourceX =
@@ -116,13 +116,26 @@ object ImageScaling {
       if (sourceY.intValue >= sourceHeight - 1) sourceHeight - 2 else sourceY.intValue
 
     // Get values of surrounding pixels (top left, top right, bottom left, bottom right)
-    val q11 = sourceImage.getPixel(normalizedSourceX, normalizedSourceY).get.color.asColorRgba
+    val q11 =
+      sourceImage.getPixel(Position(normalizedSourceX, normalizedSourceY)).get.color.asColorRgba
     val q12 =
-      sourceImage.getPixel(normalizedSourceX, normalizedSourceY + 1).get.color.asColorRgba
+      sourceImage
+        .getPixel(Position(normalizedSourceX, normalizedSourceY + 1))
+        .get
+        .color
+        .asColorRgba
     val q21 =
-      sourceImage.getPixel(normalizedSourceX + 1, normalizedSourceY).get.color.asColorRgba
+      sourceImage
+        .getPixel(Position(normalizedSourceX + 1, normalizedSourceY))
+        .get
+        .color
+        .asColorRgba
     val q22 =
-      sourceImage.getPixel(normalizedSourceX + 1, normalizedSourceY + 1).get.color.asColorRgba
+      sourceImage
+        .getPixel(Position(normalizedSourceX + 1, normalizedSourceY + 1))
+        .get
+        .color
+        .asColorRgba
 
     // calculate value for each channel using bilinear interpolation
     val red = Interpolation.bilinearInterpolation(
@@ -221,8 +234,8 @@ private def calculateSinglePixelColorWithBicubicInterpolation(
     sourceWidth: Int,
     sourceHeight: Int): ColorRgba = {
   // calculate position of this pixel on source image
-  val sourceX = pixel.x.floatValue() / targetWidth * sourceWidth
-  val sourceY = pixel.y.floatValue() / targetHeight * sourceHeight
+  val sourceX = pixel.position.x / targetWidth * sourceWidth
+  val sourceY = pixel.position.y / targetHeight * sourceHeight
 
   if (sourceX.intValue >= sourceWidth - 2 || sourceY.intValue >= sourceHeight - 2 || sourceY.intValue == 0 || sourceX.intValue == 0) {
     // TODO better handling of border pixels should be implemented
@@ -234,7 +247,7 @@ private def calculateSinglePixelColorWithBicubicInterpolation(
     // create 2D array (4x4) of pixels around normalizedSourceX and normalizedSourceY
     val nearestPixelColors = ArraySeq.tabulate(4, 4)((y: Int, x: Int) =>
       sourceImage
-        .getPixel(normalizedSourceX - 1 + x, normalizedSourceY - 1 + y)
+        .getPixel(Position(normalizedSourceX - 1 + x, normalizedSourceY - 1 + y))
         .get
         .color
         .asColorRgba)

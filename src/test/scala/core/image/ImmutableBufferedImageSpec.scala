@@ -36,43 +36,45 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
 
-    assert(immutableBufferedImage.getPixel(10, 40).isDefined)
-    assert(immutableBufferedImage.getPixel(10, 40).get.x == 10)
-    assert(immutableBufferedImage.getPixel(10, 40).get.y == 40)
-    assert(immutableBufferedImage.getPixel(10, 40).get.color == ColorRgba(0, 0, 0, 255))
+    assert(immutableBufferedImage.getPixel(Position(10, 40)).isDefined)
+    assert(immutableBufferedImage.getPixel(Position(10, 40)).get.position.x == 10)
+    assert(immutableBufferedImage.getPixel(Position(10, 40)).get.position.y == 40)
+    assert(immutableBufferedImage.getPixel(Position(10, 40)).get.color == ColorRgba(0, 0, 0, 255))
   }
 
   "ImmutableBufferedImage getPixel" should "return empty option for invalid coordinates" in {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
 
-    assert(immutableBufferedImage.getPixel(-1, 20).isEmpty)
-    assert(immutableBufferedImage.getPixel(20, -1).isEmpty)
-    assert(immutableBufferedImage.getPixel(2000, 10).isEmpty)
-    assert(immutableBufferedImage.getPixel(10, 2000).isEmpty)
+    assert(immutableBufferedImage.getPixel(Position(-1, 20)).isEmpty)
+    assert(immutableBufferedImage.getPixel(Position(20, -1)).isEmpty)
+    assert(immutableBufferedImage.getPixel(Position(2000, 10)).isEmpty)
+    assert(immutableBufferedImage.getPixel(Position(10, 2000)).isEmpty)
   }
 
   "ImmutableBufferedImage getPixels" should "return pixels for valid coordinate range" in {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
 
-    assert(immutableBufferedImage.getPixels(10, 10, 10, 10).length == 1)
-    assert(immutableBufferedImage.getPixels(10, 10, 10, 10).head.x == 10)
-    assert(immutableBufferedImage.getPixels(10, 10, 10, 10).head.y == 10)
+    assert(immutableBufferedImage.getPixels(Position(10, 10), Position(10, 10)).length == 1)
+    assert(
+      immutableBufferedImage.getPixels(Position(10, 10), Position(10, 10)).head.position.x == 10)
+    assert(
+      immutableBufferedImage.getPixels(Position(10, 10), Position(10, 10)).head.position.y == 10)
 
-    assert(immutableBufferedImage.getPixels(1, 4, 50, 130).length == 6350)
-    assert(immutableBufferedImage.getPixels(0, 0, 99, 249).length == 25000)
+    assert(immutableBufferedImage.getPixels(Position(1, 4), Position(50, 130)).length == 6350)
+    assert(immutableBufferedImage.getPixels(Position(0, 0), Position(99, 249)).length == 25000)
   }
 
   "ImmutableBufferedImage getPixels" should "return empty Seq for invalid coordinates" in {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
 
-    assert(immutableBufferedImage.getPixels(-1, -1, 0, 0).isEmpty)
-    assert(immutableBufferedImage.getPixels(0, 0, 10, 251).isEmpty)
-    assert(immutableBufferedImage.getPixels(0, 0, 101, 10).isEmpty)
-    assert(immutableBufferedImage.getPixels(10, 0, 9, 10).isEmpty)
-    assert(immutableBufferedImage.getPixels(0, 10, 10, 9).isEmpty)
+    assert(immutableBufferedImage.getPixels(Position(-1, -1), Position(0, 0)).isEmpty)
+    assert(immutableBufferedImage.getPixels(Position(0, 0), Position(10, 251)).isEmpty)
+    assert(immutableBufferedImage.getPixels(Position(0, 0), Position(101, 10)).isEmpty)
+    assert(immutableBufferedImage.getPixels(Position(10, 0), Position(9, 10)).isEmpty)
+    assert(immutableBufferedImage.getPixels(Position(0, 10), Position(10, 9)).isEmpty)
   }
 
   "ImmutableBufferedImage allPixelsAsSeq" should "return Seq with all pixels of this image" in {
@@ -87,12 +89,12 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
 
     val immutableBufferedImageAfterSetPixel: ImmutableBufferedImage =
-      immutableBufferedImage.setPixel(Pixel(50, 22, ColorRgba(255, 0, 0, 255)))
+      immutableBufferedImage.setPixel(Pixel(Position(50, 22), ColorRgba(255, 0, 0, 255)))
 
     assert(immutableBufferedImage != immutableBufferedImageAfterSetPixel)
     assert(
       immutableBufferedImageAfterSetPixel
-        .getPixel(50, 22)
+        .getPixel(Position(50, 22))
         .get
         .color == ColorRgba(255, 0, 0, 255))
   }
@@ -101,9 +103,9 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
     val pixels: List[Pixel] = List(
-      Pixel(50, 22, ColorRgba(255, 0, 0, 255)),
-      Pixel(50, 23, ColorRgba(255, 0, 255, 255)),
-      Pixel(34, 22, ColorRgba(255, 255, 0, 255)))
+      Pixel(Position(50, 22), ColorRgba(255, 0, 0, 255)),
+      Pixel(Position(50, 23), ColorRgba(255, 0, 255, 255)),
+      Pixel(Position(34, 22), ColorRgba(255, 255, 0, 255)))
 
     val immutableBufferedImageAfterSetPixels: ImmutableBufferedImage =
       immutableBufferedImage.setPixels(pixels)
@@ -112,17 +114,17 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
 
     assert(
       immutableBufferedImageAfterSetPixels
-        .getPixel(50, 22)
+        .getPixel(Position(50, 22))
         .get
         .color == ColorRgba(255, 0, 0, 255))
     assert(
       immutableBufferedImageAfterSetPixels
-        .getPixel(50, 23)
+        .getPixel(Position(50, 23))
         .get
         .color == ColorRgba(255, 0, 255, 255))
     assert(
       immutableBufferedImageAfterSetPixels
-        .getPixel(34, 22)
+        .getPixel(Position(34, 22))
         .get
         .color == ColorRgba(255, 255, 0, 255))
   }
@@ -130,23 +132,23 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
   "ImmutableBufferedImage mapPixels" should "create new ImmutableBufferedImage by function to all pixels" in {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
-    def f(pixel: Pixel): Pixel = Pixel(pixel.x, pixel.y, color = ColorRgba(255, 0, 0, 255))
+    def f(pixel: Pixel): Pixel = pixel.copy(color = ColorRgba(255, 0, 0, 255))
 
     val updatedImage: ImmutableBufferedImage = immutableBufferedImage.mapPixels(f)
 
     assert(
       updatedImage
-        .getPixel(0, 0)
+        .getPixel(Position(0, 0))
         .get
         .color == ColorRgba(255, 0, 0, 255))
     assert(
       updatedImage
-        .getPixel(50, 23)
+        .getPixel(Position(50, 23))
         .get
         .color == ColorRgba(255, 0, 0, 255))
     assert(
       updatedImage
-        .getPixel(99, 249)
+        .getPixel(Position(99, 249))
         .get
         .color == ColorRgba(255, 0, 0, 255))
   }
@@ -160,17 +162,17 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
 
     assert(
       updatedImage
-        .getPixel(0, 0)
+        .getPixel(Position(0, 0))
         .get
         .color == ColorRgba(0, 0, 255, 255))
     assert(
       updatedImage
-        .getPixel(50, 23)
+        .getPixel(Position(50, 23))
         .get
         .color == ColorRgba(0, 0, 255, 255))
     assert(
       updatedImage
-        .getPixel(99, 249)
+        .getPixel(Position(99, 249))
         .get
         .color == ColorRgba(0, 0, 255, 255))
   }

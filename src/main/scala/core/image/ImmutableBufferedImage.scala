@@ -3,7 +3,7 @@ package core.image
 
 import core.color.types.{Color, ColorRgba}
 import core.image
-import core.image.{ImmutableBufferedImage, Pixel}
+import core.image.{ImmutableBufferedImage, Pixel, Position}
 
 import java.awt.image.BufferedImage
 
@@ -32,12 +32,12 @@ final case class ImmutableBufferedImage(
   /**
    * height of this image in pixels
    */
-  lazy val Height = imageRaster.length;
+  lazy val Height: Int = imageRaster.length
 
   /**
    * width of this image in pixels
    */
-  lazy val Width = imageRaster.headOption.fold(0)(_.length)
+  lazy val Width: Int = imageRaster.headOption.fold(0)(_.length)
 
   /**
    * Sets / Replaces one pixel in ImmutableBufferedImage
@@ -48,8 +48,11 @@ final case class ImmutableBufferedImage(
    *   new ImmutableBufferedImage after changes
    */
   def setPixel(pixel: Pixel): ImmutableBufferedImage = {
-    if (isPositionInBounds(pixel.x, pixel.y)) {
-      this.copy(imageRaster.updated(pixel.y, imageRaster(pixel.y).updated(pixel.x, pixel)))
+    if (isPositionInBounds(pixel.position)) {
+      this.copy(
+        imageRaster.updated(
+          pixel.position.yInt,
+          imageRaster(pixel.position.yInt).updated(pixel.position.xInt, pixel)))
     } else this
   }
 
@@ -63,11 +66,13 @@ final case class ImmutableBufferedImage(
    *   new ImmutableBufferedImage after changes
    */
   def setPixels(pixels: List[Pixel]): ImmutableBufferedImage = {
-    val validPixels = pixels.filter(pixel => isPositionInBounds(pixel.x, pixel.y))
+    val validPixels = pixels.filter(pixel => isPositionInBounds(pixel.position))
 
     val updatedImageRaster =
       validPixels.foldLeft(imageRaster)((updatedImageRaster, pixel) =>
-        updatedImageRaster.updated(pixel.y, updatedImageRaster(pixel.y).updated(pixel.x, pixel)))
+        updatedImageRaster.updated(
+          pixel.position.yInt,
+          updatedImageRaster(pixel.position.yInt).updated(pixel.position.xInt, pixel)))
 
     this.copy(updatedImageRaster)
   }
@@ -76,34 +81,28 @@ final case class ImmutableBufferedImage(
    * Return Option with pixel for given coordinates. If coordinates are out of bound empty Option
    * will be returned.
    */
-  def getPixel(x: Int, y: Int): Option[Pixel] = {
-    if (isPositionInBounds(x, y)) {
-      Option(imageRaster(y)(x))
+  def getPixel(position: Position): Option[Pixel] = {
+    if (isPositionInBounds(position)) {
+      Option(imageRaster(position.yInt)(position.xInt))
     } else Option.empty
   }
 
   /**
    * Returns sequence of pixels from image, using specified range (box).
    *
-   * @param fromX
-   *   get from (inclusive) which X coordinate. Must be higher than 0.
-   * @param fromY
-   *   get from (inclusive) which Y coordinate. Must be higher than 0.
-   * @param toX
-   *   get until (inclusive) which X coordinate. Must be higher than fromX and lower than width of
-   *   the image.
-   * @param toY
-   *   get until (inclusive) which Y coordinate. Must be higher than fromY and lower than height
-   *   of the image.
+   * @param from
+   *   get from (inclusive) which position on the image. Must be non negative.
+   * @param to
+   *   get until (inclusive) which position on the image. Must be higher than from position.
    * @return
    *   list of pixels in specified range or empty sequence for invalid input
    */
-  def getPixels(fromX: Int, fromY: Int, toX: Int, toY: Int): Seq[Pixel] = {
-    if (isPositionInBounds(fromX, fromY) && isPositionInBounds(toX, toY)
-      && (fromX <= toX) && (fromY <= toY)) {
+  def getPixels(from: Position, to: Position): Seq[Pixel] = {
+    if (isPositionInBounds(from) && isPositionInBounds(to)
+      && (from.xInt <= to.xInt) && (from.yInt <= to.yInt)) {
       imageRaster
-        .slice(fromY, toY + 1)
-        .flatMap((pixelRow: Vector[Pixel]) => pixelRow.slice(fromX, toX + 1))
+        .slice(from.yInt, to.yInt + 1)
+        .flatMap((pixelRow: Vector[Pixel]) => pixelRow.slice(from.xInt, to.xInt + 1))
     } else Seq.empty // TODO for invalid input it makes more sense to have option or error
   }
 
@@ -112,7 +111,7 @@ final case class ImmutableBufferedImage(
    *   Sequence that contains all Pixel-s of this image
    */
   def allPixelsAsSeq(): Seq[Pixel] = {
-    getPixels(0, 0, Width - 1, Height - 1)
+    getPixels(Position(0, 0), Position(Width - 1, Height - 1))
   }
 
   /**
@@ -134,7 +133,7 @@ final case class ImmutableBufferedImage(
    *   new ImmutableBufferedImage resulting by applying operation to color of each pixel
    */
   def mapPixelColors(operation: Color => Color): ImmutableBufferedImage = {
-    mapPixels((pixel: Pixel) => Pixel(pixel.x, pixel.y, operation(pixel.color)))
+    mapPixels((pixel: Pixel) => pixel.copy(color = operation(pixel.color)))
   }
 
   /**
@@ -152,8 +151,8 @@ final case class ImmutableBufferedImage(
    * @return
    *   true if position is in bounds of this ImmutableBufferedImage, otherwise false
    */
-  def isPositionInBounds(x: Int, y: Int): Boolean = {
-    ImmutableBufferedImage.isPositionNonNegative(x, y) && (x < Width && y < Height)
+  def isPositionInBounds(position: Position): Boolean = {
+    position.isNotNegative && (position.xInt < Width && position.yInt < Height)
   }
 
   /**
@@ -179,31 +178,30 @@ final case class ImmutableBufferedImage(
   /**
    * Create new immutable image by cropping this image. If input coordinates are invalid, error
    * message will be returned instead.
-   * @param startX
-   *   X-coordinate of start position for cropping.
-   * @param startY
-   *   Y-coordinate of start position for cropping.
-   * @param endX
-   *   X-coordinate of end position for cropping. Must be above startX.
-   * @param endY
-   *   Y-coordinate of end position for cropping. Must be above startY.
+   * @param positionStart
+   *   start position for cropping.
+   * @param positionEnd
+   *   end position for cropping. Must be above startY.
    * @return
    *   New cropped image. If input coordinates are invalid, error message will be returned
    *   instead.
    */
   def crop(
-      startX: Int,
-      startY: Int,
-      endX: Int,
-      endY: Int): Either[String, ImmutableBufferedImage] = {
-    if (isPositionInBounds(startX, startY) && isPositionInBounds(endX, endY)) {
-      if (endY > startY && endX > startX) {
+      positionStart: Position,
+      positionEnd: Position): Either[String, ImmutableBufferedImage] = {
+    if (isPositionInBounds(positionStart) && isPositionInBounds(positionEnd)) {
+      if (positionEnd.x > positionStart.x && positionEnd.y > positionStart.y) {
         val subImageWithIncorrectPixelCoordinates =
-          imageRaster.slice(startY, endY).map(_.slice(startX, endX))
+          imageRaster
+            .slice(positionStart.yInt, positionEnd.yInt)
+            .map(_.slice(positionStart.xInt, positionEnd.xInt))
 
         val subImageWithCorrectedPixelCoordinates =
-          subImageWithIncorrectPixelCoordinates.map(_.map((oldPixel: Pixel) =>
-            Pixel(oldPixel.x - startX, oldPixel.y - startY, oldPixel.color)))
+          subImageWithIncorrectPixelCoordinates.map(
+            _.map((oldPixel: Pixel) =>
+              oldPixel.copy(position = Position(
+                oldPixel.position.x - positionStart.x,
+                oldPixel.position.y - positionStart.y))))
 
         Right(ImmutableBufferedImage(subImageWithCorrectedPixelCoordinates, imageType))
 
@@ -215,7 +213,8 @@ final case class ImmutableBufferedImage(
     imageRaster.flatten
       .foldLeft(BufferedImage(Width, Height, imageType))((bufferedImage, pixel) => {
         val colorInt = pixel.color.asColorRgba.rgbaInt
-        bufferedImage.setRGB(pixel.x, pixel.y, colorInt)
+        bufferedImage.setRGB(pixel.position.xInt, pixel.position.yInt, colorInt)
+
         bufferedImage
       })
   }
@@ -230,10 +229,11 @@ object ImmutableBufferedImage {
       height: Int,
       width: Int,
       imageType: Int = BufferedImage.TYPE_INT_RGB): Either[String, ImmutableBufferedImage] = {
-    if (isPositionNonNegative(width, height)) {
+    if (height >= 0 && width >= 0) {
       Right(
         ImmutableBufferedImage(
-          Vector.tabulate(height, width)((y, x) => image.Pixel(x, y, ColorRgba(0, 0, 0, 255))),
+          Vector.tabulate(height, width)((y, x) =>
+            Pixel(Position(x, y), ColorRgba(0, 0, 0, 255))),
           imageType))
     } else Left("Image size is invalid!")
   }
@@ -243,15 +243,11 @@ object ImmutableBufferedImage {
    */
   def apply(bufferedImage: BufferedImage): ImmutableBufferedImage = {
     def pixelFromBufferedImagePosition(x: Int, y: Int, bufferedImage: BufferedImage): Pixel =
-      image.Pixel(x, y, ColorRgba.fromRgbaInt(bufferedImage.getRGB(x, y)))
+      Pixel(Position(x, y), ColorRgba.fromRgbaInt(bufferedImage.getRGB(x, y)))
 
     ImmutableBufferedImage(
       Vector.tabulate(bufferedImage.getHeight, bufferedImage.getWidth)((y, x) =>
         pixelFromBufferedImagePosition(x, y, bufferedImage)),
       bufferedImage.getType)
-  }
-
-  def isPositionNonNegative(x: Int, y: Int): Boolean = {
-    x >= 0 && y >= 0
   }
 }
