@@ -1,6 +1,8 @@
 package com.example
 package core.support.math.interpolation
 
+import scala.collection.immutable.ArraySeq
+
 object Interpolation {
 
   private val cubicInterpolationOpenCvConstant = -0.75f
@@ -76,21 +78,8 @@ object Interpolation {
    * assumed that: <br>1. Distance between adjacent points with weights (q0, q1, q2, q3) is always
    * 1 (means distance between q2 and q3 is 1). <br>2. Input x position is in range 0 to 1, where
    * 0 is position of point with q1 value and 1 is position of point with q2 value.
-   *
-   * @param x
-   *   position of x between point q1 and q2 (value from 0 to 1)
-   * @param q0
-   *   value of point x0
-   * @param q1
-   *   value of point x1
-   * @param q2
-   *   value of point x2
-   * @param q3
-   *   value of point x3
-   * @return
-   *   calculated value for position x
    */
-  def cubicInterpolationOpenCV(x: Float, q0: Float, q1: Float, q2: Float, q3: Float): Float = {
+  def cubicInterpolationOpenCV(x: Float, values: ArraySeq[Float]): Float = {
     val w0 =
       ((cubicInterpolationOpenCvConstant * (x + 1) - 5 * cubicInterpolationOpenCvConstant) * (x + 1) + 8 * cubicInterpolationOpenCvConstant) * (x + 1) - 4 * cubicInterpolationOpenCvConstant
     val w1 =
@@ -99,7 +88,7 @@ object Interpolation {
       ((cubicInterpolationOpenCvConstant + 2) * (1 - x) - (cubicInterpolationOpenCvConstant + 3)) * (1 - x) * (1 - x) + 1
     val w3 = 1f - w0 - w1 - w2
 
-    q0 * w0 + q1 * w1 + q2 * w2 + q3 * w3
+    values(0) * w0 + values(1) * w1 + values(2) * w2 + values(3) * w3
   }
 
   /**
@@ -109,53 +98,40 @@ object Interpolation {
    */
   def cubicInterpolationAlternative(
       inputX: Float,
-      x0: Float,
-      q0: Float,
-      x1: Float,
-      q1: Float,
-      x2: Float,
-      q2: Float,
-      x3: Float,
-      q3: Float): Float = {
-    val w0 = ((inputX - x1) * (inputX - x2) * (inputX - x3)) / ((x0 - x1) * (x0 - x2) * (x0 - x3))
-    val w1 = ((inputX - x0) * (inputX - x2) * (inputX - x3)) / ((x1 - x0) * (x1 - x2) * (x1 - x3))
-    val w2 = ((inputX - x0) * (inputX - x1) * (inputX - x3)) / ((x2 - x0) * (x2 - x1) * (x2 - x3))
+      values: ArraySeq[Float],
+      positions: ArraySeq[Float]): Float = {
+    val w0 =
+      ((inputX - positions(1)) * (inputX - positions(2)) * (inputX - positions(3))) / ((positions(
+        0) - positions(1)) * (positions(0) - positions(2)) * (positions(0) - positions(3)))
+    val w1 =
+      ((inputX - positions(0)) * (inputX - positions(2)) * (inputX - positions(3))) / ((positions(
+        1) - positions(0)) * (positions(1) - positions(2)) * (positions(1) - positions(3)))
+    val w2 =
+      ((inputX - positions(0)) * (inputX - positions(1)) * (inputX - positions(3))) / ((positions(
+        2) - positions(0)) * (positions(2) - positions(1)) * (positions(2) - positions(3)))
     val w3 = 1f - w0 - w1 - w2
 
-    q0 * w0 + q1 * w1 + q2 * w2 + q3 * w3
+    values(0) * w0 + values(1) * w1 + values(2) * w2 + values(3) * w3
   }
 
   def bicubicInterpolation(
       inputX: Float,
       inputY: Float,
-      q00: Float,
-      q01: Float,
-      q02: Float,
-      q03: Float,
-      q10: Float,
-      q11: Float,
-      q12: Float,
-      q13: Float,
-      q20: Float,
-      q21: Float,
-      q22: Float,
-      q23: Float,
-      q30: Float,
-      q31: Float,
-      q32: Float,
-      q33: Float): Float = {
+      values: ArraySeq[ArraySeq[Float]]): Float = {
+
     // calculate cubic interpolation for each row of surrounding pixels
-    val cubicInterpolationRow0 = cubicInterpolationOpenCV(inputX, q00, q01, q02, q03)
-    val cubicInterpolationRow1 = cubicInterpolationOpenCV(inputX, q10, q11, q12, q13)
-    val cubicInterpolationRow2 = cubicInterpolationOpenCV(inputX, q20, q21, q22, q23)
-    val cubicInterpolationRow3 = cubicInterpolationOpenCV(inputX, q30, q31, q32, q33)
+    val cubicInterpolationRow0 = cubicInterpolationOpenCV(inputX, values(0))
+    val cubicInterpolationRow1 = cubicInterpolationOpenCV(inputX, values(1))
+    val cubicInterpolationRow2 = cubicInterpolationOpenCV(inputX, values(2))
+    val cubicInterpolationRow3 = cubicInterpolationOpenCV(inputX, values(3))
 
     // calculate final cubic interpolation using inputY and results of cubic interpolations for rows
     cubicInterpolationOpenCV(
       inputY,
-      cubicInterpolationRow0,
-      cubicInterpolationRow1,
-      cubicInterpolationRow2,
-      cubicInterpolationRow3)
+      ArraySeq(
+        cubicInterpolationRow0,
+        cubicInterpolationRow1,
+        cubicInterpolationRow2,
+        cubicInterpolationRow3))
   }
 }

@@ -6,6 +6,8 @@ import core.image.{ImmutableBufferedImage, Pixel}
 import core.support.math.interpolation.Interpolation
 import core.support.{FloatWithAlmostEquals, Precision}
 
+import scala.collection.immutable.ArraySeq
+
 object ImageScaling {
   private implicit val floatCompartmentPrecision: Precision = Precision(0.001f)
 
@@ -187,10 +189,6 @@ object ImageScaling {
       val sourceX = pixel.x.floatValue() / targetWidth * sourceWidth
       val sourceY = pixel.y.floatValue() / targetHeight * sourceHeight
 
-      // convert sourceX and sourceY to position (int value) of closest pixel (bottom left pixel in bilinear interpolation)
-
-      // TODO for bicubic interpolation either border should be created, or border pixels completely ignored
-
       if (sourceX.intValue >= sourceWidth - 2 || sourceY.intValue >= sourceHeight - 2 || sourceY.intValue == 0 || sourceX.intValue == 0) {
         pixel.copy(color = ColorRgba(0, 0, 0, 255))
       } else {
@@ -198,121 +196,31 @@ object ImageScaling {
         val normalizedSourceX = sourceX.intValue
         val normalizedSourceY = sourceY.intValue
 
-        // TODO simplify value assignment. (maybe with 2d array and map / fill / tabulate?)
-        // Get values of surrounding all 16 pixels
-        val q00 =
-          sourceImage.getPixel(normalizedSourceX - 1, normalizedSourceY - 1).get.color.asColorRgba
-        val q01 =
-          sourceImage.getPixel(normalizedSourceX, normalizedSourceY - 1).get.color.asColorRgba
-        val q02 =
-          sourceImage.getPixel(normalizedSourceX + 1, normalizedSourceY - 1).get.color.asColorRgba
-        val q03 =
-          sourceImage.getPixel(normalizedSourceX + 2, normalizedSourceY - 1).get.color.asColorRgba
-
-        val q10 =
-          sourceImage.getPixel(normalizedSourceX - 1, normalizedSourceY).get.color.asColorRgba
-        val q11 =
-          sourceImage.getPixel(normalizedSourceX, normalizedSourceY).get.color.asColorRgba
-        val q12 =
-          sourceImage.getPixel(normalizedSourceX + 1, normalizedSourceY).get.color.asColorRgba
-        val q13 =
-          sourceImage.getPixel(normalizedSourceX + 2, normalizedSourceY).get.color.asColorRgba
-
-        val q20 =
-          sourceImage.getPixel(normalizedSourceX - 1, normalizedSourceY + 1).get.color.asColorRgba
-        val q21 =
-          sourceImage.getPixel(normalizedSourceX, normalizedSourceY + 1).get.color.asColorRgba
-        val q22 =
-          sourceImage.getPixel(normalizedSourceX + 1, normalizedSourceY + 1).get.color.asColorRgba
-        val q23 =
-          sourceImage.getPixel(normalizedSourceX + 2, normalizedSourceY + 1).get.color.asColorRgba
-
-        val q30 =
-          sourceImage.getPixel(normalizedSourceX - 1, normalizedSourceY + 2).get.color.asColorRgba
-        val q31 =
-          sourceImage.getPixel(normalizedSourceX, normalizedSourceY + 2).get.color.asColorRgba
-        val q32 =
-          sourceImage.getPixel(normalizedSourceX + 1, normalizedSourceY + 2).get.color.asColorRgba
-        val q33 =
-          sourceImage.getPixel(normalizedSourceX + 2, normalizedSourceY + 2).get.color.asColorRgba
+        // create 2D array (4x4) of pixels around normalizedSourceX and normalizedSourceY
+        val nearestPixelColors = ArraySeq.tabulate(4, 4)((y: Int, x: Int) =>
+          sourceImage
+            .getPixel(normalizedSourceX - 1 + x, normalizedSourceY - 1 + y)
+            .get
+            .color
+            .asColorRgba)
 
         // calculate value for each channel using bilinear interpolation
         val red = Interpolation.bicubicInterpolation(
           sourceX - normalizedSourceX,
           sourceY - normalizedSourceY,
-          q00.redAsFloat,
-          q01.redAsFloat,
-          q02.redAsFloat,
-          q03.redAsFloat,
-          q10.redAsFloat,
-          q11.redAsFloat,
-          q12.redAsFloat,
-          q13.redAsFloat,
-          q20.redAsFloat,
-          q21.redAsFloat,
-          q22.redAsFloat,
-          q23.redAsFloat,
-          q30.redAsFloat,
-          q31.redAsFloat,
-          q32.redAsFloat,
-          q33.redAsFloat)
+          nearestPixelColors.map(_.map(_.redAsFloat)))
         val green = Interpolation.bicubicInterpolation(
           sourceX - normalizedSourceX,
           sourceY - normalizedSourceY,
-          q00.greenAsFloat,
-          q01.greenAsFloat,
-          q02.greenAsFloat,
-          q03.greenAsFloat,
-          q10.greenAsFloat,
-          q11.greenAsFloat,
-          q12.greenAsFloat,
-          q13.greenAsFloat,
-          q20.greenAsFloat,
-          q21.greenAsFloat,
-          q22.greenAsFloat,
-          q23.greenAsFloat,
-          q30.greenAsFloat,
-          q31.greenAsFloat,
-          q32.greenAsFloat,
-          q33.greenAsFloat)
+          nearestPixelColors.map(_.map(_.greenAsFloat)))
         val blue = Interpolation.bicubicInterpolation(
           sourceX - normalizedSourceX,
           sourceY - normalizedSourceY,
-          q00.blueAsFloat,
-          q01.blueAsFloat,
-          q02.blueAsFloat,
-          q03.blueAsFloat,
-          q10.blueAsFloat,
-          q11.blueAsFloat,
-          q12.blueAsFloat,
-          q13.blueAsFloat,
-          q20.blueAsFloat,
-          q21.blueAsFloat,
-          q22.blueAsFloat,
-          q23.blueAsFloat,
-          q30.blueAsFloat,
-          q31.blueAsFloat,
-          q32.blueAsFloat,
-          q33.blueAsFloat)
+          nearestPixelColors.map(_.map(_.blueAsFloat)))
         val alpha = Interpolation.bicubicInterpolation(
           sourceX - normalizedSourceX,
           sourceY - normalizedSourceY,
-          q00.alphaAsFloat,
-          q01.alphaAsFloat,
-          q02.alphaAsFloat,
-          q03.alphaAsFloat,
-          q10.alphaAsFloat,
-          q11.alphaAsFloat,
-          q12.alphaAsFloat,
-          q13.alphaAsFloat,
-          q20.alphaAsFloat,
-          q21.alphaAsFloat,
-          q22.alphaAsFloat,
-          q23.alphaAsFloat,
-          q30.alphaAsFloat,
-          q31.alphaAsFloat,
-          q32.alphaAsFloat,
-          q33.alphaAsFloat)
+          nearestPixelColors.map(_.map(_.alphaAsFloat)))
 
         // assign to this pixel resulting color
         pixel.copy(color = ColorRgba(red, green, blue, alpha))

@@ -5,6 +5,8 @@ import core.support.math.interpolation.Interpolation
 
 import org.scalatest.flatspec.AnyFlatSpec
 
+import scala.collection.immutable.ArraySeq
+
 class InterpolationSpec extends AnyFlatSpec {
   "linear interpolation" should "produce correct results" in {
     assert(Interpolation.linearInterpolation(3, 1, 10, 6, 20) == 14)
@@ -29,45 +31,26 @@ class InterpolationSpec extends AnyFlatSpec {
   }
 
   "cubic interpolation (alternative method)" should "produce correct results" in {
-    val (x0, x1, x2, x3) = (1, 2, 3, 4)
-    val (q0, q1, q2, q3) = (10, 10, 20, 20)
-
+    val positions = ArraySeq(1f, 2f, 3f, 4f)
+    val values = ArraySeq(10f, 10f, 20f, 20f)
     assert(
       Interpolation
-        .cubicInterpolationAlternative(2.25f, x0, q0, x1, q1, x2, q2, x3, q3) == 12.34375f)
+        .cubicInterpolationAlternative(2.25f, values, positions) == 12.34375f)
   }
 
   "cubic interpolation (OpenCV)" should "produce correct results" in {
-    val (q0, q1, q2, q3) = (10, 10, 20, 20)
+    val values = ArraySeq(10f, 10f, 20f, 20f)
 
-    assert(Interpolation.cubicInterpolationOpenCV(0.25f, q0, q1, q2, q3) == 12.265625f)
+    assert(Interpolation.cubicInterpolationOpenCV(0.25f, values) == 12.265625f)
   }
 
   "bicubic" should "produce correct results" in {
-    val (q00, q01, q02, q03) = (10, 10, 20, 20)
-    val (q10, q11, q12, q13) = (10, 10, 20, 20)
-    val (q20, q21, q22, q23) = (10, 10, 20, 20)
-    val (q30, q31, q32, q33) = (30, 30, 40, 40)
+    val values = ArraySeq(
+      ArraySeq(10f, 10f, 20f, 20f),
+      ArraySeq(10f, 10f, 20f, 20f),
+      ArraySeq(10f, 10f, 20f, 20f),
+      ArraySeq(30f, 30f, 40f, 40f))
 
-    assert(
-      Interpolation.bicubicInterpolation(
-        0.25f,
-        0.75f,
-        q00,
-        q01,
-        q02,
-        q03,
-        q10,
-        q11,
-        q12,
-        q13,
-        q20,
-        q21,
-        q22,
-        q23,
-        q30,
-        q31,
-        q32,
-        q33) == 10.15625)
+    assert(Interpolation.bicubicInterpolation(0.25f, 0.75f, values) == 10.15625)
   }
 }
