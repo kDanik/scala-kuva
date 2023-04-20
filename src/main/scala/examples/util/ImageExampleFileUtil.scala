@@ -21,7 +21,7 @@ object ImageExampleFileUtil {
    * handling. The path must be present and this function only used for generating and reading
    * example images
    */
-  def writeImage(path: String, immutableBufferedImage: ImmutableBufferedImage) = {
+  def writeImage(path: String, immutableBufferedImage: ImmutableBufferedImage): Boolean = {
     ImageIO.write(immutableBufferedImage.asBufferedImage, "png", File(path))
   }
 }

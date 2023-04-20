@@ -21,7 +21,7 @@ object ImageExampleOperations {
     // it also assumes images have same type
 
     ImmutableBufferedImage(height, width, sourceBackgroundImage.imageType) match {
-      case Right(image) => {
+      case Right(image) =>
         var resultedImage = image
         for (x <- 0 until width; y <- 0 until height) {
           resultedImage = resultedImage.setPixel(
@@ -33,7 +33,6 @@ object ImageExampleOperations {
         }
 
         resultedImage
-      }
     }
   }
 }

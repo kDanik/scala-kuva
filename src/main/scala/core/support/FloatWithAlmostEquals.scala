@@ -8,6 +8,7 @@ import scala.annotation.targetName
  * floats are equal to each other, ignoring imprecise way floating point arithmetic is performed
  */
 implicit class FloatWithAlmostEquals(val f1: Float) extends AnyVal {
+  @targetName("~=")
   implicit def ~=(f2: Float)(implicit precision: Precision): Boolean =
     (f1 - f2).abs < precision.p
 }

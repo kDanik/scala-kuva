@@ -61,7 +61,7 @@ object NShadesOfGray {
     val colorRgba = color.asColorRgba
 
     val thresholdSteps =
-      ((colorRgba.green.intValue - minimumValue) / threshold)
+      (colorRgba.green.intValue - minimumValue) / threshold
 
     val newGrayscaleValue =
       if (thresholdSteps == 0) 0

@@ -14,7 +14,7 @@ class InterpolationSpec extends AnyFlatSpec {
 
   "bilinear interpolation" should "produce correct results" in {
     // precision is not really needed here, but most examples of bilinear interpolation do some sort of rounding up
-    implicit val precision = Precision(0.001f)
+    implicit val precision: Precision = Precision(0.001f)
 
     val x1 = 14
     val x2 = 15
