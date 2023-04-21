@@ -114,6 +114,10 @@ final case class ImmutableBufferedImage(
     getPixels(Position(0, 0), Position(Width - 1, Height - 1))
   }
 
+  def rows(): Vector[Vector[Pixel]] = imageRaster
+
+  def cols(): Vector[Vector[Pixel]] = imageRaster
+
   /**
    * Creates new ImmutableBufferedImage by applying operation to color of each pixel
    * @param operation

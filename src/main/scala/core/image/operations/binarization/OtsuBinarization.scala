@@ -4,6 +4,8 @@ package core.image.operations.binarization
 import core.color.types.{Color, ColorRgba}
 import core.image.*
 
+import com.example.core.color.ordering.GrayscalePixelOrdering
+
 import scala.annotation.tailrec
 import scala.collection.immutable.NumericRange
 

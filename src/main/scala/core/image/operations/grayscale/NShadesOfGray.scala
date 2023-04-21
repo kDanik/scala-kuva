@@ -3,7 +3,7 @@ package core.image.operations.grayscale
 
 import core.color.types.{Color, ColorRgba}
 import core.image.ImmutableBufferedImage
-import core.image.operations.binarization.GrayscalePixelOrdering
+import com.example.core.color.ordering.GrayscalePixelOrdering
 
 /**
  * N-shades of gray can be applied to grayscale images, to limit number of shades of gray present

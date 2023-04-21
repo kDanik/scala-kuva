@@ -55,6 +55,12 @@ Example image is upscaled (from 128x160 to 1024x1280) using bicubic interpolatio
 
 <img src="src/main/resources/result/scale/upscale_bicubic_interpolation_cocktail.png" alt="Upscaled (with bicubic interpolation) picture of cocktail" width="300">
 
+#### Hashing
+
+##### Difference hash (dHash)
+Hashes image using simple difference hash algorithm. 
+The resulted hash should be only slightly affected by changes to the image proportions or minor color / brightness adjustments.
+
 ### Grayscale
 
 ##### Averaging
