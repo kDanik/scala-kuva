@@ -9,6 +9,8 @@
 # see also test/files/.gitignore
 #
 
+# File with sources for different algorithms and general notes
+SOURCES.md
 #
 # JARs aren't checked in, they are fetched by sbt
 #
@@ -74,3 +76,4 @@ project/**/metals.sbt
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+SOURCES.md

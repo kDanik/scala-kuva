@@ -2,6 +2,9 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "3.2.2"
 
+coverageEnabled := true
+semanticdbEnabled := true
+
 lazy val root = (project in file("."))
   .settings(name := "scala-kuva", idePackagePrefix := Some("com.example"))
 
