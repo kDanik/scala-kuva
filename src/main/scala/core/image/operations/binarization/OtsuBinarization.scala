@@ -49,7 +49,7 @@ object OtsuBinarization {
   def findLeastVarianceThreshold(
       sourceGrayscaleImage: ImmutableBufferedImage,
       histogramNumberOfBins: Int): Float = {
-    val allPixels = sourceGrayscaleImage.allPixelsAsSeq()
+    val allPixels = sourceGrayscaleImage.allPixelsAsSeq
 
     val totalWeight = allPixels.length
     val colorThresholds =

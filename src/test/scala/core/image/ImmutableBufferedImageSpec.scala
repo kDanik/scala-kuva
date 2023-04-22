@@ -81,7 +81,7 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
 
-    assert(immutableBufferedImage.allPixelsAsSeq().length == 25000)
+    assert(immutableBufferedImage.allPixelsAsSeq.length == 25000)
   }
 
   "ImmutableBufferedImage setPixel" should "should create new ImmutableBufferedImage by changing one pixel" in {
@@ -177,7 +177,7 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
         .color == ColorRgba(0, 0, 255, 255))
   }
 
-  "ImmutableBufferedImage cols() and rows()" should "return correct representation of image" in {
+  "ImmutableBufferedImage cols and rows" should "return correct representation of image" in {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(2, 2, BufferedImage.TYPE_INT_RGB))
 
@@ -185,7 +185,7 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
       immutableBufferedImage.setPixel(Pixel(Position(1, 0), ColorRgba(100, 100, 100, 100)))
 
     assert(
-      updatedImage.rows() == Vector(
+      updatedImage.rows == Vector(
         Vector(
           Pixel(Position(0, 0), ColorRgba(0, 0, 0, 255)),
           Pixel(Position(1, 0), ColorRgba(100, 100, 100, 100))),
@@ -194,7 +194,7 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
           Pixel(Position(1, 1), ColorRgba(0, 0, 0, 255)))))
 
     assert(
-      updatedImage.cols() == Vector(
+      updatedImage.cols == Vector(
         Vector(
           Pixel(Position(0, 0), ColorRgba(0, 0, 0, 255)),
           Pixel(Position(0, 1), ColorRgba(0, 0, 0, 255))),

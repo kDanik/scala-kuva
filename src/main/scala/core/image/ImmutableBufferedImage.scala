@@ -110,7 +110,7 @@ final case class ImmutableBufferedImage(
    * @return
    *   Sequence that contains all Pixel-s of this image
    */
-  def allPixelsAsSeq(): Seq[Pixel] = {
+  def allPixelsAsSeq: Seq[Pixel] = {
     getPixels(Position(0, 0), Position(Width - 1, Height - 1))
   }
 
@@ -119,14 +119,14 @@ final case class ImmutableBufferedImage(
    *   Returns representation of this image as Vector of rows (each row is Vector of pixels with
    *   same Y-position).
    */
-  def rows(): Vector[Vector[Pixel]] = imageRaster
+  def rows: Vector[Vector[Pixel]] = imageRaster
 
   /**
    * @return
    *   Returns representation of this image as Vector of columns (each column is Vector of pixels
    *   with same X-position).
    */
-  def cols(): Vector[Vector[Pixel]] = imageRaster.transpose
+  def cols: Vector[Vector[Pixel]] = imageRaster.transpose
 
   /**
    * Creates new ImmutableBufferedImage by applying operation to color of each pixel
