@@ -57,9 +57,13 @@ Example image is upscaled (from 128x160 to 1024x1280) using bicubic interpolatio
 
 #### Hashing
 
+##### Average hash (aHash)
+The average hash algorithm works by converting an image into a grayscale,
+downsampling it to a small size (8x8 per default),, computing the average pixel value, and creating a binary hash by comparing each pixel's value to the average.
+
 ##### Difference hash (dHash)
-Hashes image using simple difference hash algorithm. 
-The resulted hash should be only slightly affected by changes to the image proportions or minor color / brightness adjustments.
+The difference hash algorithm works by converting an image into a grayscale,
+downsampling it to a small size (9x8 per default), and by computing the difference in pixel values between adjacent pixels (compares pixel with pixel on the right from it).
 
 ### Grayscale
 
