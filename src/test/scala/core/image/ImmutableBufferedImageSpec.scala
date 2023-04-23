@@ -222,4 +222,38 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
     assert(!immutableBufferedImage.isPositionInBounds(Position(-1, 50))) // x below 0
     assert(!immutableBufferedImage.isPositionInBounds(Position(50, -1))) // y below 0
   }
+
+  "ImmutableBufferedImage crop" should "should return correct cropped image for valid input" in {
+    val immutableBufferedImage: ImmutableBufferedImage =
+      ImmutableBufferedImage(BufferedImage(100, 120, BufferedImage.TYPE_INT_RGB))
+        .setPixel(Pixel(Position(15, 7), ColorRgba(10, 10, 10, 10)))
+
+    val cropResult = immutableBufferedImage.crop(Position(10, 5), Position(20, 10))
+
+    cropResult match {
+      case Left(value) =>
+        fail("Crop method return error message for valid input! Message: " + value)
+      case Right(cropResultImage) => {
+        assert(cropResultImage.Width == 20 - 10)
+        assert(cropResultImage.Height == 10 - 5)
+
+        // if crop is correct pixel with Position(15, 7) should become pixel with position Position(15 - 10, 7 - 5)
+        assert(
+          cropResultImage.getPixel(Position(15 - 10, 7 - 5)).get.color.asColorRgba ==
+            ColorRgba(10, 10, 10, 10))
+      }
+    }
+  }
+
+  "ImmutableBufferedImage crop" should "should return error message for invalid inputs" in {
+    val immutableBufferedImage: ImmutableBufferedImage =
+      ImmutableBufferedImage(BufferedImage(100, 120, BufferedImage.TYPE_INT_RGB))
+
+    // start position is after end position
+    assert(immutableBufferedImage.crop(Position(6, 6), Position(5, 5)).isLeft)
+    // start position is not valid
+    assert(immutableBufferedImage.crop(Position(0, -1), Position(5, 5)).isLeft)
+    // end position is not valid
+    assert(immutableBufferedImage.crop(Position(0, 0), Position(100, 121)).isLeft)
+  }
 }
