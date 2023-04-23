@@ -202,4 +202,24 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
           Pixel(Position(1, 0), ColorRgba(100, 100, 100, 100)),
           Pixel(Position(1, 1), ColorRgba(0, 0, 0, 255)))))
   }
+
+  "ImmutableBufferedImage isPositionInBounds" should "should detect valid positions correctly" in {
+    val immutableBufferedImage: ImmutableBufferedImage =
+      ImmutableBufferedImage(BufferedImage(100, 120, BufferedImage.TYPE_INT_RGB))
+
+    assert(immutableBufferedImage.isPositionInBounds(Position(0, 0)))
+    assert(immutableBufferedImage.isPositionInBounds(Position(99, 119)))
+    assert(immutableBufferedImage.isPositionInBounds(Position(40, 35)))
+  }
+
+  "ImmutableBufferedImage isPositionInBounds" should "should detect invalid positions" in {
+    val immutableBufferedImage: ImmutableBufferedImage =
+      ImmutableBufferedImage(BufferedImage(100, 120, BufferedImage.TYPE_INT_RGB))
+
+    assert(!immutableBufferedImage.isPositionInBounds(Position(100, 50))) // x outside of bounds
+    assert(!immutableBufferedImage.isPositionInBounds(Position(50, 120))) // y outside of bounds
+
+    assert(!immutableBufferedImage.isPositionInBounds(Position(-1, 50))) // x below 0
+    assert(!immutableBufferedImage.isPositionInBounds(Position(50, -1))) // y below 0
+  }
 }
