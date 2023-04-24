@@ -39,5 +39,18 @@ object HashExamplesMain {
       "Average hash for the picture of sheep: " + ImageHashing
         .aHash(sheep)
         .toHexString)
+
+    println(
+      "Median hash for the picture of cocktail(high res): " + ImageHashing
+        .mHash(cocktailImage)
+        .toHexString)
+    println(
+      "Median hash for the picture of cocktail(low res, downscaled): " + ImageHashing
+        .mHash(cocktailImageLowRes)
+        .toHexString)
+    println(
+      "Median hash for the picture of sheep: " + ImageHashing
+        .mHash(sheep)
+        .toHexString)
   }
 }

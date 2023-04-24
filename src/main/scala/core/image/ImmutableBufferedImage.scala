@@ -151,13 +151,15 @@ final case class ImmutableBufferedImage(
   }
 
   /**
-   * Creates BufferedImage (java awt) using data of this object.
+   * @return
+   *   BufferedImage created using the type and the content of the raster from this immutable
+   *   image
    */
   def asBufferedImage: BufferedImage = {
     if (Height == 0 || Width == 0) {
       BufferedImage(Width, Height, imageType)
     } else {
-      imageRasterContentAsBufferedImage
+      imageContentAsBufferedImage
     }
   }
 
@@ -173,7 +175,7 @@ final case class ImmutableBufferedImage(
    * @param orderingMethod
    *   defines how pixels will be compared
    * @return
-   *   Pixel with maximum value
+   *   Pixel with maximum value (for provided orderingMethod)
    */
   def max(orderingMethod: Ordering[Pixel]): Pixel = {
     this.imageRaster.flatten.max(orderingMethod)
@@ -183,7 +185,7 @@ final case class ImmutableBufferedImage(
    * @param orderingMethod
    *   defines how pixels will be compared
    * @return
-   *   Pixel with minimum value
+   *   Pixel with minimum value (for provided orderingMethod)
    */
   def min(orderingMethod: Ordering[Pixel]): Pixel = {
     this.imageRaster.flatten.min(orderingMethod)
@@ -223,7 +225,7 @@ final case class ImmutableBufferedImage(
     } else Left("Coordinates are not in bounds of the image!")
   }
 
-  private def imageRasterContentAsBufferedImage: BufferedImage = {
+  private def imageContentAsBufferedImage: BufferedImage = {
     imageRaster.flatten
       .foldLeft(BufferedImage(Width, Height, imageType))((bufferedImage, pixel) => {
         val colorInt = pixel.color.asColorRgba.rgbaInt

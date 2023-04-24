@@ -44,7 +44,7 @@ class InterpolationSpec extends AnyFlatSpec {
     assert(Interpolation.cubicInterpolationOpenCV(0.25f, values) == 12.265625f)
   }
 
-  "bicubic" should "produce correct results" in {
+  "bicubic interpolation" should "produce correct results" in {
     val values = ArraySeq(
       ArraySeq(10f, 10f, 20f, 20f),
       ArraySeq(10f, 10f, 20f, 20f),
