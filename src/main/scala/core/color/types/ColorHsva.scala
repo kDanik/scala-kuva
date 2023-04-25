@@ -5,7 +5,11 @@ import core.support.{FloatWithAlmostEquals, Precision}
 
 import spire.math.UByte
 
-final case class ColorHsva(hue: Float, saturation: Float, value: Float, alpha: UByte = UByte(255))
+final case class ColorHsva private (
+    hue: Float,
+    saturation: Float,
+    value: Float,
+    alpha: UByte = UByte(255))
     extends Color,
       HsvaHsla {
   override def asAwtColor: java.awt.Color = asColorRgba.asAwtColor
@@ -31,11 +35,24 @@ final case class ColorHsva(hue: Float, saturation: Float, value: Float, alpha: U
 
   override def asColorHsva: ColorHsva = this
 
+  def copy(
+      hue: Float = hue,
+      saturation: Float = saturation,
+      value: Float = value,
+      alpha: UByte = alpha): ColorHsva =
+    ColorHsva.apply(hue, saturation, value, alpha)
+
   /**
    * Check if is this ColorHsva almost equals to another ColorHsva. This function should be used
    * instead of equals because of floating point precision problems
    */
   def almostEquals(obj: ColorHsva): Boolean = {
     (hue ~= obj.hue) && (saturation ~= obj.saturation) && (value ~= obj.value) && (alpha == obj.alpha)
+  }
+}
+
+object ColorHsva extends ColorCompanion {
+  def apply(hue: Float, saturation: Float, value: Float, alpha: UByte = UByte(255)): ColorHsva = {
+    new ColorHsva(hue.max(0f).min(360f), saturation.max(0f).min(1f), value.max(0).min(1f), alpha)
   }
 }

@@ -20,4 +20,21 @@ class ColorHsvaSpec extends AnyFlatSpec {
 
     assert(colorHsva.asColorHsla.almostEquals(expectedColorHsla))
   }
+
+  "ColorHsva" should "normalize value, if created with invalid values" in {
+    val colorHsva: ColorHsva = ColorHsva(380f, 1.4f, -1f, UByte(50))
+
+    assert(colorHsva.hue == 360f)
+    assert(colorHsva.saturation == 1f)
+    assert(colorHsva.value == 0f)
+  }
+
+  "ColorHsva" should "normalize value, if created with copy with invalid values" in {
+    val colorHsva: ColorHsva = ColorHsva(250f, 0.5f, 0.2f, UByte(50))
+    val copyColorHsva = colorHsva.copy(hue = 380f, saturation = 1.4f, value = -1f)
+
+    assert(copyColorHsva.hue == 360f)
+    assert(copyColorHsva.saturation == 1f)
+    assert(copyColorHsva.value == 0f)
+  }
 }

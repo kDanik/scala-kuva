@@ -34,4 +34,21 @@ class ColorHslaSpec extends AnyFlatSpec {
       colorHsva.alpha == UByte(125),
       "Conversion failed: expected alpha %s, received %s" format (UByte(125), colorHsva.alpha))
   }
+
+  "ColorHsla" should "normalize value, if created with invalid values" in {
+    val colorHsla: ColorHsla = ColorHsla(380f, 1.4f, -1f, UByte(50))
+
+    assert(colorHsla.hue == 360f)
+    assert(colorHsla.saturation == 1f)
+    assert(colorHsla.lightness == 0f)
+  }
+
+  "ColorHsla" should "normalize value, if created with copy with invalid values" in {
+    val colorHsla: ColorHsla = ColorHsla(250f, 0.5f, 0.2f, UByte(50))
+    val copyColorHsla = colorHsla.copy(hue = 380f, saturation = 1.4f, lightness = -1f)
+
+    assert(copyColorHsla.hue == 360f)
+    assert(copyColorHsla.saturation == 1f)
+    assert(copyColorHsla.lightness == 0f)
+  }
 }
