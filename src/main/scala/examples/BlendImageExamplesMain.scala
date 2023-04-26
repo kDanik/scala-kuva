@@ -3,7 +3,10 @@ package examples
 
 import core.color.operations.blend.{BlendMode, ColorBlending}
 import core.color.types.Color
-import examples.util.{ImageExampleFileUtil, ImageExampleOperations}
+import examples.util.ImageExampleFileUtil
+
+import com.example.core.image.Position
+import com.example.core.image.operations.blending.ImageBlending
 
 object BlendImageExamplesMain {
   def main(args: Array[String]): Unit = {
@@ -268,11 +271,12 @@ object BlendImageExamplesMain {
       resultedImagePath: String,
       backgroundImagePath: String,
       foregroundImagePath: String): Unit = {
-    val resultedImage = ImageExampleOperations.combineTwoImageInOne(
+
+    val resultedImage = ImageBlending.blend(
       ImageExampleFileUtil.loadImage(backgroundImagePath),
       ImageExampleFileUtil.loadImage(foregroundImagePath),
-      (background: Color, foreground: Color) =>
-        ColorBlending.blend(background, foreground, blendMode))
+      Position(0, 0),
+      blendMode)
 
     ImageExampleFileUtil.writeImage(resultedImagePath, resultedImage)
   }

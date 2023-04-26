@@ -5,7 +5,7 @@ import core.color.operations.blend.{BlendMode, ColorBlending}
 import core.color.operations.grayscale.{GrayscaleColorConversion, GrayscaleConversionAlgorithm}
 import core.color.types.Color
 import core.image.operations.binarization.OtsuBinarization
-import examples.util.{ImageExampleFileUtil, ImageExampleOperations}
+import examples.util.ImageExampleFileUtil
 
 object BinarizationImageExamplesMain {
   def main(args: Array[String]): Unit = {

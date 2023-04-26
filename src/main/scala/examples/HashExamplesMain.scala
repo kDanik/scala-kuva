@@ -2,8 +2,8 @@ package com.example
 package examples
 
 import core.image.ImmutableBufferedImage
-import examples.util.ImageExampleFileUtil
 import core.image.hash.ImageHashing
+import examples.util.ImageExampleFileUtil
 
 object HashExamplesMain {
   def main(args: Array[String]): Unit = {

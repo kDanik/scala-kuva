@@ -4,7 +4,7 @@ package examples
 import core.color.operations.inversion.ColorInversion
 import core.color.types.Color
 import core.image.ImmutableBufferedImage
-import examples.util.{ImageExampleFileUtil, ImageExampleOperations}
+import examples.util.ImageExampleFileUtil
 
 object InversionImageExampleMain {
   def main(args: Array[String]): Unit = {
