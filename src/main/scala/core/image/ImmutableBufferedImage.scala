@@ -103,7 +103,8 @@ final case class ImmutableBufferedImage(
       imageRaster
         .slice(from.yInt, to.yInt + 1)
         .flatMap((pixelRow: Vector[Pixel]) => pixelRow.slice(from.xInt, to.xInt + 1))
-    } else Seq.empty // TODO for invalid input it makes more sense to have option or error
+    } else
+      Seq.empty
   }
 
   /**
@@ -111,7 +112,7 @@ final case class ImmutableBufferedImage(
    *   Sequence that contains all Pixel-s of this image
    */
   def allPixelsAsSeq: Seq[Pixel] = {
-    getPixels(Position(0, 0), Position(Width - 1, Height - 1))
+    imageRaster.flatten
   }
 
   /**

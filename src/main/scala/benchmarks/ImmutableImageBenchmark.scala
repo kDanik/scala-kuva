@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit
 @Fork(2)
 @State(Scope.Thread)
 class ImmutableImageBenchmark {
+
   val image: ImmutableBufferedImage = ImmutableBufferedImage(4096, 2048) match {
     case Right(image) => image
   }
