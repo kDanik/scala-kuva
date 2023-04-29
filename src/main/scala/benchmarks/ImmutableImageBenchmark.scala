@@ -10,7 +10,7 @@ import spire.math.UByte
 import java.util.concurrent.TimeUnit
 
 /**
- * Run using sbt "jmh:run benchmarks.ImmutableImageBenchmark"
+ * Run using: sbt "jmh:run benchmarks.ImmutableImageBenchmark"
  */
 @BenchmarkMode(Array(Mode.AverageTime))
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
