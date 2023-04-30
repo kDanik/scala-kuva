@@ -1,10 +1,9 @@
 package com.example
 package core.image.operations.binarization
 
+import core.color.ordering.GrayscalePixelOrdering
 import core.color.types.{Color, ColorRgba}
 import core.image.*
-
-import com.example.core.color.ordering.GrayscalePixelOrdering
 
 import scala.annotation.tailrec
 import scala.collection.immutable.NumericRange
@@ -65,8 +64,8 @@ object OtsuBinarization {
   }
 
   /**
-   * Recursive function that iterates through all thresholds, looking for threshold with least
-   * variance for background and foreground.
+   * Recursive function that iterates through all thresholds, calculates variance for background
+   * and foreground for current threshold, looking for threshold with least variance.
    */
   @tailrec
   private def findLeastVarianceThreshold(

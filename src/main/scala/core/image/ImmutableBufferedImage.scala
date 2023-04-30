@@ -30,20 +30,21 @@ final case class ImmutableBufferedImage(
     imageType: Int) {
 
   /**
-   * height of this image in pixels
+   * Height of this image in pixels.
    */
   lazy val Height: Int = imageRaster.length
 
   /**
-   * width of this image in pixels
+   * Width of this image in pixels.
    */
   lazy val Width: Int = imageRaster.headOption.fold(0)(_.length)
 
   /**
-   * Sets / Replaces one pixel in ImmutableBufferedImage
+   * Creates new Immutable image by replacing one pixel of this immutable image.
    *
    * @param pixel
-   *   pixel that should be replaced in ImmutableBufferedImage
+   *   pixel that should be replaced in ImmutableBufferedImage. Pixel.position will control which
+   *   pixel will be replaced.
    * @return
    *   new ImmutableBufferedImage after changes
    */
@@ -57,17 +58,18 @@ final case class ImmutableBufferedImage(
   }
 
   /**
-   * Sets / Replaces multiple pixels in ImmutableBufferedImage. This function is faster than using
+   * Sets / Replaces multiple pixels in ImmutableBufferedImage. This method is faster than using
    * setPixel for each element of collection.
    *
    * @param pixels
-   *   list of pixels that should be replaced with
+   *   sequence of pixels that should be replaced with
    * @return
    *   new ImmutableBufferedImage after changes
    */
-  def setPixels(pixels: List[Pixel]): ImmutableBufferedImage = {
+  def setPixels(pixels: Seq[Pixel]): ImmutableBufferedImage = {
     val validPixels = pixels.filter(pixel => isPositionInBounds(pixel.position))
 
+    // this can be slightly optimized in the future, if needed
     val updatedImageRaster =
       validPixels.foldLeft(imageRaster)((updatedImageRaster, pixel) =>
         updatedImageRaster.updated(
@@ -154,7 +156,7 @@ final case class ImmutableBufferedImage(
   /**
    * @return
    *   BufferedImage created using the type and the content of the raster from this immutable
-   *   image
+   *   image.
    */
   def asBufferedImage: BufferedImage = {
     if (Height == 0 || Width == 0) {
@@ -166,7 +168,7 @@ final case class ImmutableBufferedImage(
 
   /**
    * @return
-   *   true if position is in bounds of this ImmutableBufferedImage, otherwise false
+   *   true if position is in bounds of this ImmutableBufferedImage, otherwise false.
    */
   def isPositionInBounds(position: Position): Boolean = {
     position.isNotNegative && (position.xInt < Width && position.yInt < Height)
