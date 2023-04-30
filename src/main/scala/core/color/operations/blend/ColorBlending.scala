@@ -26,57 +26,131 @@ object ColorBlending {
    *   color which will go "on top" of background color (overlay)
    * @param blendMode
    *   blend mode (algorithm) that should be used for blending. More details in BlendMode enum.
+   * @param alphaBlending
+   *   toggles blending of the foreground and background alpha channels. If false, will only use
+   *   background alpha for final alpha. This will also affect the final color values (for most
+   *   blend modes) because of alpha pre-multiplication and un-multiplication by final alpha.
    * @return
    *   resulting color in ColorRgba format
    */
-  def blend(backgroundColor: Color, foregroundColor: Color, blendMode: BlendMode): ColorRgba = {
+  def blend(
+      backgroundColor: Color,
+      foregroundColor: Color,
+      blendMode: BlendMode,
+      alphaBlending: Boolean = true): ColorRgba = {
     blendMode match {
       case BlendMode.SIMPLE_ALPHA_COMPOSITING =>
-        blendUsingAlphaCompositing(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingAlphaCompositing(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case DISSOLVE =>
         blendUsingDissolveAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
       case MULTIPLY =>
-        blendUsingMultiplyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingMultiplyAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case SCREEN =>
-        blendUsingScreenAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingScreenAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case OVERLAY =>
-        blendUsingOverlayAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingOverlayAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case HARD_LIGHT =>
-        blendUsingHardLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingHardLightAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case SOFT_LIGHT =>
-        blendUsingSoftLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingSoftLightAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case COLOR_DODGE =>
-        blendUsingColorDodgeAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingColorDodgeAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case LINEAR_DODGE =>
-        blendUsingLinearDodgeAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingLinearDodgeAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case COLOR_BURN =>
-        blendUsingColorBurnAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingColorBurnAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case LINEAR_BURN =>
-        blendUsingLinearBurnAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingLinearBurnAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case VIVID_LIGHT =>
-        blendUsingVividLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingVividLightAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case LINEAR_LIGHT =>
-        blendUsingLinearLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingLinearLightAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case DIFFERENCE =>
-        blendUsingDifferenceAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingDifferenceAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case SUBTRACT =>
-        blendUsingSubtractAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingSubtractAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case LIGHTEN_ONLY =>
-        blendUsingLightenOnlyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingLightenOnlyAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case DARKEN_ONLY =>
-        blendUsingDarkenOnlyAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingDarkenOnlyAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case DIVIDE =>
-        blendUsingDivideAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingDivideAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case HARD_MIX =>
-        blendUsingHardMixAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingHardMixAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case PIN_LIGHT =>
-        blendUsingPinLightAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingPinLightAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case REFLECT =>
-        blendUsingReflectAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingReflectAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case EXCLUSION =>
-        blendUsingExclusionAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingExclusionAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case GEOMETRIC_MEAN =>
-        blendUsingGeometricMeanAlgorithm(backgroundColor.asColorRgba, foregroundColor.asColorRgba)
+        blendUsingGeometricMeanAlgorithm(
+          backgroundColor.asColorRgba,
+          foregroundColor.asColorRgba,
+          alphaBlending)
       case LUMINOSITY =>
         blendUsingLuminosityAlgorithm(backgroundColor.asColorHsla, foregroundColor.asColorHsla)
       case COLOR =>
@@ -114,212 +188,275 @@ object ColorBlending {
 
   private def blendUsingGeometricMeanAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingGeometricMeanAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingGeometricMeanAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingExclusionAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingExclusionAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingExclusionAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingReflectAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingReflectAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingReflectAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingPinLightAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingPinLightAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingPinLightAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingHardMixAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingHardMixAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingHardMixAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingDivideAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingDivideAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingDivideAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingLightenOnlyAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingLightenOnlyAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingLightenOnlyAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingDarkenOnlyAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingDarkenOnlyAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingDarkenOnlyAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingSubtractAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingSubtractAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingSubtractAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingDifferenceAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingDifferenceAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingDifferenceAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingLinearLightAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingLinearLightAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingLinearLightAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingVividLightAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingVividLightAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingVividLightAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingLinearBurnAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingLinearBurnAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingLinearBurnAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingColorBurnAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingColorBurnAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingColorBurnAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingLinearDodgeAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingLinearDodgeAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingLinearDodgeAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingColorDodgeAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingColorDodgeAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingColorDodgeAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingSoftLightAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingSoftLightAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingSoftLightAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingHardLightAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingHardLightAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingHardLightAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingOverlayAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (backgroundColor: Float, foregroundColor: Float, _: Float) =>
-        blendSingleChannelUsingOverlayAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingOverlayAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingMultiplyAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (foregroundColor: Float, backgroundColor: Float, _: Float) =>
-        blendSingleChannelUsingMultiplyAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingMultiplyAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingScreenAlgorithm(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
       blendAlgorithmForOneChannel = (backgroundColor: Float, foregroundColor: Float, _: Float) =>
-        blendSingleChannelUsingScreenAlgorithm(backgroundColor, foregroundColor))
+        blendSingleChannelUsingScreenAlgorithm(backgroundColor, foregroundColor),
+      false,
+      alphaBlending)
   }
 
   private def blendUsingDissolveAlgorithm(
@@ -340,11 +477,14 @@ object ColorBlending {
 
   private def blendUsingAlphaCompositing(
       backgroundColor: ColorRgba,
-      foregroundColor: ColorRgba): ColorRgba = {
+      foregroundColor: ColorRgba,
+      alphaBlending: Boolean): ColorRgba = {
     blend(
       backgroundColor,
       foregroundColor,
-      blendAlgorithmForOneChannel = blendSingleChannelUsingAlphaCompositing)
+      blendAlgorithmForOneChannel = blendSingleChannelUsingAlphaCompositing,
+      false,
+      alphaBlending)
   }
 
   /**
@@ -370,7 +510,8 @@ object ColorBlending {
           background: Float,
           foreground: Float,
           alphaForeground: Float) => Float,
-      blendFullyTransparentColors: Boolean = false) = {
+      blendFullyTransparentColors: Boolean,
+      alphaBlending: Boolean) = {
     val alphaBg = backgroundColor.alphaAsFloat
     val alphaFg = foregroundColor.alphaAsFloat
 
@@ -387,7 +528,8 @@ object ColorBlending {
           alphaBg,
           foregroundColor,
           alphaFg,
-          blendAlgorithmForOneChannel)
+          blendAlgorithmForOneChannel,
+          alphaBlending)
       }
     }
   }
@@ -427,11 +569,13 @@ object ColorBlending {
       blendAlgorithmForOneChannel: (
           background: Float,
           foreground: Float,
-          alphaForeground: Float) => Float): ColorRgba = {
+          alphaForeground: Float) => Float,
+      alphaBlending: Boolean): ColorRgba = {
     val (redBg, greenBg, blueBg) = preMultiplyRgbValues(backgroundColor, alphaBg)
     val (redFg, greenFg, blueFg) = preMultiplyRgbValues(foregroundColor, alphaFg)
 
-    val finalAlpha = calculateStandardBlendedAlpha(alphaBg, alphaFg)
+    val finalAlpha =
+      if (alphaBlending) calculateStandardBlendedAlpha(alphaBg, alphaFg) else alphaBg
 
     ColorRgba(
       unMultiplyFinalColorChannel(blendAlgorithmForOneChannel(redBg, redFg, alphaFg), finalAlpha),
