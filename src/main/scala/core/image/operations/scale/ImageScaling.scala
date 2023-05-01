@@ -52,7 +52,7 @@ object ImageScaling {
       val sourceY =
         (pixel.position.y / targetHeight * sourceHeight).round.intValue.min(sourceHeight - 1)
 
-      pixel.copy(color = sourceImage.getPixel(Position(sourceX, sourceY)).get.color)
+      sourceImage.getPixel(Position(sourceX, sourceY)).get.color
     })
   }
 
@@ -88,13 +88,13 @@ object ImageScaling {
     targetImage.mapPixels((pixel: Pixel) => {
 
       // assign to this pixel resulting color
-      pixel.copy(color = calculateSinglePixelColorWithBilinearInterpolation(
+      calculateSinglePixelColorWithBilinearInterpolation(
         sourceImage,
         targetWidth,
         targetHeight,
         pixel,
         sourceWidth,
-        sourceHeight))
+        sourceHeight)
     })
   }
 
@@ -215,13 +215,14 @@ object ImageScaling {
 
     // calculate color for each pixel of target image, using pixels from source image (and bicubic interpolation)
     targetImage.mapPixels((pixel: Pixel) => {
-      pixel.copy(color = calculateSinglePixelColorWithBicubicInterpolation(
+      calculateSinglePixelColorWithBicubicInterpolation(
         sourceImage,
         targetWidth,
         targetHeight,
         pixel,
         sourceWidth,
-        sourceHeight))
+        sourceHeight)
+
     })
   }
 }

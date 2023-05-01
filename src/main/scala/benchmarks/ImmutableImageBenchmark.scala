@@ -41,7 +41,7 @@ class ImmutableImageBenchmark {
   }
 
   @Benchmark def imageMapPixels(): Unit = {
-    image.mapPixels(pixel => Pixel(pixel.position, ColorRgba(100, 100, 100, 255)))
+    image.mapPixels(_ => ColorRgba(100, 100, 100, 255))
   }
 
   @Benchmark def imageMapColors(): Unit = {

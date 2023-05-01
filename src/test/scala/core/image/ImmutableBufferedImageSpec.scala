@@ -132,7 +132,7 @@ class ImmutableBufferedImageSpec extends AnyFlatSpec {
   "ImmutableBufferedImage mapPixels" should "create new ImmutableBufferedImage by function to all pixels" in {
     val immutableBufferedImage: ImmutableBufferedImage =
       ImmutableBufferedImage(BufferedImage(100, 250, BufferedImage.TYPE_INT_RGB))
-    def f(pixel: Pixel): Pixel = pixel.copy(color = ColorRgba(255, 0, 0, 255))
+    def f(pixel: Pixel): Color = ColorRgba(255, 0, 0, 255)
 
     val updatedImage: ImmutableBufferedImage = immutableBufferedImage.mapPixels(f)
 

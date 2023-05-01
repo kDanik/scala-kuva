@@ -1,8 +1,9 @@
 package com.example
 package core.image.operations.blending
 
-import core.image.{ImmutableBufferedImage, Pixel, Position}
+import core.color.types.ColorRgba
 import core.color.operations.blend.{BlendMode, ColorBlending}
+import core.image.{ImmutableBufferedImage, Pixel, Position}
 
 object ImageBlending {
   def blend(
@@ -18,7 +19,7 @@ object ImageBlending {
       foreground.getPixel(foregroundPixelPosition) match {
         case Some(foregroundPixel) =>
           blendTwoPixels(backgroundPixel, foregroundPixel, blendMode)
-        case None => backgroundPixel
+        case None => backgroundPixel.color
       }
     })
   }
@@ -26,9 +27,8 @@ object ImageBlending {
   private def blendTwoPixels(
       backgroundPixel: Pixel,
       foregroundPixel: Pixel,
-      blendMode: BlendMode): Pixel = {
-    backgroundPixel.copy(color =
-      ColorBlending.blend(backgroundPixel.color, foregroundPixel.color, blendMode))
+      blendMode: BlendMode): ColorRgba = {
+    ColorBlending.blend(backgroundPixel.color, foregroundPixel.color, blendMode)
   }
 
   private def calculateCorrespondingForegroundPixelPosition(

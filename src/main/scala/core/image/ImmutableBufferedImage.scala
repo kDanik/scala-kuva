@@ -132,25 +132,28 @@ final case class ImmutableBufferedImage(
   def cols: Vector[Vector[Pixel]] = imageRaster.transpose
 
   /**
-   * Creates new ImmutableBufferedImage by applying operation to color of each pixel
+   * Creates new ImmutableBufferedImage by applying operation to color of each pixel (taking pixel
+   * as input)
    * @param operation
    *   operation to apply to each pixel color
    * @return
-   *   new ImmutableBufferedImage resulting by applying operation to color of each pixel
+   *   new ImmutableBufferedImage resulting by applying operation to each pixel
    */
-  def mapPixels(operation: Pixel => Pixel): ImmutableBufferedImage = {
-    this.copy(imageRaster.map((row: Vector[Pixel]) => row.map(operation)))
+  def mapPixels(operation: Pixel => Color): ImmutableBufferedImage = {
+    this.copy(imageRaster.map((row: Vector[Pixel]) =>
+      row.map(pixel => pixel.copy(color = operation(pixel)))))
   }
 
   /**
-   * Creates new ImmutableBufferedImage by applying operation to color of each pixel
+   * Creates new ImmutableBufferedImage by applying operation to color of each pixel (taking pixel
+   * color as input)
    * @param operation
    *   operation to apply to each pixel color
    * @return
    *   new ImmutableBufferedImage resulting by applying operation to color of each pixel
    */
   def mapPixelColors(operation: Color => Color): ImmutableBufferedImage = {
-    mapPixels((pixel: Pixel) => pixel.copy(color = operation(pixel.color)))
+    mapPixels((pixel: Pixel) => operation(pixel.color))
   }
 
   /**
