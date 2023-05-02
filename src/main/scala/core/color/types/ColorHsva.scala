@@ -43,7 +43,7 @@ final case class ColorHsva private (
     ColorHsva.apply(hue, saturation, value, alpha)
 
   /**
-   * Check if is this ColorHsva almost equals to another ColorHsva. This function should be used
+   * Checks if is this ColorHsva almost equals to another ColorHsva. This function should be used
    * instead of equals because of floating point precision problems
    */
   def almostEquals(obj: ColorHsva): Boolean = {

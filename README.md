@@ -7,20 +7,21 @@
 ## Color types
 
 The library contains implementations for three color formats: **RGB(A)**, **HSL(A)**, and **HSV(A)**.
-These color types are immutable and can be converted between each other. Additionally, they can also be converted to java.awt.Color and created from it
+These color types are immutable and can be converted between each other. Additionally, they can also be converted to
+java.awt.Color and created from it
 
 ## Immutable image
 
 For all image operations in this library own implementation of the immutable image is used.
-The Immutable image simply wraps two-dimensional Vector of immutable Pixels, offering some useful operations to work with it in functional way.
-
+The Immutable image simply wraps two-dimensional Vector of immutable Pixels, offering some useful operations to work
+with it in functional way.
 
 It can also be converted to java.awt.image.BufferedImage and created from it.
 
 ## Color and image manipulation
 
-This library contains implementation for various color and image operations. For example: most grayscale algorithms, many blend modes, binarization, resizing with different algorithms, croping and more.
-
+This library contains implementation for various color and image operations. For example: most grayscale algorithms,
+many blend modes, binarization, resizing with different algorithms, croping and more.
 
 This initial image will be used to demonstrate the effects of the different operations.
 
@@ -59,17 +60,28 @@ Example image is upscaled (from 128x160 to 1024x1280) using bicubic interpolatio
 #### Hashing
 
 ##### Average hash (aHash)
+
 The average hash algorithm works by converting an image into a grayscale,
-downsampling it to a small size (8x8 per default), computing the **average** pixel value, and creating a binary hash by comparing each pixels value with the average value.
+downsampling it to a small size (8x8 per default), computing the **average** pixel value, and creating a binary hash by
+comparing each pixels value with the average value.
 
 ##### Median hash (mHash)
-The average hash algorithm works by converting an image into a grayscale,
-downsampling it to a small size (8x8 per default), computing the **median** pixel value, and creating a binary hash by comparing each pixels value with the median value.
 
+The average hash algorithm works by converting an image into a grayscale,
+downsampling it to a small size (8x8 per default), computing the **median** pixel value, and creating a binary hash by
+comparing each pixels value with the median value.
 
 ##### Difference hash (dHash)
+
 The difference hash algorithm works by converting an image into a grayscale,
-downsampling it to a small size (9x8 per default), and by computing the difference in pixel values between adjacent pixels (compares each pixel with the pixel on the right from it).
+downsampling it to a small size (9x8 per default), and by computing the difference in pixel values between adjacent
+pixels (compares each pixel with the pixel on the right from it).
+
+### Blur
+
+##### Box blur
+
+<img src="src/main/resources/result/blur/box_blur_cocktail.png" alt="Picture of cocktail after applying box blur with radius 7" width="350">
 
 ### Grayscale
 
@@ -271,7 +283,6 @@ Foreground (overlay image):
 ##### Color
 
 <img src="src/main/resources/result/blend/blend_color.png" alt="Color blending with geometric color(HSL) algorithm" width="300">
-
 
 ### Binarization
 
