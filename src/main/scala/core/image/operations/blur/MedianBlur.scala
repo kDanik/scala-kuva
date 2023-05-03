@@ -3,16 +3,17 @@ package core.image.operations.blur
 
 import core.color.types.ColorRgba
 import core.image.{ImmutableBufferedImage, Pixel, Position}
+import core.support.math.interpolation.MedianSeq
 
 /**
  * A box blur is a filter in which each pixel in the resulting image has a value equal to the
- * average value of its neighboring pixels (box) in the input image.
+ * median value of its neighboring pixels (box) in the input image.
  */
-object BoxBlur {
+object MedianBlur {
 
   /**
-   * Applies box blur to image. Box blur works by simply calculating value for each pixel, based
-   * on average value of surrounding pixels (in box, controlled by radius param).
+   * Applies median blur to image. Median blur works by calculating value for each pixel, based on
+   * median value of surrounding pixels (in box, controlled by radius param).
    * @param image
    *   input image that should be blurred
    * @param radius
@@ -37,21 +38,15 @@ object BoxBlur {
       } yield image.getPixel(Position(x, y))
     ).flatten
 
-    val numberOfPixels = pixelsInBox.length
-    val summedColorValueTuple = pixelsInBox.foldLeft((0, 0, 0, 0)) {
-      case ((red, green, blue, alpha), pixel) =>
-        val colorRgba = pixel.color.asColorRgba
-        (
-          red + colorRgba.red.intValue,
-          green + colorRgba.green.intValue,
-          blue + colorRgba.blue.intValue,
-          alpha + colorRgba.alpha.intValue)
-    }
+    val medianRed =
+      pixelsInBox.map(_.color.asColorRgba.redAsFloat).median.getOrElse(0.0).floatValue
+    val medianGreen =
+      pixelsInBox.map(_.color.asColorRgba.greenAsFloat).median.getOrElse(0.0).floatValue
+    val medianBlue =
+      pixelsInBox.map(_.color.asColorRgba.blueAsFloat).median.getOrElse(0.0).floatValue
+    val medianAlpha =
+      pixelsInBox.map(_.color.asColorRgba.alphaAsFloat).median.getOrElse(0.0).floatValue
 
-    ColorRgba(
-      summedColorValueTuple._1 / numberOfPixels,
-      summedColorValueTuple._2 / numberOfPixels,
-      summedColorValueTuple._3 / numberOfPixels,
-      summedColorValueTuple._4 / numberOfPixels)
+    ColorRgba(medianRed, medianGreen, medianBlue, medianAlpha)
   }
 }

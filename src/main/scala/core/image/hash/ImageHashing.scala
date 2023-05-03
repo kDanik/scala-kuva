@@ -5,6 +5,7 @@ import core.color.operations.grayscale.{GrayscaleColorConversion, GrayscaleConve
 import core.color.ordering.{GrayscaleColorOrdering, GrayscalePixelOrdering}
 import core.image.ImmutableBufferedImage
 import core.image.operations.scale.ImageScaling
+import core.support.math.interpolation.MedianSeq
 
 object ImageHashing {
 
@@ -126,16 +127,9 @@ object ImageHashing {
   }
 
   private def calculateGrayscaleMedian(grayscaleImage: ImmutableBufferedImage): Float = {
-    val allPixels = grayscaleImage.allPixelsAsSeq
-    val sortedPixels =
-      allPixels.sortWith(_.color.asColorRgba.redAsFloat < _.color.asColorRgba.redAsFloat)
+    val allPixelValues = grayscaleImage.allPixelsAsSeq.map(_.color.asColorRgba.redAsFloat)
 
-    if (sortedPixels.length % 2 == 0) {
-      (sortedPixels(sortedPixels.length / 2).color.asColorRgba.redAsFloat + sortedPixels(
-        sortedPixels.length / 2 + 1).color.asColorRgba.redAsFloat) / 2f
-    } else {
-      sortedPixels(sortedPixels.length / 2).color.asColorRgba.redAsFloat
-    }
+    allPixelValues.median.getOrElse(0.0).toFloat
   }
 
   private def calculateGrayscaleAverage(grayscaleImage: ImmutableBufferedImage): Float = {
