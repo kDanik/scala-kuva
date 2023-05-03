@@ -52,6 +52,10 @@ class ImmutableImageBenchmark {
     for (_ <- 1 to 10) image.getPixels(Position(100, 100), Position(2000, 2000))
   }
 
+  @Benchmark def imageGetPixel(): Unit = {
+    for (_ <- 1 to 100) image.getPixel(Position(500, 100))
+  }
+
   @Benchmark def imageAllPixelsAsSeq(): Unit = {
     for (_ <- 1 to 10) image.allPixelsAsSeq
   }

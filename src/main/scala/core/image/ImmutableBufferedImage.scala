@@ -84,9 +84,10 @@ final case class ImmutableBufferedImage(
    * will be returned.
    */
   def getPixel(position: Position): Option[Pixel] = {
-    if (isPositionInBounds(position)) {
-      Option(imageRaster(position.yInt)(position.xInt))
-    } else Option.empty
+    imageRaster.lift(position.yInt) match {
+      case Some(row) => row.lift(position.xInt)
+      case None => Option.empty
+    }
   }
 
   /**
