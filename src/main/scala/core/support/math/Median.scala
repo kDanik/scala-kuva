@@ -1,5 +1,5 @@
 package com.example
-package core.support.math.interpolation
+package core.support.math
 
 implicit class MedianSeq[T](seq: Seq[T]) {
 

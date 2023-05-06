@@ -1,8 +1,7 @@
 package com.example
 package core.support
 
-import core.support.math.interpolation.MedianSeq
-
+import com.example.core.support.math.MedianSeq
 import org.scalatest.flatspec.AnyFlatSpec
 
 class MedianSpec extends AnyFlatSpec {

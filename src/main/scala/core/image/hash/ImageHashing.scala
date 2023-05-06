@@ -5,7 +5,7 @@ import core.color.operations.grayscale.{GrayscaleColorConversion, GrayscaleConve
 import core.color.ordering.{GrayscaleColorOrdering, GrayscalePixelOrdering}
 import core.image.ImmutableBufferedImage
 import core.image.operations.scale.ImageScaling
-import core.support.math.interpolation.MedianSeq
+import core.support.math.MedianSeq
 
 object ImageHashing {
 

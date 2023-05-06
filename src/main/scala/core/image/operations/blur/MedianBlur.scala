@@ -3,7 +3,7 @@ package core.image.operations.blur
 
 import core.color.types.ColorRgba
 import core.image.{ImmutableBufferedImage, Pixel, Position}
-import core.support.math.interpolation.MedianSeq
+import core.support.math.MedianSeq
 
 /**
  * A box blur is a filter in which each pixel in the resulting image has a value equal to the
