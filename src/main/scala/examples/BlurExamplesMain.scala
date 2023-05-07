@@ -25,6 +25,6 @@ object BlurExamplesMain {
 
     ImageExampleFileUtil.writeImage(
       "src/main/resources/result/blur/gaussian_blur_cocktail.png",
-      GaussianBlur.blur(cocktailImage, 27, 27))
+      GaussianBlur.blur(cocktailImage, 101, 101))
   }
 }

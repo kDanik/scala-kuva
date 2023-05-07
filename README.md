@@ -89,7 +89,7 @@ pixels (compares each pixel with the pixel on the right from it).
 
 ##### Gaussian blur
 
-<img src="src/main/resources/result/blur/gaussian_blur_cocktail.png" alt="Picture of cocktail after applying gaussian blur with radius 21" width="350">
+<img src="src/main/resources/result/blur/gaussian_blur_cocktail.png" alt="Picture of cocktail after applying gaussian blur with kernel 101x101" width="350">
 
 ### Grayscale
 
