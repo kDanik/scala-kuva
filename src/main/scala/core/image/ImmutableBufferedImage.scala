@@ -6,6 +6,7 @@ import core.image
 import core.image.{ImmutableBufferedImage, Pixel, Position}
 
 import java.awt.image.BufferedImage
+import scala.collection.parallel.CollectionConverters.*
 
 /**
  * This class is a primitive implementation of immutable image. Its idea is to replace java
@@ -141,8 +142,11 @@ final case class ImmutableBufferedImage(
    *   new ImmutableBufferedImage resulting by applying operation to each pixel
    */
   def mapPixels(operation: Pixel => Color): ImmutableBufferedImage = {
-    this.copy(imageRaster.map((row: Vector[Pixel]) =>
-      row.map(pixel => pixel.copy(color = operation(pixel)))))
+    this.copy(
+      imageRaster.par
+        .map((row: Vector[Pixel]) =>
+          row.par.map(pixel => pixel.copy(color = operation(pixel))).seq)
+        .seq)
   }
 
   /**
